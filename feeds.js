@@ -15,17 +15,12 @@
       url: "https://feralamerica.substack.com/feed",
       cache: "./substack.json",
       target: "substack-feed",
-      limit: 6,
+      limit: 3,
       viewAll: "https://feralamerica.substack.com/archive",
     },
-    youtube: {
-      url: "https://www.youtube.com/feeds/videos.xml?channel_id=UCZCMfPUFytpl1MugojZOzZQ",
-      cache: "./youtube.json",
-      target: "youtube-feed",
-      limit: 6,
-      viewAll: "https://www.youtube.com/@feralamerica/videos",
-    },
   };
+  // Note: the YouTube section uses a static channel-uploads embed in index.html
+  // (newest video first) — no feed fetch needed, so it never hangs on a proxy.
 
   var PROXIES = [
     function (u) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(u); },
@@ -106,6 +101,7 @@
       out.push({
         title: (en.getElementsByTagName("title")[0] || {}).textContent || "",
         link: link,
+        id: vId,
         date: (en.getElementsByTagName("published")[0] || {}).textContent || "",
         summary: stripTags(descEl ? descEl.textContent : "").slice(0, 140),
         thumb: thumbUrl,
@@ -176,6 +172,12 @@
     );
   }
 
+  function ytId(it) {
+    if (it.id) return it.id;
+    var m = (it.link || "").match(/[?&]v=([\w-]+)/) || (it.link || "").match(/youtu\.be\/([\w-]+)/);
+    return m ? m[1] : "";
+  }
+
   function render(feedKey, items) {
     var feed = FEEDS[feedKey];
     var el = document.getElementById(feed.target);
@@ -183,14 +185,29 @@
     if (!items || !items.length) {
       el.innerHTML =
         '<div class="feed-status">Latest ' +
-        (feedKey === "youtube" ? "videos" : "posts") +
-        ' are loading on our channel — <a href="' + feed.viewAll +
-        '" target="_blank" rel="noopener" style="color:var(--red-bright)">view them directly →</a></div>';
+        (feedKey === "youtube" ? "video" : "posts") +
+        ' loading on our channel — <a href="' + feed.viewAll +
+        '" target="_blank" rel="noopener" style="color:var(--red-bright)">view directly →</a></div>';
       return;
     }
     items = items.slice(0, feed.limit);
-    var maker = feedKey === "youtube" ? videoCard : articleCard;
-    el.innerHTML = items.map(maker).join("");
+
+    // YouTube: embed the single most recent video as a player.
+    if (feedKey === "youtube") {
+      var id = ytId(items[0]);
+      if (id) {
+        el.innerHTML =
+          '<iframe src="https://www.youtube-nocookie.com/embed/' + esc(id) +
+          '" title="' + esc(items[0].title || "Latest video") +
+          '" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+      } else {
+        el.innerHTML = items.map(videoCard).join("");
+        if (window.__revealObserve) window.__revealObserve(el.querySelectorAll(".reveal"));
+      }
+      return;
+    }
+
+    el.innerHTML = items.map(articleCard).join("");
     if (window.__revealObserve) window.__revealObserve(el.querySelectorAll(".reveal"));
   }
 

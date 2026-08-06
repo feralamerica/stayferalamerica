@@ -149,6 +149,9 @@ header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
   border:1px solid var(--navy-line);border-radius:var(--radius);overflow:hidden;
   display:flex;flex-direction:column;transition:transform .2s var(--ease),border-color .2s,box-shadow .2s;position:relative}
 .card:hover{transform:translateY(-4px);border-color:var(--red);box-shadow:var(--shadow)}
+/* Static info cards (mission) — no click affordance */
+.card.static{cursor:default}
+.card.static:hover{transform:none;border-color:var(--navy-line);box-shadow:none}
 .card .thumb{aspect-ratio:16/9;background:#0a1c3d center/cover no-repeat;position:relative;overflow:hidden}
 .card .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(1,12,32,.7))}
 .card .thumb.ph{display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0f2650,#08193a)}
@@ -173,7 +176,11 @@ header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
 /* ---------- Projects ---------- */
-.proj{display:grid;grid-template-columns:repeat(2,1fr);gap:22px}
+.proj{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
+/* Featured single video */
+.video-featured{max-width:860px;margin:0 auto}
+.video-featured iframe{width:100%;aspect-ratio:16/9;display:block;border:1px solid var(--navy-line);border-radius:var(--radius);box-shadow:var(--shadow);background:#0a1c3d}
+.video-featured .skeleton{min-height:0}
 .proj-card{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--navy-line);
   background:linear-gradient(155deg,var(--navy-panel-2),var(--navy));padding:30px;min-height:230px;display:flex;flex-direction:column;
   transition:transform .2s var(--ease),border-color .2s,box-shadow .2s}
@@ -193,6 +200,8 @@ header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
 .donate-box img.qr{width:190px;margin:0 auto 16px;border-radius:12px;border:6px solid #f4f6fb;background:#fff}
 .venmo-handle{font-family:var(--stencil);font-weight:600;font-size:1.15rem;color:#fff;letter-spacing:.04em}
 .venmo-blue{color:#3d95ce}
+.btn-venmo{background:#2ea043;color:#fff;box-shadow:0 10px 26px rgba(46,160,67,.34)}
+.btn-venmo:hover{background:#39b34d}
 
 /* ---------- Forms ---------- */
 .form-card{background:linear-gradient(180deg,var(--navy-panel),var(--navy));border:1px solid var(--navy-line);
