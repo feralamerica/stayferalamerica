@@ -6,23 +6,11 @@ Everything is a plain static site (HTML/CSS/JS), so it runs free on **GitHub Pag
 
 ---
 
-## ⭐ The ONE thing you must do before it's fully live
+## ✅ Tip form: already wired up
 
-The tip/request form needs a free **Formspree** endpoint so submissions email to `localtip@proton.me`. Takes 3 minutes:
+The tip/request form is connected to your live **Formspree** endpoint (`https://formspree.io/f/mqpzkwaq`), which delivers submissions to `localtip@proton.me`. Nothing to configure.
 
-1. Go to **https://formspree.io** and sign up (free plan is fine).
-2. Create a **New Form**. For the destination email, use **localtip@proton.me** and confirm it (Formspree sends a verification email there).
-3. Formspree gives you an endpoint that looks like `https://formspree.io/f/abcdwxyz`.
-4. Open **`index.html`**, find this line (around the tip form):
-
-   ```html
-   <form id="tip-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
-   ```
-
-   Replace `YOUR_FORM_ID` with your real ID, e.g. `action="https://formspree.io/f/abcdwxyz"`.
-5. Save. Done. The form now emails you securely and never exposes your address to bots.
-
-> Until you do this, the form shows a friendly error and points people to email `localtip@proton.me` directly, so nothing breaks.
+Just make sure of two things in your Formspree account: the form's destination email is set to **localtip@proton.me** and confirmed, and (optional) the allowed domain is set to `stayferalamerica.com` once the site is live. That's it. If you ever need to change where tips go, update the `action="..."` URL on the `<form id="tip-form" ...>` line in `index.html`.
 
 ---
 
