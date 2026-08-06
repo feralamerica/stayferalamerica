@@ -1,4 +1,4 @@
-/* FERAL AMERICA — UI behaviors: nav, reveal-on-scroll, year, form UX */
+/* FERAL AMERICA: UI behaviors: nav, reveal-on-scroll, year, form UX */
 (function () {
   "use strict";
 
@@ -51,7 +51,7 @@
       }).then(function (r) {
         if (r.ok) {
           form.reset();
-          status.textContent = "Received. Your message is encrypted in transit and headed to a secure inbox. Expect a reply if it warrants one — thank you for staying feral.";
+          status.textContent = "Received. Your message is encrypted in transit and headed to a secure inbox. Expect a reply if it warrants one. Thank you for staying feral.";
           status.className = "form-note ok";
           status.style.color = "#7BE0A4";
         } else {

@@ -1,5 +1,5 @@
 /* =========================================================
-   FERAL AMERICA — live feed loader
+   FERAL AMERICA: live feed loader
    Pulls latest Substack posts + YouTube videos.
    Strategy per feed:
      1) baked cache at ./data/<name>.json (refreshed by GitHub Action)
@@ -20,7 +20,7 @@
     },
   };
   // Note: the YouTube section uses a static channel-uploads embed in index.html
-  // (newest video first) — no feed fetch needed, so it never hangs on a proxy.
+  // (newest video first). No feed fetch needed, so it never hangs on a proxy.
 
   var PROXIES = [
     function (u) { return "https://api.allorigins.win/raw?url=" + encodeURIComponent(u); },
@@ -186,7 +186,7 @@
       el.innerHTML =
         '<div class="feed-status">Latest ' +
         (feedKey === "youtube" ? "video" : "posts") +
-        ' loading on our channel — <a href="' + feed.viewAll +
+        ' loading on our channel. <a href="' + feed.viewAll +
         '" target="_blank" rel="noopener" style="color:var(--red-bright)">view directly →</a></div>';
       return;
     }

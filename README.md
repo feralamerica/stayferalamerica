@@ -1,6 +1,6 @@
-# Feral America — stayferalamerica.com
+# Feral America: stayferalamerica.com
 
-Your one-stop investigative-journalism site: latest Substack posts (with thumbnails), YouTube videos, your Project 545 and Anand Jon investigations, a secure tip/request form, Venmo donations, and links to all your socials — built to match the Feral America logo.
+Your one-stop investigative-journalism site: latest Substack posts (with thumbnails), YouTube videos, your Project 545 and Anand Jon investigations, a secure tip/request form, Venmo donations, and links to all your socials, built to match the Feral America logo.
 
 Everything is a plain static site (HTML/CSS/JS), so it runs free on **GitHub Pages** with your custom domain.
 
@@ -20,7 +20,7 @@ The tip/request form needs a free **Formspree** endpoint so submissions email to
    ```
 
    Replace `YOUR_FORM_ID` with your real ID, e.g. `action="https://formspree.io/f/abcdwxyz"`.
-5. Save. Done — the form now emails you securely and never exposes your address to bots.
+5. Save. Done. The form now emails you securely and never exposes your address to bots.
 
 > Until you do this, the form shows a friendly error and points people to email `localtip@proton.me` directly, so nothing breaks.
 
@@ -59,7 +59,7 @@ DNS can take anywhere from a few minutes to a few hours to propagate. That's nor
 
 ## How the auto-updating feeds work
 
-Your Substack posts and YouTube videos show up **automatically** — you don't edit code when you publish.
+Your Substack posts and YouTube videos show up **automatically**. You don't edit code when you publish.
 
 - **In the browser:** the site fetches your latest Substack (`feralamerica.substack.com/feed`) and YouTube (`@feralamerica`) feeds live and renders cards with thumbnails.
 - **As a reliable backup:** a GitHub Action (`.github/workflows/update-feeds.yml`) re-fetches both feeds **every 6 hours** and saves them to `data/substack.json` / `data/youtube.json`. This means the site stays fast and always has content even if the live fetch is blocked.
@@ -74,11 +74,11 @@ To refresh manually anytime: repo → **Actions → Update feeds → Run workflo
 
 Everything you'd want to tweak is easy to find:
 
-- **Venmo handle / QR** — currently `@bustertoks`. To change: update the two `venmo.com/u/bustertoks` links and the handle text in `index.html`, and swap `assets/venmo-qr.png` for a new QR.
-- **Social links** — in the footer of every page: YouTube `@feralamerica`, Instagram `@feral_america`, TikTok `@feralamerica`, Substack. Edit the `href`s in the `<footer>` block.
-- **Colors / vibe** — all in `css/styles.css` at the top under `:root` (navy `#011032`, flag red, chrome).
-- **Project pages** — `project545.html` and `anandjon.html`. Edit the text freely; the big "Open the live tracker" buttons link out to `project545.org` and `anandjon.info`.
-- **Add a stat or section** — copy any existing `card` / `section` block in `index.html`.
+- **Venmo handle / QR**: currently `@bustertoks`. To change: update the two `venmo.com/u/bustertoks` links and the handle text in `index.html`, and swap `venmo-qr.png` for a new QR.
+- **Social links**: in the footer of every page: YouTube `@feralamerica`, Instagram `@feral_america`, TikTok `@feralamerica`, Substack. Edit the `href`s in the `<footer>` block.
+- **Colors / vibe**: all in `styles.css` at the top under `:root` (navy `#011032`, flag red, chrome).
+- **Project pages**: `project545.html`, `anandjon.html`, and `epsteinsweb.html`. Edit the text freely; the big "Open the live site" buttons link out to `project545.org`, `anandjon.info`, and `epsteinsweb.com`.
+- **Add a stat or section**: copy any existing `card` / `section` block in `index.html`.
 
 ---
 
