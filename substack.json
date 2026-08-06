@@ -1,13 +1,27 @@
 {
-  "updated": "2026-08-06T00:00:00.000Z",
+  "updated": "2026-08-06T12:00:00.000Z",
   "source": "https://feralamerica.substack.com/feed",
-  "note": "Seed cache. The GitHub Action (and live browser fetch) will replace this with the full latest set, including thumbnails, automatically.",
+  "note": "Reliable fallback: three most recent posts. The live loader will replace these with fresher data (and thumbnails) when the feed service is reachable.",
   "items": [
     {
-      "title": "Peter Thiel's Secret Society Dialog: The 2026 Attendee List Cross-Referenced Against the Epstein Files",
-      "link": "https://feralamerica.substack.com/p/peter-thiels-secret-society-dialog",
-      "date": "",
-      "summary": "Cross-referencing the 2026 attendee list against the Epstein files.",
+      "title": "Mutch Ado About Something: Parolee Marvin Mutch Arrested on CSAM, Weapons Charges",
+      "link": "https://feralamerica.substack.com/p/mutch-ado-about-something-parolee",
+      "date": "2026-08-04T12:00:00Z",
+      "summary": "",
+      "thumb": ""
+    },
+    {
+      "title": "\"Entirely Unaware\": Data Firm Behind Israel's Newest Foreign Agent Says It Didn't Know",
+      "link": "https://feralamerica.substack.com/p/entirely-unaware-data-firm-behind",
+      "date": "2026-08-03T12:00:00Z",
+      "summary": "",
+      "thumb": ""
+    },
+    {
+      "title": "The Other Pipelines: What Else Israel Buys in America, According to Its Own Paperwork",
+      "link": "https://feralamerica.substack.com/p/the-other-pipelines-what-else-israel",
+      "date": "2026-08-02T12:00:00Z",
+      "summary": "",
       "thumb": ""
     }
   ]

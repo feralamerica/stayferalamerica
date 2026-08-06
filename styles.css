@@ -1,5 +1,5 @@
 /* =========================================================
-   FERAL AMERICA — stayferalamerica.com
+   FERAL AMERICA : stayferalamerica.com
    Design system built from the Feral America logo
    Navy #011032 · Flag Red · White · Chrome
    ========================================================= */
@@ -149,7 +149,7 @@ header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
   border:1px solid var(--navy-line);border-radius:var(--radius);overflow:hidden;
   display:flex;flex-direction:column;transition:transform .2s var(--ease),border-color .2s,box-shadow .2s;position:relative}
 .card:hover{transform:translateY(-4px);border-color:var(--red);box-shadow:var(--shadow)}
-/* Static info cards (mission) — no click affordance */
+/* Static info cards (mission): no click affordance */
 .card.static{cursor:default}
 .card.static:hover{transform:none;border-color:var(--navy-line);box-shadow:none}
 .card .thumb{aspect-ratio:16/9;background:#0a1c3d center/cover no-repeat;position:relative;overflow:hidden}

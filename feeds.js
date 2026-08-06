@@ -118,7 +118,26 @@
     }));
   }
 
-  function liveFetch(feed) {
+  // rss2json returns parsed JSON (CORS-friendly) and includes thumbnails.
+  function rss2jsonFetch(feed) {
+    var u = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(feed.url) + "&count=10";
+    return timeout(9000, fetch(u, { cache: "no-store" }).then(function (r) { return r.json(); }))
+      .then(function (j) {
+        if (!j || j.status !== "ok" || !j.items) return [];
+        return j.items.map(function (it) {
+          var thumb = it.thumbnail || (it.enclosure && it.enclosure.link) || firstImg(it.content || it.description) || "";
+          return {
+            title: it.title || "",
+            link: it.link || "",
+            date: it.pubDate || "",
+            summary: stripTags(it.description || it.content || "").slice(0, 160),
+            thumb: thumb,
+          };
+        });
+      });
+  }
+
+  function proxyFetch(feed) {
     var i = 0;
     function tryNext() {
       if (i >= PROXIES.length) return Promise.reject(new Error("all proxies failed"));
@@ -129,6 +148,13 @@
       }).catch(tryNext);
     }
     return tryNext();
+  }
+
+  function liveFetch(feed) {
+    return rss2jsonFetch(feed).then(function (items) {
+      if (items && items.length) return items;
+      return proxyFetch(feed);
+    }).catch(function () { return proxyFetch(feed); });
   }
 
   function cacheFetch(feed) {
@@ -213,14 +239,15 @@
 
   function load(feedKey) {
     var feed = FEEDS[feedKey];
-    // Race cache and live; prefer whichever yields items, favor the larger set.
-    var cacheP = cacheFetch(feed).catch(function () { return []; });
-    var liveP = liveFetch(feed).catch(function () { return []; });
-    Promise.all([cacheP, liveP]).then(function (res) {
-      var cache = res[0] || [], live = res[1] || [];
-      var chosen = live.length >= cache.length ? live : cache;
-      render(feedKey, chosen);
-    }).catch(function () { render(feedKey, []); });
+    var best = [], settled = 0;
+    // Render the cached posts the instant they arrive; upgrade to live data
+    // only if it returns MORE items (fresher set, with thumbnails).
+    function apply(items) {
+      if (items && items.length > best.length) { best = items; render(feedKey, items); }
+    }
+    function settle() { settled++; if (settled >= 2 && best.length === 0) render(feedKey, []); }
+    cacheFetch(feed).then(function (x) { apply(x); settle(); }, function () { settle(); });
+    liveFetch(feed).then(function (x) { apply(x); settle(); }, function () { settle(); });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
