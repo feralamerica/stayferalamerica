@@ -306,7 +306,7 @@
         var longform = null, shorts = [];
         ordered.forEach(function (v) {
           if (v.secs > YT.shortMaxSeconds) { if (!longform) longform = v; }
-          else if (shorts.length < 2) { shorts.push(v); }
+          else if (shorts.length < 3) { shorts.push(v); }
         });
         if (!longform && !shorts.length) throw new Error("nothing to show");
         renderVideos(el, longform, shorts);
