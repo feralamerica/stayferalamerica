@@ -140,7 +140,9 @@
       </div>
       <a class="btn btn-red reveal" href="https://www.youtube.com/@feralamerica" target="_blank" rel="noopener">Subscribe on YouTube →</a>
     </div>
-    <div class="video-featured reveal">
+    <div id="youtube-feed" class="video-featured reveal">
+      <!-- Fallback shown until the YouTube API key is set (see feeds.js). Then JS
+           replaces this with the newest long-form video + two newest Shorts. -->
       <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UUZCMfPUFytpl1MugojZOzZQ" title="Latest from Feral America on YouTube" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
   </div>

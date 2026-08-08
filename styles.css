@@ -177,9 +177,13 @@ header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(10px);
 
 /* ---------- Projects ---------- */
 .proj{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px}
-/* Featured single video */
-.video-featured{max-width:860px;margin:0 auto}
-.video-featured iframe{width:100%;aspect-ratio:16/9;display:block;border:1px solid var(--navy-line);border-radius:var(--radius);box-shadow:var(--shadow);background:#0a1c3d}
+/* Videos: featured long-form (16:9) + two Shorts (9:16) */
+.video-featured{max-width:900px;margin:0 auto}
+.video-featured > iframe,
+.vf-main .vf-frame{width:100%;aspect-ratio:16/9;display:block;border:1px solid var(--navy-line);border-radius:var(--radius);box-shadow:var(--shadow);background:#0a1c3d}
+.vf-shorts{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.vf-short{flex:0 0 auto}
+.vf-short .vf-frame{width:260px;max-width:72vw;aspect-ratio:9/16;display:block;border:1px solid var(--navy-line);border-radius:var(--radius);box-shadow:var(--shadow-soft);background:#0a1c3d}
 .video-featured .skeleton{min-height:0}
 .proj-card{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--navy-line);
   background:linear-gradient(155deg,var(--navy-panel-2),var(--navy));padding:30px;min-height:230px;display:flex;flex-direction:column;
