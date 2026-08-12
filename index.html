@@ -34,9 +34,9 @@
     </a>
     <button class="nav-toggle" aria-label="Menu">☰</button>
     <nav class="nav-links">
-      <a href="#investigations">Investigations</a>
+      <a href="#projects">Investigations</a>
+      <a href="#investigations">The Stack</a>
       <a href="#videos">Videos</a>
-      <a href="#projects">Projects</a>
       <a href="#support">Support</a>
       <a class="nav-cta" href="#request">Send a Tip</a>
     </nav>
@@ -62,7 +62,7 @@
           <a class="btn btn-red" href="#request">Send a Secure Tip
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
           </a>
-          <a class="btn btn-ghost" href="#investigations">Read the Work</a>
+          <a class="btn btn-ghost" href="#projects">Read the Work</a>
           <a class="btn btn-chrome" href="#support">Fund the Fight</a>
         </div>
         <div class="hero-badges">
@@ -114,40 +114,6 @@
   </div>
 </section>
 
-<!-- ============ INVESTIGATIONS (Substack) ============ -->
-<section id="investigations">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow reveal">Latest from the Feral Stack</p>
-        <h2 class="title reveal">Investigations</h2>
-      </div>
-      <a class="btn btn-ghost reveal" href="https://feralamerica.substack.com/archive" target="_blank" rel="noopener">Full Archive →</a>
-    </div>
-    <div class="grid cols-3" id="substack-feed">
-      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ VIDEOS (YouTube) ============ -->
-<section id="videos" style="background:linear-gradient(180deg,transparent,rgba(15,38,80,.35),transparent)">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <p class="eyebrow reveal">On the Channel</p>
-        <h2 class="title reveal">Videos and Podcast</h2>
-      </div>
-      <a class="btn btn-red reveal" href="https://www.youtube.com/@feralamerica" target="_blank" rel="noopener">Subscribe on YouTube →</a>
-    </div>
-    <div id="youtube-feed" class="video-featured reveal">
-      <!-- Fallback shown until the YouTube API key is set (see feeds.js). Then JS
-           replaces this with the newest long-form video + two newest Shorts. -->
-      <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UUZCMfPUFytpl1MugojZOzZQ" title="Latest from Feral America on YouTube" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    </div>
-  </div>
-</section>
-
 <!-- ============ PROJECTS ============ -->
 <section id="projects">
   <div class="claw red" style="top:6%;right:-30px;transform:scaleX(-1)" aria-hidden="true">
@@ -160,11 +126,22 @@
   <div class="wrap">
     <div class="section-head">
       <div>
-        <p class="eyebrow reveal">Standalone Investigations</p>
-        <h2 class="title reveal">The Projects</h2>
+        <p class="eyebrow reveal">Standalone Deep Dives</p>
+        <h2 class="title reveal">Investigations</h2>
       </div>
     </div>
     <div class="proj">
+      <a class="proj-card reveal" href="driz.html">
+        <span class="tag">A $72 Million Verdict, Unpaid</span>
+        <h3>The Driz Judgment</h3>
+        <p>Four men beat three good Samaritans outside a West Hollywood restaurant. A jury said they owe $72 million. Years later the plaintiffs have not collected a penny, and with statutory interest the debt now runs past $122 million. Every claim links to a document.</p>
+        <div class="row">
+          <div><div class="stat">$72.6M</div><div class="statlbl">Jury Verdict</div></div>
+          <div><div class="stat">~$122M</div><div class="statlbl">Owed Now</div></div>
+          <div><div class="stat">$0</div><div class="statlbl">Collected</div></div>
+        </div>
+        <span class="go" style="margin-top:16px">Open the case →</span>
+      </a>
       <a class="proj-card reveal" href="project545.html">
         <span class="tag">The Project 545 Tracker</span>
         <h3>Project 545</h3>
@@ -201,6 +178,42 @@
     </div>
   </div>
 </section>
+
+<!-- ============ INVESTIGATIONS (Substack) ============ -->
+<section id="investigations">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow reveal">Latest from the Substack</p>
+        <h2 class="title reveal">The Feral Stack</h2>
+      </div>
+      <a class="btn btn-ghost reveal" href="https://feralamerica.substack.com/archive" target="_blank" rel="noopener">Full Archive →</a>
+    </div>
+    <div class="grid cols-3" id="substack-feed">
+      <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VIDEOS (YouTube) ============ -->
+<section id="videos" style="background:linear-gradient(180deg,transparent,rgba(15,38,80,.35),transparent)">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <p class="eyebrow reveal">On the Channel</p>
+        <h2 class="title reveal">Videos and Podcast</h2>
+      </div>
+      <a class="btn btn-red reveal" href="https://www.youtube.com/@feralamerica" target="_blank" rel="noopener">Subscribe on YouTube →</a>
+    </div>
+    <div id="youtube-feed" class="video-featured reveal">
+      <!-- Fallback shown until the YouTube API key is set (see feeds.js). Then JS
+           replaces this with the newest long-form video + two newest Shorts. -->
+      <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UUZCMfPUFytpl1MugojZOzZQ" title="Latest from Feral America on YouTube" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
+</section>
+
+
 
 <!-- ============ REQUEST / TIP ============ -->
 <section id="request" class="support">
@@ -304,11 +317,12 @@
       </div>
       <div class="foot">
         <h4>The Work</h4>
-        <a href="#investigations">Investigations</a>
+        <a href="#projects">Investigations</a>
         <a href="#videos">Videos and Podcast</a>
         <a href="project545.html">Project 545 Tracker</a>
         <a href="anandjon.html">The Anand Jon Record</a>
         <a href="epsteinsweb.html">Epstein's Web</a>
+        <a href="driz.html">The Driz Judgment</a>
         <a href="https://feralamerica.substack.com/archive" target="_blank" rel="noopener">Substack Archive</a>
       </div>
       <div class="foot">
