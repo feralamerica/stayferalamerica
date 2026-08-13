@@ -67,7 +67,7 @@ body::before{
 
 /* ---------- Layout ---------- */
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;position:relative;z-index:2}
-section{position:relative;z-index:2;padding:78px 0}
+section{position:relative;z-index:2;padding:78px 0;overflow-x:clip}
 .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:34px}
 .eyebrow{
   font-family:var(--stencil);font-weight:600;letter-spacing:.32em;text-transform:uppercase;
@@ -256,6 +256,7 @@ footer.site{background:#010b24;border-top:1px solid var(--navy-line);padding:56p
 
 /* ---------- Responsive ---------- */
 @media(max-width:900px){
+  .claw{display:none}
   .hero-grid{grid-template-columns:1fr;text-align:center}
   .hero-art{order:-1}
   .hero-cta,.hero-badges{justify-content:center}
