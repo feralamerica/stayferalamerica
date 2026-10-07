@@ -297,6 +297,6 @@ footer.site{background:#010b24;border-top:1px solid var(--navy-line);padding:56p
 
 /* Photo behind the tip section */
 .photo-bg{position:relative;overflow:hidden}
-.photo-bg-img{position:absolute;inset:0;z-index:0;background:url("images/tip-bg.jpg") center/cover no-repeat}
+.photo-bg-img{position:absolute;inset:0;z-index:0;background:url("tip-bg.jpg") center/cover no-repeat}
 .photo-bg-img::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(19,48,95,.55),rgba(1,16,50,.88) 70%)}
 .photo-bg > .wrap{position:relative;z-index:2}
