@@ -129,6 +129,35 @@
   .mm-receipts li{padding-left:34px}
   .mm-receipts li::before{width:26px}
 }
+
+/* ===== Flow chart ===== */
+.fx-panel{background:linear-gradient(180deg,#071a3f,#030f2c);border:1px solid var(--navy-line);border-radius:var(--radius);padding:18px 14px 10px;position:relative}
+.fx-heads{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 0 6px;padding:0 4px}
+.fx-heads div{font-family:var(--display);text-transform:uppercase;font-size:clamp(.95rem,2.4vw,1.35rem);line-height:1.05}
+.fx-heads div:nth-child(2){text-align:center}.fx-heads div:nth-child(3){text-align:right}
+.fx-heads span{display:block;font:500 .7rem var(--body);color:var(--muted-dim);text-transform:none;letter-spacing:0;margin-top:2px}
+#fxSvg{display:block;width:100%;height:auto;overflow:visible}
+#fxSvg .lk{fill:none;stroke:#8fa6cf;stroke-opacity:.28;stroke-linecap:round;transition:stroke-opacity .2s,stroke .2s}
+#fxSvg .lk.promise{stroke-dasharray:5 5}
+#fxSvg .nd rect{stroke-width:1.2;transition:opacity .2s,stroke .2s}
+#fxSvg .nd{cursor:pointer;outline:none}
+#fxSvg .nd text{pointer-events:none}
+#fxSvg .nd .nm{font:600 13px var(--stencil);fill:#fff;text-transform:uppercase;letter-spacing:.02em}
+#fxSvg .nd .am{font:600 12px var(--display);fill:var(--red-bright)}
+#fxSvg .nd.in .am{fill:#8db6ff}#fxSvg .nd.out .am{fill:var(--silver)}
+#fxSvg .nd:focus-visible rect,#fxSvg .nd:hover rect{stroke:#fff}
+#fxSvg.dim .nd{opacity:.25}#fxSvg.dim .lk{stroke-opacity:.06}
+#fxSvg.dim .nd.on{opacity:1}#fxSvg.dim .nd.sel rect{stroke:var(--red-bright);stroke-width:2.5}
+#fxSvg.dim .lk.on{stroke:var(--red-bright);stroke-opacity:.85}
+.fx-detail{margin-top:12px;background:var(--navy-panel);border:1px solid var(--navy-line);border-left:3px solid var(--red-bright);border-radius:10px;padding:14px 16px;display:none}
+.fx-detail.on{display:block}
+.fx-detail .t{font:600 .64rem var(--stencil);letter-spacing:.16em;text-transform:uppercase;color:var(--muted-dim)}
+.fx-detail h3{font-family:var(--display);text-transform:uppercase;font-size:1.5rem;margin:2px 0 4px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
+.fx-detail h3 b{color:var(--red-bright);font-weight:inherit}
+.fx-detail p{color:var(--muted);margin:0 0 10px;font-size:.92rem}
+.fx-detail .row{display:flex;gap:8px;flex-wrap:wrap}
+.fx-hint{color:var(--muted-dim);font-size:.85rem;margin:10px 2px 0}
+@media(max-width:560px){.fx-panel{padding:14px 8px 8px}}
 </style>
 </head>
 <body>
@@ -141,9 +170,9 @@
     </a>
     <button class="nav-toggle" aria-label="Menu">☰</button>
     <nav class="nav-links">
-      <a href="index.html#investigations">Investigations</a>
+      <a href="index.html#projects">Investigations</a>
+      <a href="index.html#investigations">The Stack</a>
       <a href="index.html#videos">Videos</a>
-      <a href="index.html#projects">Projects</a>
       <a href="index.html#support">Support</a>
       <a class="nav-cta" href="index.html#request">Send a Tip</a>
     </nav>
@@ -159,12 +188,12 @@
     </g></svg>
   </div>
   <div class="wrap">
-    <a class="back-link" href="index.html#investigations">← Back to Feral America</a>
+    <a class="back-link" href="index.html#projects">← Back to Feral America</a>
     <p class="eyebrow reveal in">Investigation: Follow the Money</p>
     <h1 class="reveal in">The Epstein <span class="red">Money Map</span></h1>
     <p class="lead reveal in" style="font-size:1.15rem">Jeffrey Epstein said he ran a DNA database, an algorithm shop and a science charity. The bank records describe a toll booth. This is where his money came from, where it went, and the DOJ file behind every box. <strong>Appearing here is not evidence of wrongdoing.</strong></p>
     <div class="hero-cta reveal in" style="margin-top:24px">
-      <a class="btn btn-red" href="#map">Open the Map ↓</a>
+      <a class="btn btn-red" href="#flow">Open the Map ↓</a>
       <a class="btn btn-ghost" href="#receipts">The Receipts</a>
     </div>
     <div class="hero-badges" style="margin-top:30px">
@@ -181,7 +210,7 @@
     <div class="prose reveal">
       <p>It started with one unsigned receipt. Ten and a half million dollars from Leon Black to Enhanced Education, Epstein's private foundation, dated December 2014. No wire ever matched it. So we pulled the next file. And the next one. A few hundred DOJ documents later, the receipt was the least interesting thing in the pile.</p>
       <p>Southern Trust Company told the U.S. Virgin Islands it would build an "extensive DNA database." It booked about $183 million from two clients. One bought "financial algorithms." The other paid a fee that shrank if its own bank's DOJ penalty got too big. The only DNA work we found was a $30,000 invoice, and Epstein's accountant told the vendor what to write on it.</p>
-      <p>This map traces every entity we could document: the money in, the shells in the middle, and the money out. Tap any box to open it. Hit <strong>Trace this money</strong> to light up everything it touched.</p>
+      <p>This map traces every entity we could document: the money in, the shells in the middle, and the money out. Start with the flow chart. Tap any box to see what it touched, then open its receipts for the DOJ files.</p>
       <div class="callout">
         <strong>Appearing here is not evidence of wrongdoing.</strong> Many people and institutions on this map were paid by Epstein, or paid him, for reasons that may be lawful. Each box says what the record shows and links the DOJ file. Every EFTA chip is graded: <b style="color:#7fd1a0">A</b> records (bank exhibits, signed contracts, government certificates, tax returns), <b style="color:#9db8ea">B</b> working papers (emails, drafts, ledgers, forensic analysis), <b style="color:#e0a85a">C</b> claims (lawsuit allegations, press pitches, statements by a party). DOJ links open the Epstein Library, which asks you to confirm your age first.
       </div>
@@ -189,7 +218,21 @@
   </div>
 </section>
 
+<section id="flow" style="padding-top:10px;padding-bottom:30px">
+  <div class="mm-wrap">
+    <p class="eyebrow">The Flow</p>
+    <h2 style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .4em">Follow the money</h2>
+    <div class="fx-panel">
+      <div class="fx-heads"><div>Money in<span>Who paid</span></div><div>The shells<span>Epstein's entities</span></div><div>Money out<span>Where it landed</span></div></div>
+      <svg id="fxSvg" role="img" aria-label="Flow chart of money from Epstein's funders, through his companies, charities and trusts, to where it went. Line thickness shows dollar size."></svg>
+      <div class="fx-detail" id="fxDetail" aria-live="polite"></div>
+      <p class="fx-hint">Tap any box to light up its connections. Thicker lines mean more money. Dashed means promised but no payment found. Then open the receipts for the files.</p>
+    </div>
+  </div>
+</section>
+
 <section id="map" style="padding-top:0">
+  <div class="mm-wrap"><p class="eyebrow">The Receipts, Box by Box</p><h2 style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .4em">Every entity, every file</h2></div>
   <div class="mm-tools">
     <div class="mm-wrap">
       <div class="mm-tools-row">
@@ -717,6 +760,80 @@ function build(){
   document.getElementById("mmReceipts").innerHTML = html;
 }
 
+/* ---------- Flow chart ---------- */
+var SHORT = {people:"People paid",advisers:"Gatekeepers",universities:"MIT · Harvard · ASU",investments:"Funds & Joi Ito",science:"Scientists",odd:"Fine · cello · gift",grantees:"Gratitude grants",edwards:"Edwards' charity",civic:"USVI charity rule",political:"Plaskett",dubin:"Dubin / Highbridge",rothschild:"Rothschild",usvi:"USVI tax breaks",personal:"Personal accounts",southernfin:"Southern Financial",stc:"Southern Trust",ftc:"Financial Trust",gratitude:"Gratitude America",couq:"C.O.U.Q.",caterpillar:"Caterpillar Trust",aviation:"JEGE & Hyperion",property:"Property LLCs",ee:"Enhanced Education"};
+var TINY = {usvi:"USVI taxes",stc:"S. Trust",southernfin:"S. Financial",personal:"JE accounts",ee:"Enh. Educ.",gratitude:"Gratitude",civic:"USVI charity",edwards:"Edwards gift",odd:"Fine · cello",universities:"Universities",grantees:"Grat. grants",investments:"Funds · Ito",dubin:"Dubin",caterpillar:"Caterpillar",aviation:"Aircraft",property:"Property LLCs",ftc:"Fin. Trust",couq:"C.O.U.Q.",rothschild:"Rothschild",people:"People paid",advisers:"Gatekeepers",political:"Plaskett",science:"Scientists",butterfly:"Butterfly",haze:"Haze Trust",pland:"Plan D",jeepers:"Jeepers",nes:"NES LLC",wexner:"Les Wexner",black:"Leon Black",bv70:"BV70 LLC",art:"Art sales",estate:"The Estate"};
+function money(a){ var m=/\$([\d,.]+)\s*([KMB])?/.exec(a||""); if(!m) return 0; var v=parseFloat(m[1].replace(/,/g,"")); return v*({K:1e3,M:1e6,B:1e9}[m[2]]||1); }
+var fxSel=null;
+function fxDraw(){
+  var svg=document.getElementById("fxSvg"); if(!svg) return;
+  var W=Math.max(300, svg.parentNode.clientWidth-28), narrow=W<620;
+  var lanes={in:[],hub:[],out:[]}; N.forEach(function(n){ lanes[n.lane].push(n); });
+  var hubIdx={}; lanes.hub.forEach(function(n,i){ hubIdx[n.id]=i; });
+  function bary(n){ var s=0,c=0; F.forEach(function(f){ var o=f[0]===n.id?f[1]:f[1]===n.id?f[0]:null; if(o!=null&&hubIdx[o]!=null){s+=hubIdx[o];c++;} }); return c?s/c:99; }
+  ["in","out"].forEach(function(l){ lanes[l].sort(function(a,b){return bary(a)-bary(b);}); });
+  var rowH=narrow?34:40, boxH=narrow?28:32, gap=narrow?Math.max(26,W*0.09):Math.max(60,W*0.1);
+  var colW=(W-2*gap)/3, H=lanes.hub.length*rowH+8, fs=narrow?(W<400?9.5:10.5):12.5;
+  var pos={};
+  ["in","hub","out"].forEach(function(l,ci){
+    var arr=lanes[l], step=H/arr.length;
+    arr.forEach(function(n,i){ pos[n.id]={x:ci*(colW+gap), y:step*i+(step-boxH)/2, lane:l, ci:ci}; });
+  });
+  var maxV=158e6, ns="http://www.w3.org/2000/svg", out=[];
+  F.forEach(function(f,i){
+    var a=pos[f[0]], b=pos[f[1]]; if(!a||!b) return;
+    var v=money(f[2]), sw=v?Math.max(1.5,Math.min(narrow?9:16,(narrow?9:16)*Math.sqrt(v/maxV))):1.2;
+    var ay=a.y+boxH/2, by=b.y+boxH/2, d;
+    if(a.ci===b.ci){ var x=a.x+colW, bulge=Math.min(gap*0.8,30+Math.abs(by-ay)*0.15); d="M"+x+","+ay+" C"+(x+bulge)+","+ay+" "+(x+bulge)+","+by+" "+x+","+by; }
+    else if(a.ci<b.ci){ var x1=a.x+colW,x2=b.x,mx=(x1+x2)/2; d="M"+x1+","+ay+" C"+mx+","+ay+" "+mx+","+by+" "+x2+","+by; }
+    else { var x1=a.x,x2=b.x+colW,mx=(x1+x2)/2; d="M"+x1+","+ay+" C"+mx+","+ay+" "+mx+","+by+" "+x2+","+by; }
+    var tip=esc((byId[f[0]].name)+" to "+(byId[f[1]].name)+(f[2]?": "+f[2]:"")+". "+f[3]);
+    out.push('<path class="lk'+(f[5]?" promise":"")+'" data-a="'+f[0]+'" data-b="'+f[1]+'" d="'+d+'" stroke-width="'+sw.toFixed(1)+'"><title>'+tip+'</title></path>');
+  });
+  var fill={in:"#14305f",hub:"#3a0f1d",out:"#1b2a48"}, stroke={in:"#4f86d9",hub:"#e4141b",out:"#8a94aa"};
+  N.forEach(function(n){
+    var p=pos[n.id], label=n.name, maxCh=Math.floor((colW-(n.amt?0:10))/(fs*0.62));
+    var amt=n.amt||"", amtW=amt?amt.length*fs*0.62+10:0;
+    if(narrow){ amt=""; amtW=0; }
+    if(label.length*fs*0.56+amtW>colW-14) label=SHORT[n.id]||label;
+    if(label.length*fs*0.56+amtW>colW-14) label=TINY[n.id]||label;
+    var room=Math.floor((colW-14-amtW)/(fs*0.56));
+    if(label.length>room){ if(amt && narrow){ amt=""; amtW=0; room=Math.floor((colW-14)/(fs*0.56)); } if(label.length>room) label=label.slice(0,Math.max(4,room-1))+"…"; }
+    var ty=p.y+boxH/2+fs*0.36;
+    out.push('<g class="nd '+n.lane+'" data-id="'+n.id+'" tabindex="0" role="button" aria-label="'+esc(n.name)+(n.amt?", "+esc(n.amt):"")+'">'+
+      '<rect x="'+p.x+'" y="'+p.y+'" width="'+colW+'" height="'+boxH+'" rx="6" fill="'+fill[n.lane]+'" stroke="'+stroke[n.lane]+'"/>'+
+      '<text class="nm" x="'+(p.x+8)+'" y="'+ty+'" style="font-size:'+fs+'px">'+esc(label)+'</text>'+
+      (amt?'<text class="am" x="'+(p.x+colW-7)+'" y="'+ty+'" text-anchor="end" style="font-size:'+fs+'px">'+esc(amt)+'</text>':'')+'</g>');
+  });
+  svg.setAttribute("viewBox","-4 -4 "+(W+8)+" "+(H+8));
+  svg.innerHTML=out.join("");
+  if(fxSel) fxSelect(fxSel,true);
+}
+function fxSelect(id, keep){
+  var svg=document.getElementById("fxSvg"), det=document.getElementById("fxDetail");
+  if(!keep && fxSel===id){ fxSel=null; svg.classList.remove("dim"); svg.querySelectorAll(".on,.sel").forEach(function(e){e.classList.remove("on","sel");}); det.classList.remove("on"); return; }
+  fxSel=id; var links=linksOf(id); svg.classList.add("dim");
+  svg.querySelectorAll(".nd").forEach(function(g){ var k=g.getAttribute("data-id"); g.classList.toggle("on", k===id||links.indexOf(k)>=0); g.classList.toggle("sel", k===id); });
+  svg.querySelectorAll(".lk").forEach(function(p){ var on=p.getAttribute("data-a")===id||p.getAttribute("data-b")===id; p.classList.toggle("on",on); if(on) p.parentNode.appendChild(p); });
+  svg.querySelectorAll(".nd").forEach(function(g){ g.parentNode.appendChild(g); });
+  var n=byId[id];
+  det.innerHTML='<div class="t">'+esc(n.tag)+' · '+links.length+' connection'+(links.length===1?"":"s")+'</div><h3>'+esc(n.name)+(n.amt?' <b>'+n.amt+'</b>':'')+'</h3><p>'+esc(n.teaser)+'</p>'+
+    '<div class="row"><button class="mm-btn-trace" data-open="'+id+'">Open the receipts ↓</button><button class="mm-btn-link" data-fxclear="1">Clear</button></div>';
+  det.classList.add("on");
+}
+function fxInit(){
+  var svg=document.getElementById("fxSvg"); if(!svg) return;
+  fxDraw();
+  var t; window.addEventListener("resize",function(){ clearTimeout(t); t=setTimeout(fxDraw,150); });
+  svg.addEventListener("click",function(e){ var g=e.target.closest(".nd"); if(g) fxSelect(g.getAttribute("data-id")); });
+  svg.addEventListener("keydown",function(e){ var g=e.target.closest(".nd"); if(!g) return; if(e.key==="Enter"||e.key===" "){ e.preventDefault(); var id=g.getAttribute("data-id"); if(fxSel===id){ go(id); trace(id);} else fxSelect(id); } });
+  document.getElementById("fxDetail").addEventListener("click",function(e){
+    var b=e.target.closest("button"); if(!b) return;
+    if(b.dataset.open){ var id=b.dataset.open; go(id); trace(id); }
+    if(b.dataset.fxclear){ fxSelect(fxSel); }
+  });
+}
+
 /* ---------- Behavior ---------- */
 function setOpen(el, open){
   var b = el.querySelector(".node-head"), body = el.querySelector(".node-body");
@@ -795,6 +912,7 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   });
   var timer; document.getElementById("mmSearch").addEventListener("input", function(e){ clearTimeout(timer); var v=e.target.value; timer=setTimeout(function(){ filter(v); },120); });
+  fxInit();
   var h = location.hash.replace("#","");
   if(h && byId[h]) setTimeout(function(){ go(h,{noHash:true}); }, 250);
 });

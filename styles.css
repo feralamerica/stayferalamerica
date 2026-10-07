@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700&display=swap");
 /* =========================================================
    FERAL AMERICA : stayferalamerica.com
    Design system built from the Feral America logo
@@ -26,7 +27,7 @@
   --star-blue:#0a3161;
 
   /* Type */
-  --display:"Anton",Impact,"Arial Narrow",sans-serif;
+  --display:"Saira Condensed","Arial Narrow",sans-serif;
   --stencil:"Oswald",sans-serif;
   --body:"Inter","Helvetica Neue",Arial,sans-serif;
 
@@ -273,3 +274,29 @@ footer.site{background:#010b24;border-top:1px solid var(--navy-line);padding:56p
   .foot-bottom{flex-direction:column}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+
+/* =========================================================
+   Light sections + images (Oct 2026)
+   ========================================================= */
+.light{background:#f4f6fb;color:#0a1730;
+  --ink:#0a1730;--muted:#43506b;--muted-dim:#6b7896;--navy-panel:#ffffff;--navy:#ffffff;--navy-panel-2:#ffffff;--navy-line:#d7deeb;--silver:#43506b}
+.light .card h3,.light .proj-card .stat,.light .venmo-handle,.light .hero-badge b,.light .prose h3{color:#0a1730}
+.light .card,.light .proj-card{box-shadow:0 8px 24px rgba(1,16,50,.08)}
+.light .btn-ghost{color:#0a1730;border-color:#c3cde0}
+.light .btn-ghost:hover{background:rgba(1,16,50,.05);border-color:#0a1730}
+.light .claw path{fill:rgba(1,16,50,.05)}
+.light .claw.red path{fill:rgba(200,16,46,.07)}
+.light .skeleton{background:linear-gradient(90deg,#e6ebf4,#f1f4fa,#e6ebf4);background-size:200% 100%}
+.light .donate-box img.qr{border-color:#e6ebf4}
+#videos.light{background:#f4f6fb!important}
+
+/* Cover images on investigation cards */
+.proj-img{display:block;width:calc(100% + 60px);max-width:none;height:auto;aspect-ratio:16/9;object-fit:cover;
+  margin:-30px -30px 22px;border-bottom:1px solid var(--navy-line);background:#0a1c3d}
+
+/* Photo behind the tip section */
+.photo-bg{position:relative;overflow:hidden}
+.photo-bg-img{position:absolute;inset:0;z-index:0;background:url("images/tip-bg.jpg") center/cover no-repeat}
+.photo-bg-img::after{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(19,48,95,.55),rgba(1,16,50,.88) 70%)}
+.photo-bg > .wrap{position:relative;z-index:2}
