@@ -158,6 +158,22 @@
 .fx-detail .row{display:flex;gap:8px;flex-wrap:wrap}
 .fx-hint{color:var(--muted-dim);font-size:.85rem;margin:10px 2px 0}
 @media(max-width:560px){.fx-panel{padding:14px 8px 8px}}
+
+/* ===== Light sections on this page ===== */
+.tierA{color:#7fd1a0}.tierB{color:#9db8ea}.tierC{color:#e0a85a}
+.light .tierA{color:#2e7d4f}.light .tierB{color:#3f5f9c}.light .tierC{color:#8a5a1f}
+.light .prose strong,.light .callout strong{color:#0a1730}
+.light .callout{background:#fff;box-shadow:0 6px 18px rgba(1,16,50,.06)}
+.light .pvr{box-shadow:0 8px 24px rgba(1,16,50,.08)}
+.light .pvr .said{color:#0a1730}
+.light .efta{background:#f4f6fb;color:#1c2a48}
+.light .efta:hover{color:#0a1730;border-color:var(--red)}
+.light .mm-tier-h{color:#0a1730}
+.light .mm-receipts a{color:#0a1730;text-decoration-color:#c3cde0}
+.light .mm-receipts li{border-bottom-color:#dfe5ef}
+.light .mm-receipts .in button{color:#3f5f9c}
+.light .prose a{color:#0a1730}
+.light .prose p[style*="Stay"],.light p.stay{color:#0a1730!important}
 </style>
 </head>
 <body>
@@ -205,20 +221,20 @@
   </div>
 </section>
 
-<section style="padding-top:20px;padding-bottom:30px">
+<section class="light" style="padding:60px 0">
   <div class="wrap">
     <div class="prose reveal">
       <p>It started with one unsigned receipt. Ten and a half million dollars from Leon Black to Enhanced Education, Epstein's private foundation, dated December 2014. No wire ever matched it. So we pulled the next file. And the next one. A few hundred DOJ documents later, the receipt was the least interesting thing in the pile.</p>
       <p>Southern Trust Company told the U.S. Virgin Islands it would build an "extensive DNA database." It booked about $183 million from two clients. One bought "financial algorithms." The other paid a fee that shrank if its own bank's DOJ penalty got too big. The only DNA work we found was a $30,000 invoice, and Epstein's accountant told the vendor what to write on it.</p>
       <p>This map traces every entity we could document: the money in, the shells in the middle, and the money out. Start with the flow chart. Tap any box to see what it touched, then open its receipts for the DOJ files.</p>
       <div class="callout">
-        <strong>Appearing here is not evidence of wrongdoing.</strong> Many people and institutions on this map were paid by Epstein, or paid him, for reasons that may be lawful. Each box says what the record shows and links the DOJ file. Every EFTA chip is graded: <b style="color:#7fd1a0">A</b> records (bank exhibits, signed contracts, government certificates, tax returns), <b style="color:#9db8ea">B</b> working papers (emails, drafts, ledgers, forensic analysis), <b style="color:#e0a85a">C</b> claims (lawsuit allegations, press pitches, statements by a party). DOJ links open the Epstein Library, which asks you to confirm your age first.
+        <strong>Appearing here is not evidence of wrongdoing.</strong> Many people and institutions on this map were paid by Epstein, or paid him, for reasons that may be lawful. Each box says what the record shows and links the DOJ file. Every EFTA chip is graded: <b class="tierA">A</b> records (bank exhibits, signed contracts, government certificates, tax returns), <b class="tierB">B</b> working papers (emails, drafts, ledgers, forensic analysis), <b class="tierC">C</b> claims (lawsuit allegations, press pitches, statements by a party). DOJ links open the Epstein Library, which asks you to confirm your age first.
       </div>
     </div>
   </div>
 </section>
 
-<section id="flow" style="padding-top:10px;padding-bottom:30px">
+<section id="flow" style="padding-top:60px;padding-bottom:30px">
   <div class="mm-wrap">
     <p class="eyebrow">The Flow</p>
     <h2 style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .4em">Follow the money</h2>
@@ -231,7 +247,7 @@
   </div>
 </section>
 
-<section id="map" style="padding-top:0">
+<section id="map" style="padding-top:0;padding-bottom:60px">
   <div class="mm-wrap"><p class="eyebrow">The Receipts, Box by Box</p><h2 style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .4em">Every entity, every file</h2></div>
   <div class="mm-tools">
     <div class="mm-wrap">
@@ -280,7 +296,7 @@
   </div>
 </section>
 
-<section style="padding-top:20px">
+<section class="light" style="padding:60px 0">
   <div class="wrap">
     <p class="eyebrow">Said vs. Record</p>
     <h2 class="title" style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .6em">What they promised. What the files show.</h2>
@@ -288,7 +304,7 @@
   </div>
 </section>
 
-<section style="padding-top:10px">
+<section style="padding:60px 0">
   <div class="wrap">
     <div class="prose">
       <h3>What we still can't prove</h3>
@@ -308,15 +324,15 @@
   </div>
 </section>
 
-<section id="receipts" style="padding-top:10px">
+<section id="receipts" class="light" style="padding:60px 0">
   <div class="wrap">
     <p class="eyebrow">The Receipts</p>
     <h2 class="title" style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .3em">Every file on this map</h2>
     <p style="color:var(--muted);max-width:74ch">Numbered, graded and linked. Tap "cited in" to jump to the box. Files come from the DOJ Epstein Library and the court record in <em>Government of the U.S. Virgin Islands v. JPMorgan Chase</em>.</p>
     <div id="mmReceipts"></div>
     <div class="prose" style="margin-top:34px">
-      <p>Got a document that belongs on this map? A wire, a 990, a ledger page? <a href="index.html#request" style="color:#fff;text-decoration:underline">Send it.</a> We read everything.</p>
-      <p style="font-family:var(--stencil);text-transform:uppercase;letter-spacing:.14em;color:#fff">Stay feral.</p>
+      <p>Got a document that belongs on this map? A wire, a 990, a ledger page? <a href="index.html#request" style="text-decoration:underline">Send it.</a> We read everything.</p>
+      <p class="stay" style="font-family:var(--stencil);text-transform:uppercase;letter-spacing:.14em;color:#fff">Stay feral.</p>
     </div>
   </div>
 </section>
