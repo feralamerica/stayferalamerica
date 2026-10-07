@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Epstein Money Map | Feral America</title>
+<meta name="description" content="Follow the money: who funded Jeffrey Epstein's Southern Trust Company, Enhanced Education, Gratitude America and his other shells, where the money went, and the DOJ file number behind every step. Appearing here is not evidence of wrongdoing.">
+<link rel="canonical" href="https://stayferalamerica.com/moneymap.html">
+<meta property="og:title" content="The Epstein Money Map | Feral America">
+<meta property="og:description" content="$158M for algorithms nobody has seen. An interactive map of Epstein's money, built from the DOJ Epstein Library. Every box cites its EFTA file.">
+<meta property="og:image" content="https://stayferalamerica.com/feral-logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* ===== Money Map (page-specific) ===== */
+.mm-wrap{max-width:var(--maxw);margin:0 auto;padding:0 22px;position:relative;z-index:2}
+.mm-tools{position:sticky;top:var(--navh,69px);z-index:20;background:rgba(1,16,50,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--navy-line);padding:12px 0;margin-bottom:22px}
+.mm-tools-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.mm-search{flex:1 1 240px;min-width:0;background:var(--navy-panel);border:1px solid var(--navy-line);border-radius:999px;color:var(--ink);font:500 .95rem var(--body);padding:10px 16px}
+.mm-search::placeholder{color:var(--muted-dim)}
+.mm-search:focus{outline:2px solid var(--red-bright);outline-offset:1px}
+.mm-chips{display:flex;gap:6px;flex-wrap:wrap}
+.mm-chip{font:600 .72rem var(--stencil);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:transparent;border:1px solid var(--navy-line);border-radius:999px;padding:8px 13px;cursor:pointer}
+.mm-chip[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff}
+.mm-btn-sm{font:600 .72rem var(--stencil);letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--navy-panel-2);border:1px solid var(--navy-line);border-radius:999px;padding:8px 13px;cursor:pointer}
+.mm-btn-sm:hover{border-color:var(--silver)}
+.mm-trace{display:none;margin-top:10px;background:var(--red-deep);border-radius:10px;padding:9px 14px;font-size:.9rem;align-items:center;gap:10px;flex-wrap:wrap}
+.mm-trace.on{display:flex}
+.mm-trace b{font-family:var(--stencil);letter-spacing:.06em;text-transform:uppercase}
+
+.mm-lanes{display:grid;grid-template-columns:1fr 1.12fr 1fr;gap:20px;align-items:start}
+.mm-lane-head{font-family:var(--display);text-transform:uppercase;font-size:1.55rem;letter-spacing:.02em;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.mm-lane-head .arrow{color:var(--red-bright)}
+.mm-lane-sub{color:var(--muted-dim);font-size:.85rem;margin:0 0 14px}
+.mm-group{font:600 .72rem var(--stencil);letter-spacing:.16em;text-transform:uppercase;color:var(--silver-dark);margin:20px 0 8px;display:flex;align-items:center;gap:8px}
+.mm-group::after{content:"";flex:1;height:1px;background:var(--navy-line)}
+.mm-lane[data-lane="in"] .mm-group:first-of-type,.mm-lane[data-lane="out"] .mm-group:first-of-type{margin-top:4px}
+
+.node{background:var(--navy-panel);border:1px solid var(--navy-line);border-radius:var(--radius-sm);margin:0 0 10px;transition:opacity .25s var(--ease),border-color .25s,box-shadow .25s;scroll-margin-top:calc(var(--navh,69px) + 80px)}
+.node[data-lane="in"]{border-left:3px solid #4f86d9}
+.node[data-lane="hub"]{border-left:3px solid var(--red-bright)}
+.node[data-lane="out"]{border-left:3px solid var(--silver-dark)}
+.node-head{all:unset;box-sizing:border-box;display:grid;grid-template-columns:1fr auto;gap:2px 10px;width:100%;padding:12px 14px;cursor:pointer}
+.node-head:focus-visible{outline:2px solid var(--red-bright);outline-offset:-2px;border-radius:var(--radius-sm)}
+.node-tag{grid-column:1/-1;font:600 .64rem var(--stencil);letter-spacing:.16em;text-transform:uppercase;color:var(--muted-dim)}
+.node-name{font:600 1.05rem/1.25 var(--stencil);color:#fff;text-transform:uppercase;letter-spacing:.03em}
+.node-amt{font-family:var(--display);font-size:1.2rem;color:var(--red-bright);text-align:right;white-space:nowrap;align-self:center}
+.node-amt.soft{color:var(--silver)}
+.node-teaser{grid-column:1/-1;color:var(--muted);font-size:.86rem;line-height:1.45;margin-top:3px}
+.node-more{grid-column:1/-1;font:600 .64rem var(--stencil);letter-spacing:.14em;text-transform:uppercase;color:var(--red-bright);margin-top:6px}
+.node-more::after{content:" +"}
+.node.open .node-more::after{content:" \2212"}
+.node-body{padding:0 14px 14px;border-top:1px dashed var(--navy-line)}
+.node-body[hidden]{display:none}
+.node-body p{color:var(--muted);font-size:.92rem;margin:12px 0 8px}
+.node-body ul{color:var(--muted);font-size:.9rem;padding-left:18px;margin:8px 0}
+.node-body li{margin:6px 0}
+.node-body strong{color:#fff}
+.node-note{background:rgba(255,255,255,.04);border-left:2px solid var(--silver-dark);padding:8px 10px;font-size:.84rem;color:var(--muted);border-radius:0 6px 6px 0;margin:10px 0}
+.node-sub{font:600 .66rem var(--stencil);letter-spacing:.16em;text-transform:uppercase;color:var(--silver);margin:14px 0 6px}
+.flows{list-style:none;padding:0!important;margin:0!important}
+.flows li{display:grid;grid-template-columns:auto 1fr auto;gap:4px 8px;align-items:baseline;padding:7px 0;border-bottom:1px solid rgba(31,63,116,.6);margin:0!important}
+.flows li:last-child{border-bottom:0}
+.flow-dir{font-family:var(--display);color:var(--red-bright);font-size:.95rem}
+.flow-who{all:unset;cursor:pointer;color:#fff;font-weight:600;font-size:.9rem;text-decoration:underline;text-decoration-color:var(--navy-line);text-underline-offset:3px}
+.flow-who:hover,.flow-who:focus-visible{text-decoration-color:var(--red-bright)}
+.flow-amt{font-family:var(--display);color:var(--silver);font-size:.95rem;white-space:nowrap}
+.flow-lbl{grid-column:2/-1;color:var(--muted-dim);font-size:.8rem;line-height:1.4}
+.flow-lbl .eftas{margin-top:4px}
+.flows li.promise .flow-amt{color:var(--muted-dim);text-decoration:line-through}
+.eftas{display:flex;flex-wrap:wrap;gap:5px}
+.efta{display:inline-flex;align-items:center;gap:5px;font:500 .72rem/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--silver);background:rgba(255,255,255,.05);border:1px solid var(--navy-line);border-radius:6px;padding:5px 7px}
+.efta:hover{border-color:var(--red-bright);color:#fff}
+.efta i{font:700 .6rem var(--stencil);font-style:normal;border-radius:3px;padding:2px 4px;color:#fff}
+.efta i.A{background:#2e7d4f}.efta i.B{background:#4f6ea8}.efta i.C{background:#8a5a1f}
+.node-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.mm-btn-trace{font:600 .7rem var(--stencil);letter-spacing:.12em;text-transform:uppercase;background:var(--red);color:#fff;border:0;border-radius:999px;padding:8px 13px;cursor:pointer}
+.mm-btn-link{font:600 .7rem var(--stencil);letter-spacing:.12em;text-transform:uppercase;background:transparent;color:var(--muted);border:1px solid var(--navy-line);border-radius:999px;padding:8px 13px;cursor:pointer}
+
+.mm-lanes.tracing .node{opacity:.22}
+.mm-lanes.tracing .node.lit{opacity:1;border-color:var(--red-bright)}
+.mm-lanes.tracing .node.focus{opacity:1;box-shadow:0 0 0 2px var(--red-bright),var(--shadow-soft)}
+.node.flash{animation:mmflash 1.2s var(--ease)}
+@keyframes mmflash{0%{box-shadow:0 0 0 3px var(--red-bright)}100%{box-shadow:0 0 0 0 transparent}}
+.node.hide{display:none}
+.mm-empty{display:none;color:var(--muted);padding:20px 0}
+
+.mm-legend{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:.84rem;margin:14px 0 0}
+.mm-legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:12px;height:12px;border-radius:3px;display:inline-block}
+
+.mm-pvr{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.pvr{background:var(--navy-panel);border:1px solid var(--navy-line);border-radius:var(--radius-sm);padding:16px}
+.pvr h4{font:600 .68rem var(--stencil);letter-spacing:.16em;text-transform:uppercase;color:var(--muted-dim);margin:0 0 8px}
+.pvr .said{font-size:.95rem;color:#fff;margin:0 0 10px}
+.pvr .said::before{content:"SAID: ";font:700 .7rem var(--stencil);letter-spacing:.14em;color:var(--silver-dark)}
+.pvr .rec{font-size:.92rem;color:var(--muted);margin:0 0 10px;border-top:1px solid var(--navy-line);padding-top:10px}
+.pvr .rec::before{content:"RECORD: ";font:700 .7rem var(--stencil);letter-spacing:.14em;color:var(--red-bright)}
+
+.mm-receipts{counter-reset:r;list-style:none;padding:0;margin:0;columns:2 380px;column-gap:28px}
+.mm-receipts li{counter-increment:r;break-inside:avoid;padding:8px 0 8px 40px;position:relative;border-bottom:1px solid rgba(31,63,116,.55);font-size:.88rem;color:var(--muted)}
+.mm-receipts li::before{content:counter(r);position:absolute;left:0;top:8px;font-family:var(--display);color:var(--red-bright);width:32px;text-align:right}
+.mm-receipts a{color:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.82rem;text-decoration:underline;text-decoration-color:var(--navy-line);text-underline-offset:3px}
+.mm-receipts .in{display:block;color:var(--muted-dim);font-size:.78rem}
+.mm-receipts .in button{all:unset;cursor:pointer;color:var(--silver)}
+.mm-receipts .in button:hover{color:var(--red-bright)}
+.mm-tier-h{font-family:var(--stencil);text-transform:uppercase;letter-spacing:.08em;font-size:1.05rem;color:#fff;margin:28px 0 4px}
+.mm-tier-p{color:var(--muted-dim);font-size:.86rem;margin:0 0 10px}
+
+@media(max-width:900px){
+  .mm-tools{position:relative;z-index:30;background:transparent;border-bottom:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .mm-trace{position:fixed;left:16px;right:16px;bottom:14px;z-index:60;margin:0;box-shadow:var(--shadow)}
+  .node{scroll-margin-top:calc(var(--navh,69px) + 12px)}
+  .mm-lanes{grid-template-columns:1fr;gap:6px}
+  .mm-lane{margin-bottom:22px}
+  .mm-lanes.only-in .mm-lane:not([data-lane="in"]),
+  .mm-lanes.only-hub .mm-lane:not([data-lane="hub"]),
+  .mm-lanes.only-out .mm-lane:not([data-lane="out"]){display:none}
+}
+@media(min-width:901px){.mm-lanefilter{display:none}}
+@media(max-width:560px){
+  .mm-wrap{padding:0 16px}
+  .node-name{font-size:.98rem}
+  .node-amt{font-size:1.05rem}
+  .mm-receipts li{padding-left:34px}
+  .mm-receipts li::before{width:26px}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html">
+      <img src="feral-logo.png" alt="Feral America logo">
+      <span>FERAL<b>·</b>AMERICA</span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu">☰</button>
+    <nav class="nav-links">
+      <a href="index.html#investigations">Investigations</a>
+      <a href="index.html#videos">Videos</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#support">Support</a>
+      <a class="nav-cta" href="index.html#request">Send a Tip</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-hero">
+  <div class="claw" style="top:10%;left:-40px" aria-hidden="true">
+    <svg width="200" height="330" viewBox="0 0 220 360"><g>
+      <path d="M40 0 C70 90 66 200 20 360 L60 360 C96 210 92 96 78 0 Z"/>
+      <path d="M100 0 C130 96 126 210 84 360 L124 360 C158 214 156 100 140 0 Z"/>
+      <path d="M160 0 C190 100 188 214 150 360 L190 360 C220 218 218 104 200 0 Z"/>
+    </g></svg>
+  </div>
+  <div class="wrap">
+    <a class="back-link" href="index.html#investigations">← Back to Feral America</a>
+    <p class="eyebrow reveal in">Investigation: Follow the Money</p>
+    <h1 class="reveal in">The Epstein <span class="red">Money Map</span></h1>
+    <p class="lead reveal in" style="font-size:1.15rem">Jeffrey Epstein said he ran a DNA database, an algorithm shop and a science charity. The bank records describe a toll booth. This is where his money came from, where it went, and the DOJ file behind every box. <strong>Appearing here is not evidence of wrongdoing.</strong></p>
+    <div class="hero-cta reveal in" style="margin-top:24px">
+      <a class="btn btn-red" href="#map">Open the Map ↓</a>
+      <a class="btn btn-ghost" href="#receipts">The Receipts</a>
+    </div>
+    <div class="hero-badges" style="margin-top:30px">
+      <div class="hero-badge"><b>$158M</b><span>Leon Black to Southern Trust</span></div>
+      <div class="hero-badge"><b>$25M</b><span>Rothschild fee</span></div>
+      <div class="hero-badge"><b>$80.6M</b><span>Taxes avoided (USVI est.)</span></div>
+      <div class="hero-badge"><b>$634.8M</b><span>Estate, end of 2019</span></div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px;padding-bottom:30px">
+  <div class="wrap">
+    <div class="prose reveal">
+      <p>It started with one unsigned receipt. Ten and a half million dollars from Leon Black to Enhanced Education, Epstein's private foundation, dated December 2014. No wire ever matched it. So we pulled the next file. And the next one. A few hundred DOJ documents later, the receipt was the least interesting thing in the pile.</p>
+      <p>Southern Trust Company told the U.S. Virgin Islands it would build an "extensive DNA database." It booked about $183 million from two clients. One bought "financial algorithms." The other paid a fee that shrank if its own bank's DOJ penalty got too big. The only DNA work we found was a $30,000 invoice, and Epstein's accountant told the vendor what to write on it.</p>
+      <p>This map traces every entity we could document: the money in, the shells in the middle, and the money out. Tap any box to open it. Hit <strong>Trace this money</strong> to light up everything it touched.</p>
+      <div class="callout">
+        <strong>Appearing here is not evidence of wrongdoing.</strong> Many people and institutions on this map were paid by Epstein, or paid him, for reasons that may be lawful. Each box says what the record shows and links the DOJ file. Every EFTA chip is graded: <b style="color:#7fd1a0">A</b> records (bank exhibits, signed contracts, government certificates, tax returns), <b style="color:#9db8ea">B</b> working papers (emails, drafts, ledgers, forensic analysis), <b style="color:#e0a85a">C</b> claims (lawsuit allegations, press pitches, statements by a party). DOJ links open the Epstein Library, which asks you to confirm your age first.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="map" style="padding-top:0">
+  <div class="mm-tools">
+    <div class="mm-wrap">
+      <div class="mm-tools-row">
+        <input class="mm-search" id="mmSearch" type="search" placeholder="Search a name, entity or EFTA number" aria-label="Search the money map">
+        <div class="mm-chips mm-lanefilter" role="group" aria-label="Show column">
+          <button class="mm-chip" data-only="all" aria-pressed="true">All</button>
+          <button class="mm-chip" data-only="in" aria-pressed="false">Money In</button>
+          <button class="mm-chip" data-only="hub" aria-pressed="false">Shells</button>
+          <button class="mm-chip" data-only="out" aria-pressed="false">Money Out</button>
+        </div>
+        <button class="mm-btn-sm" id="mmExpand" type="button">Open all</button>
+      </div>
+      <div class="mm-trace" id="mmTrace" role="status" aria-live="polite"></div>
+    </div>
+  </div>
+
+  <div class="mm-wrap">
+    <div class="mm-lanes" id="mmLanes">
+      <div class="mm-lane" data-lane="in">
+        <h2 class="mm-lane-head">Money In <span class="arrow">→</span></h2>
+        <p class="mm-lane-sub">Who paid, and what they said they were paying for.</p>
+        <div class="mm-col" id="col-in"></div>
+      </div>
+      <div class="mm-lane" data-lane="hub">
+        <h2 class="mm-lane-head">The Shells <span class="arrow">→</span></h2>
+        <p class="mm-lane-sub">Epstein's companies, charities and trusts. Same owner, many names.</p>
+        <div class="mm-col" id="col-hub"></div>
+      </div>
+      <div class="mm-lane" data-lane="out">
+        <h2 class="mm-lane-head">Money Out</h2>
+        <p class="mm-lane-sub">Where it landed: funds, people, politics, "charity."</p>
+        <div class="mm-col" id="col-out"></div>
+      </div>
+    </div>
+    <p class="mm-empty" id="mmEmpty">Nothing matches that search. Try a last name or an EFTA number.</p>
+    <div class="mm-legend">
+      <span><i class="sw" style="background:#4f86d9"></i>Money in</span>
+      <span><i class="sw" style="background:var(--red-bright)"></i>Epstein entity</span>
+      <span><i class="sw" style="background:var(--silver-dark)"></i>Money out</span>
+      <span><i class="sw" style="background:#2e7d4f"></i>A: records</span>
+      <span><i class="sw" style="background:#4f6ea8"></i>B: working papers</span>
+      <span><i class="sw" style="background:#8a5a1f"></i>C: claims</span>
+      <span><s>$10.5M</s>&nbsp;promised, not found paid</span>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap">
+    <p class="eyebrow">Said vs. Record</p>
+    <h2 class="title" style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .6em">What they promised. What the files show.</h2>
+    <div class="mm-pvr" id="mmPvr"></div>
+  </div>
+</section>
+
+<section style="padding-top:10px">
+  <div class="wrap">
+    <div class="prose">
+      <h3>What we still can't prove</h3>
+      <ul>
+        <li>Whether the $10M Plan D wired to Black's BV70 LLC in October 2018 returned the 2015 "donation" or repaid BV70's 2017 loans. Deutsche Bank read it as a return. The loan paperwork allows either.</li>
+        <li>Whether the $10.5M Enhanced Education receipt was ever paid. We found the draft and the promise. We did not find the wire.</li>
+        <li>What the "financial algorithms" were. The contract says they were delivered before it was signed. Nobody has produced one.</li>
+        <li>Who funded Enhanced Education's first $8 million. The balance was there by the end of 2010. The deposits are not in what we have read.</li>
+        <li>What Glenn Dubin's 2011 assignment of economic interest to Jeepers covered, and what it was worth.</li>
+      </ul>
+      <h3>Their side</h3>
+      <p>Leon Black has denied wrongdoing. A 2021 review by the law firm Dechert, commissioned by Apollo's board, said Black paid Epstein $158 million for tax and estate-planning advice and found no evidence Black was involved in Epstein's crimes. Les Wexner has said Epstein misappropriated vast sums from him and that he cut ties long before Epstein's 2019 arrest. Stacey Plaskett said in 2019 she would give up Epstein-linked donations. No wrongdoing by Brad Edwards is suggested here; the record shows he chose a crime victims' charity for the gift.</p>
+      <div class="callout">
+        <strong>Requests for comment.</strong> Brad Edwards has been asked about the Enhanced Education check. Requests are going to Leon Black's representatives, Edmond de Rothschild, Terje Rød-Larsen and Erika Kellerhals. Responses received by <strong>October 14, 2026</strong> will be added here, in full if they ask.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="receipts" style="padding-top:10px">
+  <div class="wrap">
+    <p class="eyebrow">The Receipts</p>
+    <h2 class="title" style="font-family:var(--display);text-transform:uppercase;font-size:clamp(1.8rem,4vw,2.8rem);margin:.1em 0 .3em">Every file on this map</h2>
+    <p style="color:var(--muted);max-width:74ch">Numbered, graded and linked. Tap "cited in" to jump to the box. Files come from the DOJ Epstein Library and the court record in <em>Government of the U.S. Virgin Islands v. JPMorgan Chase</em>.</p>
+    <div id="mmReceipts"></div>
+    <div class="prose" style="margin-top:34px">
+      <p>Got a document that belongs on this map? A wire, a 990, a ledger page? <a href="index.html#request" style="color:#fff;text-decoration:underline">Send it.</a> We read everything.</p>
+      <p style="font-family:var(--stencil);text-transform:uppercase;letter-spacing:.14em;color:#fff">Stay feral.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-bottom" style="border:0;padding-top:0">
+      <span>© <span id="year">2026</span> Feral America</span>
+      <a href="index.html" style="color:var(--muted)">← Back to stayferalamerica.com</a>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ---------- Sources: EFTA id -> [tier, description] ---------- */
+var SRC = {
+"EFTA00027019":["A","Bank-record exhibits A to E: Black and Rothschild deposits, Southern Trust investments, Jeepers, Haze Trust, Gratitude America outflows"],
+"EFTA02816240":["A","JPMorgan wire log for Enhanced Education (Exhibit 155, USVI v. JPMorgan)"],
+"EFTA01116979":["A","Purchase and Sale Agreement: Southern Trust sells Black family \"financial algorithms\" for $23.5M, Dec 2012"],
+"EFTA00584893":["A","Final Rothschild letter agreement: flat $25M fee, Oct 5, 2015"],
+"EFTA00587879":["A","Indyke receipt: $10M from BV70 LLC to Gratitude America, Oct 14, 2015"],
+"EFTA00589279":["A","BV70 promissory note to Plan D LLC, 2017"],
+"EFTA00594105":["A","BV70 promissory note to Plan D LLC, 2017 (second note)"],
+"EFTA01166297":["A","USVI EDC benefits certificate: Southern Trust as \"extensive DNA database\" business"],
+"EFTA02814338":["A","USVI EDA media log and compliance review, Exhibit 332"],
+"EFTA02814265":["A","EDC compliance record for Financial Trust Company"],
+"EFTA01377445":["A","IRS 501(c)(3) determination letter for Enhanced Education's foundation, Nov 1, 2000"],
+"EFTA00811971":["A","Enhanced Education 2017 Form 990-PF grant schedule"],
+"EFTA01940002":["A","$3,016,809 moved from JPMorgan to Deutsche Bank, Jan 2014"],
+"EFTA00287078":["A","Marvin Minsky consulting agreement with Enhanced Education"],
+"EFTA00299927":["A","Grant agreement, Enhanced Education to the C.O.U.Q. Foundation, Oct 2008"],
+"EFTA01110649":["A","Black Family Foundation $5M pledge to MIT Media Lab, Dec 2014"],
+"EFTA00153569":["A","FinCEN summary: three SARs on Gratitude America, plus French TRACFIN inquiry"],
+"EFTA01372332":["A","Gratitude America 2015 Form 990-PF"],
+"EFTA01345259":["A","Gratitude America 2016 Form 990-PF"],
+"EFTA00075562":["A","Estate accounting: $634.8M as of Dec 31, 2019"],
+"EFTA02809262":["A","Court exhibit: Southern Trust money \"for the benefit of Stacey Plaskett\""],
+"EFTA02810827":["B","USVI forensic accounting report on Epstein's accounts"],
+"EFTA02465679":["B","Kahn's ledger of Black deposits to Southern Trust, Apr 2016"],
+"EFTA00639892":["B","Kahn to Black's office: \"fees... maximize deductions,\" Oct 9, 2015"],
+"EFTA02485037":["B","Same thread: Black's office on the \"charitable fnd'n\""],
+"EFTA00844021":["B","Epstein approves the fee plan: \"Yes\""],
+"EFTA00716151":["B","Epstein: \"10,5 to enhanced education next week,\" Dec 4, 2014"],
+"EFTA00584573":["B","Draft $10.5M Enhanced Education receipt to Black, unsigned"],
+"EFTA01425264":["B","Deutsche Bank note on BV70 and the $10M wire back, Mar 2019"],
+"EFTA01045336":["B","Kahn: \"money never left STC to another entity,\" May 2017"],
+"EFTA01201722":["B","Black's vehicles held in \"Leon Black or BV70\""],
+"EFTA00310331":["B","Draft Rothschild agreement: $25M if DOJ penalty is $75M or less, $10M if higher"],
+"EFTA02588105":["B","Epstein to Kathy Ruemmler on the Rothschild bank's \"justice department problem,\" 2014"],
+"EFTA00844785":["B","Epstein to Ariane de Rothschild: \"DOJ settlement should be settled before any further dealings\""],
+"EFTA01199910":["B","Terje Rød-Larsen forwards \"Draft agreement Rothschild,\" Oct 2014"],
+"EFTA01093101":["B","2016 draft engagement of Southern Trust by a Rothschild entity"],
+"EFTA01100131":["B","Kellerhals letter to the EDC on Southern Trust's algorithms and DNA plans, Dec 28, 2012"],
+"EFTA01079665":["B","Southern Trust balance sheet: $366.6M total assets"],
+"EFTA01478437":["B","Southern Trust consolidated statements: Southern Financial and Haze Trust"],
+"EFTA00299953":["B","Financial Trust Company merged into Southern Financial LLC"],
+"EFTA00614037":["B","Memo on Financial Trust client accounts"],
+"EFTA00286387":["B","Memo on Financial Trust client accounts (Dubin, Zwirn, Reynolds)"],
+"EFTA00286388":["B","Jeepers Inc. capital account statement, year-end 2006"],
+"EFTA01200058":["B","Assignment of economic interest from Glenn Dubin, Aug 1, 2011"],
+"EFTA01282292":["B","Butterfly Trust instrument, Dec 27, 2006"],
+"EFTA01357500":["B","Butterfly Trust trustees: Harry Beller and Erika Kellerhals"],
+"EFTA01373616":["B","Butterfly Trust beneficiary list"],
+"EFTA00163119":["B","C.O.U.Q. Foundation's $46M contribution to Wexner's YLK Charitable Fund, 2008"],
+"EFTA00310685":["B","Enhanced Education balance sheet: $8.04M at end of 2010"],
+"EFTA01741665":["B","Foundation Center agrees to list the foundation \"without the 990\""],
+"EFTA01426941":["B","Enhanced Education's last positions sold, account closed, early 2019"],
+"EFTA00615501":["B","$160,000 DPNR environmental fine coded \"Charitable contributions\""],
+"EFTA00148030":["B","DPNR fine payment from Enhanced Education"],
+"EFTA00979293":["B","Goertzel sends $45K back to Enhanced Education; $60K arrives from Southern Trust, Dec 2013"],
+"EFTA01159838":["B","1927 Soffritti cello bought \"for investment\""],
+"EFTA00669095":["B","Shears Consulting search-engine work for Enhanced Education"],
+"EFTA00359778":["B","$50K Columbia dental gift credited to Karyna Shuliak"],
+"EFTA01409890":["B","Wire setup to UAB Fors Projektai, Vilnius, Jan 2017"],
+"EFTA01365138":["B","Enhanced Education wires to Joscha Bach"],
+"EFTA01028726":["B","Epstein to Brad Edwards: \"check fed ex ed will arrive monday, from enhanced education\""],
+"EFTA02626876":["B","Edwards names the National Crime Victim Bar Association, Jan 24, 2019"],
+"EFTA02627561":["B","\"put on the jan giving list,\" Feb 1, 2019"],
+"EFTA01009337":["B","Epstein: \"Think about an increased amount. That benefits Courtney and helps to resolve cvra\""],
+"EFTA00843993":["B","Epstein, 2015: \"happy to give 1 miillion to crime victims rights charity... nice pr\""],
+"EFTA00317137":["B","Letter from Black to ASU: send unspent Origins money to Gratitude America, Oct 17, 2018"],
+"EFTA02630295":["B","Kahn: \"I have drafted a letter... Leon will need to sign,\" Jan 2019"],
+"EFTA02607369":["B","ASU and Kahn emails on moving Origins money to MIT"],
+"EFTA01008512":["B","ASU and Kahn emails on moving Origins money to MIT"],
+"EFTA02604997":["B","ASU and Kahn emails on moving Origins money to MIT"],
+"EFTA01032960":["B","ASU and Kahn emails on moving Origins money to MIT"],
+"EFTA01022053":["B","Gratitude America's Deutsche Bank account and BV70 KYC question, Sept 2018"],
+"EFTA00859381":["B","Epstein: \"10m paid today to gratitude america,\" Apr 15, 2015"],
+"EFTA02704621":["B","Kahn needs Rød-Larsen's W-9 for the $250,000 Southern Trust payment"],
+"EFTA01191403":["B","Kahn tells Goertzel to invoice Southern Trust for \"Algorithm DNA database management\""],
+"EFTA02675662":["B","Kahn asks whether to pay Larry Summers trip invoices \"from stc\""],
+"EFTA02650474":["B","Paul Barrett proposal: $250K a year \"paid from STC\" to ESP Advisory"],
+"EFTA00689466":["B","$250K \"from stc to dki\" (Indyke's firm), Dec 2013"],
+"EFTA02514464":["B","$400K to Darren K. Indyke PLLC and $200K to Kahn's HBRK, Jan 2015"],
+"EFTA02503749":["B","$200K to HBRK \"for the next 3-4 months,\" Apr 2015"],
+"EFTA02508954":["B","Accountants paid from Southern Trust"],
+"EFTA00658399":["B","Southern Trust payroll covering household staff"],
+"EFTA00711169":["B","Queen Louise Home $75K: \"Delivered to carmen govt house\""],
+"EFTA01370674":["B","$50K check to Islands Engaged, June 2018"],
+"EFTA02510079":["B","100 Chromebooks: pay \"from STC or Enhanced\"?"],
+"EFTA02337340":["B","Records of Southern Trust money routed for Plaskett's benefit"],
+"EFTA00162121":["C","USVI Second Amended Complaint against the Epstein estate (allegations)"],
+"EFTA02806228":["C","USVI filing on Wexner payments from Enhanced Education"],
+"EFTA01138979":["C","Reuters questions to Epstein's team on the foundation, Jan 2015"],
+"EFTA02570766":["C","Epstein press pitch: Harvard PED \"$30 million grant\""],
+"EFTA01114852":["C","Foundation Center application repeating the \"$30 million\" claim, 2013"],
+"EFTA00077556":["C","Wexner's side: the $46M return was a fraction of what was taken"],
+"EFTA00068096":["C","Wexner's side on misappropriated funds"],
+"EFTA00722127":["C","Financial Trust Company v. Bear Stearns litigation"]
+};
+
+var VI = {"EFTA02806228":1,"EFTA02809262":1,"EFTA02810827":1,"EFTA02814338":1,"EFTA02816240":1,"EFTA02814265":1};
+function url(id){
+  var n = parseInt(id.slice(4),10), f;
+  if (VI[id]) f = "Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)";
+  else if (n < 40000) f = "DataSet 8";
+  else if (n < 1250000) f = "DataSet 9";
+  else if (n < 2000000) f = "DataSet 10";
+  else f = "DataSet 11";
+  return "https://www.justice.gov/epstein/files/" + encodeURI(f) + "/" + id + ".pdf";
+}
+
+/* ---------- Nodes ---------- */
+/* lane: in | hub | out. g: group label. */
+var N = [
+/* ===== MONEY IN ===== */
+{id:"black",lane:"in",g:"Clients",tag:"Apollo co-founder",name:"Leon Black",amt:"$158M+",
+ teaser:"The biggest client by far. Paid Southern Trust for \"financial algorithms\" and estate advice, 2013 to 2017.",
+ body:"<p>Southern Trust reported about $184M in revenue from 2013 to 2017. About 85% came from one man.</p><ul><li><strong>Dec 2012 contract:</strong> Southern Trust sells the Black family \"a series of financial algorithms\" for $23.5M, to be used \"solely\" for structuring their estates. The algorithms were already delivered \"prior to the date hereof.\" The sale ran under the direction of Black's estate lawyer, Carlyn McCaffrey of McDermott Will &amp; Emery.</li><li><strong>The ledger:</strong> $50M in 2013, $70M in 2014, $30M in 2015, $8M in 2017.</li><li><strong>Oct 9, 2015:</strong> Kahn writes that Epstein and Black \"agreed upon fees,\" to be paid through \"the most advantageous entities\" to \"maximize deductions.\" $4.75M would go to Epstein's foundation as a \"charitable donation\" from Black's car LLC \"to avoid public disclosure of Leon name.\" Epstein: \"Yes.\"</li></ul>",
+ note:"Black has denied wrongdoing. A 2021 Dechert review commissioned by Apollo's board said the payments were for tax and estate advice and found no evidence Black was involved in Epstein's crimes. Comment requested.",
+ c:["EFTA01116979","EFTA02465679","EFTA00027019","EFTA00639892","EFTA02485037","EFTA00844021"]},
+
+{id:"bv70",lane:"in",g:"Clients",tag:"Black's single-member LLC",name:"BV70 LLC",amt:"$40.5M",
+ teaser:"Black's \"LLC that owns automobiles.\" Gave $10M to an Epstein charity, lent $30.5M to an Epstein jet company.",
+ body:"<ul><li>Black's cars and yacht sit in \"Leon Black or BV70.\" Same office as Black's family office, 445 Park Ave.</li><li><strong>Oct 14, 2015:</strong> $10M to Gratitude America. Receipt: \"No goods or services were provided in exchange.\" Five days earlier, the same money was described as \"fees.\"</li><li><strong>2017:</strong> $30.5M in loans to Plan D LLC, Epstein's Gulfstream company. Kahn: the money \"never left STC.\"</li><li><strong>Oct 2, 2018:</strong> Plan D wires $10M back to BV70.</li></ul><p>Deutsche Bank, March 2019: BV70 \"was used to protect the identity of the person making the donation,\" and it \"looks like Epstein used the Plan D account to return the contribution.\"</p>",
+ note:"Open question: the 2018 wire could also be a partial repayment of the 2017 loans.",
+ c:["EFTA01201722","EFTA00587879","EFTA00589279","EFTA00594105","EFTA01045336","EFTA01425264"]},
+
+{id:"rothschild",lane:"in",g:"Clients",tag:"Swiss private bank",name:"Edmond de Rothschild",amt:"$25M",
+ teaser:"Paid Southern Trust for \"risk analysis\" and \"algorithms.\" The fee was keyed to the bank's DOJ penalty.",
+ body:"<ul><li><strong>Sept 2015 draft:</strong> $25M if the bank's DOJ penalty came in at $75M or less. $10M if it ran $75M to $150M.</li><li><strong>Oct 5, 2015 final:</strong> flat $25M, due within three days after the bank pays the United States. Signed by Epstein for Southern Trust.</li><li><strong>Dec 17 and 21, 2015:</strong> $10M from Edmond de Rothschild (Suisse) SA, then $14,999,980 from Benjamin de Rothschild.</li><li><strong>Dec 18, 2015:</strong> DOJ announces the bank's $45.245M penalty under the Swiss Bank Program. Under the threshold.</li><li>Epstein to Ariane de Rothschild, Oct 1: \"DOJ settlement should be settled before any further dealings.\"</li></ul>",
+ note:"No wrongdoing by the bank or the family is alleged here. What $25M bought is the open question. Comment requested.",
+ c:["EFTA00310331","EFTA00584893","EFTA00027019","EFTA02588105","EFTA00844785","EFTA01199910","EFTA01093101"]},
+
+{id:"wexner",lane:"in",g:"The original fortune",tag:"L Brands founder",name:"Les Wexner",amt:"$46M back",
+ teaser:"Epstein's first big client. Wexner says he was robbed. Money kept moving to him after the split.",
+ body:"<ul><li>Epstein ran Wexner's money from the late 1980s until 2007.</li><li><strong>2008:</strong> Epstein's C.O.U.Q. Foundation sent $46M to Wexner's YLK Charitable Fund. Wexner's side says that was a fraction of what Epstein misappropriated.</li><li><strong>2009 and 2010:</strong> Enhanced Education paid Wexner $124,232 personally, plus $404,588 to the Wexner Family Charitable Fund. The USVI flagged the personal payments and sought to subpoena Wexner.</li></ul>",
+ note:"Wexner has not been charged with any crime and says he cut ties with Epstein long before 2019.",
+ c:["EFTA00163119","EFTA00077556","EFTA00068096","EFTA02816240","EFTA02806228"]},
+
+{id:"dubin",lane:"in",g:"The original fortune",tag:"Highbridge Capital",name:"Glenn Dubin / Highbridge",amt:"",
+ teaser:"Highbridge-related records show an Epstein company, Jeepers Inc., with a capital account worth about $134.4M at the end of 2006.",
+ body:"<ul><li>A year-end 2006 statement puts Jeepers Inc.'s capital account at about $134.4M.</li><li><strong>Aug 1, 2011:</strong> an assignment of economic interest from Glenn Dubin appears in Epstein's files.</li><li>Memos on Financial Trust client accounts name Dubin, Dan Zwirn and Brooks Reynolds.</li></ul>",
+ note:"These are investment records, not allegations. What the 2011 interest covered and what it was worth is an open question.",
+ c:["EFTA00286388","EFTA01200058","EFTA00286387","EFTA00614037"]},
+
+{id:"usvi",lane:"in",g:"Public money",tag:"U.S. Virgin Islands",name:"USVI tax breaks",amt:"$80.6M",
+ teaser:"Not a check. A 90% income-tax break, granted for a DNA database nobody found.",
+ body:"<ul><li><strong>Financial Trust Company</strong> got Economic Development Commission benefits from 1999 to 2009.</li><li><strong>Southern Trust</strong> got them from Feb 1, 2013 to Jan 31, 2023: 90% off income tax, 100% off gross receipts, excise and withholding taxes.</li><li>Conditions: at least 5 full-time staff, $400K invested, $50K a year to local charity.</li><li>USVI estimate: about $80.6M in taxes avoided, including $71.3M passed through to Epstein.</li><li><strong>Nov 2018:</strong> the EDA's own review found Southern Trust \"in compliance.\"</li></ul>",
+ c:["EFTA01166297","EFTA02814265","EFTA02814338","EFTA00162121"]},
+
+{id:"art",lane:"in",g:"Public money",tag:"Auction proceeds",name:"Art sales",amt:"$30.4M",
+ teaser:"Sotheby's and Christie's sale proceeds flowed into the Haze Trust.",
+ body:"<ul><li>Three auction payouts of $7.7M, $11.5M and $11.2M landed in the Haze Trust.</li><li>From there, money moved to Southern Financial, Southern Trust and Plan D.</li></ul>",
+ c:["EFTA00027019"]},
+
+/* ===== THE SHELLS ===== */
+{id:"ftc",lane:"hub",g:"Operating companies",tag:"1998 to 2012 · USVI",name:"Financial Trust Company",amt:"$212M",
+ teaser:"The original. Epstein's money-management firm, with USVI tax breaks from 1999.",
+ body:"<ul><li>Held about $212M in assets in 2012, per the USVI.</li><li>11 employees on its EDC compliance filing.</li><li>About $232.1M moved through its main account (#5001), per the USVI's forensic accountants.</li><li>Sued Bear Stearns over losses.</li><li>Later merged into Southern Financial LLC, Southern Trust's subsidiary.</li></ul>",
+ c:["EFTA02814265","EFTA00162121","EFTA02810827","EFTA00722127","EFTA00299953"]},
+
+{id:"stc",lane:"hub",g:"Operating companies",tag:"2011 to 2019 · EIN 66-0779861",name:"Southern Trust Company",amt:"$184M",
+ teaser:"Pitched as a DNA database and algorithm shop. Two clients paid nearly all of its revenue.",
+ body:"<ul><li>Incorporated Nov 18, 2011 as Financial Informatics, Inc. Renamed in 2012. Epstein 100% owner, Kahn treasurer, Indyke secretary.</li><li>Its lawyer, Erika Kellerhals, told the EDC it would \"create algorithms\" and sell DNA services online.</li><li>Black ($158M) plus Rothschild ($25M) equals $183M of $184M in reported revenue.</li><li>13 employees over six years, mostly assistants, a driver and payroll. USVI: \"no visible clients.\"</li><li>Balance sheet: $366.6M in total assets, including Southern Financial ($167.5M) and the Haze Trust ($60.9M).</li><li>The only DNA work found: a $30K invoice from Ben Goertzel, worded by Kahn.</li></ul>",
+ c:["EFTA01166297","EFTA01100131","EFTA00027019","EFTA01079665","EFTA01478437","EFTA02814338","EFTA00162121","EFTA02810827"]},
+
+{id:"southernfin",lane:"hub",g:"Operating companies",tag:"Owned by Southern Trust",name:"Southern Financial LLC",amt:"$167.5M",
+ teaser:"Southern Trust's investment arm. Absorbed Financial Trust. Paid the hedge funds and Joi Ito.",
+ body:"<ul><li>100% owned by Southern Trust. Carried at $167.5M on its balance sheet.</li><li>Paid Boothbay and Absolute Strategies funds about $38.25M (2014 to 2016).</li><li>Paid Joi Ito $1M personally and $1M to his Neoteny 3 fund.</li><li>Paid Coatue Enterprises, another Epstein entity, $500K a year.</li><li>About $63.0M moved through account #9006.</li></ul>",
+ c:["EFTA00299953","EFTA01079665","EFTA00027019","EFTA02810827"]},
+
+{id:"jeepers",lane:"hub",g:"Operating companies",tag:"Holding company",name:"Jeepers Inc.",amt:"$58.9M",
+ teaser:"Held a capital account tied to Highbridge. Fed Epstein's personal checking.",
+ body:"<ul><li>Capital account of about $134.4M at the end of 2006.</li><li>About $58.9M in cash flows, per the USVI forensic report.</li><li>Transfers into Epstein's personal checking appear in the bank exhibits.</li></ul>",
+ c:["EFTA00286388","EFTA02810827","EFTA00027019"]},
+
+{id:"personal",lane:"hub",g:"Operating companies",tag:"Account #0438",name:"Epstein personal accounts",amt:"$395.3M",
+ teaser:"The biggest pipe on the map. Everything eventually touched it.",
+ body:"<ul><li>About $395.3M in flows through his main personal account, per the USVI forensic report.</li><li>Fed by Jeepers, Southern Trust and Financial Trust. Paid out to credit cards, staff, aircraft companies and individuals.</li></ul>",
+ c:["EFTA02810827","EFTA00027019","EFTA00162121"]},
+
+{id:"ee",lane:"hub",g:"Charities",tag:"EIN 66-0585379 · private foundation",name:"Enhanced Education",amt:"$9.66M",
+ teaser:"Epstein's own charity. Paid Wexner, a fine, a cello, and a check to a survivors' lawyer's chosen charity.",
+ body:"<p>The trade name of the J. Epstein Virgin Islands Foundation. 501(c)(3) since Nov 1, 2000.</p><ul><li>$8.04M in assets at the end of 2010. Who funded it is still unknown.</li><li>78 JPMorgan wires totaling $9.66M. About half moved to Epstein's own accounts and brokerages.</li><li>No public 990 after 2002. Reuters couldn't find one in 2015. Black's office couldn't verify its status in 2015.</li><li>2017 grants: $356K, including $75K to a Lithuanian event company listed as a 501(c)(3).</li><li>Told the press it gave Harvard a \"$30 million grant.\" Harvard says $6.5M.</li><li>Closed early 2019.</li></ul>",
+ c:["EFTA01377445","EFTA00310685","EFTA02816240","EFTA01138979","EFTA01741665","EFTA00811971","EFTA01940002","EFTA01426941"]},
+
+{id:"gratitude",lane:"hub",g:"Charities",tag:"EIN 66-0789697",name:"Gratitude America, Ltd.",amt:"$10M",
+ teaser:"Got Black's $10M \"donation.\" Gave a fraction away. Drew three suspicious activity reports.",
+ body:"<ul><li>Apr 2015, Epstein: \"10m paid today to gratitude america... will make last year complete.\" The bank records show it arriving Oct 14, 2015.</li><li>Most of the $10M moved into Gratitude America's own other accounts.</li><li>Its 2015 990-PF named BV70 as donor, not Black.</li><li>FinCEN: three SARs, plus a French inquiry into a €50K transfer.</li><li>Oct 2018: Black's letter asked ASU to send unspent Origins money here.</li></ul>",
+ c:["EFTA00587879","EFTA00859381","EFTA00027019","EFTA01372332","EFTA01345259","EFTA00153569","EFTA01022053","EFTA00317137"]},
+
+{id:"couq",lane:"hub",g:"Charities",tag:"Private foundation",name:"C.O.U.Q. Foundation",amt:"$46M",
+ teaser:"The older Epstein charity. Sent $46M to Wexner's fund in 2008.",
+ body:"<ul><li>2008: $46M to Wexner's YLK Charitable Fund.</li><li>Oct 2008 grant agreement with Enhanced Education. About $440K moved between the two foundations from 2008 to 2010.</li></ul>",
+ c:["EFTA00163119","EFTA00299927","EFTA02816240"]},
+
+{id:"haze",lane:"hub",g:"Trusts",tag:"Grantor trust",name:"Haze Trust",amt:"$60.9M",
+ teaser:"Where the art money went. Carried on Southern Trust's books.",
+ body:"<ul><li>Carried at $60.9M on Southern Trust's consolidated balance sheet.</li><li>Received Sotheby's and Christie's proceeds.</li><li>Sent $15M to Plan D and transfers to Southern Financial and Southern Trust.</li></ul>",
+ c:["EFTA01079665","EFTA01478437","EFTA00027019"]},
+
+{id:"butterfly",lane:"hub",g:"Trusts",tag:"Created Dec 27, 2006",name:"Butterfly Trust",amt:"",
+ teaser:"Trustees: his accountant and his USVI lawyer. Beneficiaries: his lawyer, his accountant, his girlfriend.",
+ body:"<ul><li>Trustees: Harry Beller and Erika Kellerhals.</li><li>Beneficiaries include Darren Indyke, Richard Kahn and Karyna Shuliak.</li><li>The USVI forensic report has a section titled \"Payments to Women from Butterfly Trust.\"</li></ul>",
+ c:["EFTA01282292","EFTA01357500","EFTA01373616","EFTA02810827"]},
+
+{id:"caterpillar",lane:"hub",g:"Trusts",tag:"2017",name:"2017 Caterpillar Trust",amt:"$10M",
+ teaser:"Put $10M into Honeycomb on top of Southern Trust's stake.",
+ body:"<ul><li>$10M to Honeycomb Partners, per the bank exhibits.</li></ul>",
+ c:["EFTA00027019"]},
+
+{id:"pland",lane:"hub",g:"Planes, islands, cards",tag:"Gulfstream owner",name:"Plan D LLC",amt:"$30.5M",
+ teaser:"The jet company. Borrowed Black's money, parked it at Southern Trust, wired $10M back.",
+ body:"<ul><li>Borrowed $30.5M from BV70 in March and April 2017.</li><li>Kahn, May 2017: \"plan d to stc 30,500,000. money never left STC to another entity.\" $17M went to Southern Trust's savings.</li><li>Received $15M from the Haze Trust.</li><li>Oct 2, 2018: $10M to BV70.</li></ul>",
+ c:["EFTA00589279","EFTA00594105","EFTA01045336","EFTA00027019","EFTA01425264"]},
+
+{id:"aviation",lane:"hub",g:"Planes, islands, cards",tag:"Aircraft",name:"JEGE & Hyperion Air",amt:"",
+ teaser:"Airplanes and helicopters, each in its own company.",
+ body:"<ul><li>JEGE held Epstein's aircraft. Hyperion Air ran the helicopters.</li><li>Both were funded from his personal and company accounts.</li></ul>",
+ c:["EFTA00162121","EFTA02810827"]},
+
+{id:"nes",lane:"hub",g:"Planes, islands, cards",tag:"Credit cards",name:"NES LLC",amt:"",
+ teaser:"The company that held credit cards.",
+ body:"<ul><li>Named in the USVI complaint and forensic report as a card-paying entity.</li></ul>",
+ c:["EFTA00162121","EFTA02810827"]},
+
+{id:"property",lane:"hub",g:"Planes, islands, cards",tag:"Real estate & staff",name:"Property & staff LLCs",amt:"",
+ teaser:"One LLC per island, house, ranch and payroll.",
+ body:"<ul><li>Great St. Jim, Nautilus, Poplar, Cypress, Maple, Laurel: islands and houses.</li><li>LSJE and LSJ Employees: island staff.</li><li>Zorro: the New Mexico ranch. FT Real Estate. Coatue Enterprises. Mort Inc. Kyara Investments, named in the Ito wire memos.</li></ul>",
+ c:["EFTA00162121","EFTA02810827","EFTA00027019"]},
+
+/* ===== MONEY OUT ===== */
+{id:"investments",lane:"out",g:"Investments",tag:"Venture & hedge funds",name:"Funds & Joi Ito",amt:"~$130M",
+ teaser:"Honeycomb, Boothbay, Valar, and $2M to Joi Ito and his fund.",
+ body:"<ul><li><strong>Honeycomb:</strong> about $54M from Southern Trust (2016 to 2019), plus $10M from the Caterpillar Trust.</li><li><strong>Boothbay / Absolute Strategies:</strong> about $38.25M from Southern Financial.</li><li><strong>Valar Global Funds II and III:</strong> about $26.3M in capital calls.</li><li><strong>Joi Ito:</strong> $1M personally (wire memos name Blockstream and OH2 Laboratories via Kyara Investments), plus $1M to Neoteny 3.</li></ul>",
+ c:["EFTA00027019"]},
+
+{id:"universities",lane:"out",g:"Prestige",tag:"Black-funded, Epstein-arranged",name:"MIT, Harvard, ASU",amt:"$5M pledges",
+ teaser:"Black's foundation gave where Epstein pointed. Epstein called them \"my\" charities.",
+ body:"<ul><li><strong>Dec 2014:</strong> Epstein tells Black's office: $5M to Harvard's PED, \"same exact for mit.\"</li><li>Black Family Foundation pledges $5M to MIT Media Lab, $4M on signing.</li><li>Epstein asks for \"the final of how much money was sent to each of my cahrities.\"</li><li><strong>2018 to 2019:</strong> Black's letter asks ASU to send unspent Origins money to Gratitude America. It goes to MIT instead: $467,150 of Black's money plus Enhanced Education's $25K, Feb 14, 2019.</li></ul>",
+ c:["EFTA00716151","EFTA01110649","EFTA02465679","EFTA00317137","EFTA02630295","EFTA02607369","EFTA01008512","EFTA02604997","EFTA01032960"]},
+
+{id:"people",lane:"out",g:"People",tag:"Paid by Southern Trust",name:"Rød-Larsen, Goertzel, Summers",amt:"$280K+",
+ teaser:"A peace envoy, an AI researcher, and a former Treasury secretary's travel invoices.",
+ body:"<ul><li><strong>Terje Rød-Larsen</strong>, then president of the International Peace Institute: $250,000 on Feb 21, 2015.</li><li><strong>Ben Goertzel / Novamente:</strong> $30,000 for \"Algorithm DNA database management.\" Kahn supplied the wording.</li><li><strong>Larry Summers:</strong> Kahn asked whether to pay four trip invoices ($1,195.65) \"from stc.\" Payment not shown.</li><li><strong>Paul Barrett</strong>, then Epstein's Deutsche Bank adviser: a 2017 proposal for $250K a year \"paid from STC.\"</li></ul>",
+ note:"A request or proposal is not proof of payment. Comment requested from Rød-Larsen.",
+ c:["EFTA02704621","EFTA01191403","EFTA00979293","EFTA02675662","EFTA02650474"]},
+
+{id:"advisers",lane:"out",g:"People",tag:"Lawyers, accountants, staff",name:"The gatekeepers",amt:"$1M+",
+ teaser:"Indyke, Kahn, the accountants and the household staff, paid by the \"DNA\" company.",
+ body:"<ul><li>$250K \"from stc to dki\" (Darren Indyke's firm), Dec 2013.</li><li>$400K to Darren K. Indyke PLLC and $200K to Kahn's HBRK, Jan 2015. Another $200K to HBRK in Apr 2015.</li><li>Accountants, including Harry Beller at $7K a month, paid from Southern Trust.</li><li>Southern Trust payroll covered household and island staff.</li></ul>",
+ c:["EFTA00689466","EFTA02514464","EFTA02503749","EFTA02508954","EFTA00658399"]},
+
+{id:"political",lane:"out",g:"Politics & civic",tag:"USVI delegate",name:"Stacey Plaskett",amt:"$13K to $15K",
+ teaser:"Southern Trust money routed \"for the benefit of\" the USVI's delegate to Congress.",
+ body:"<ul><li>Court exhibits show Southern Trust money \"for the benefit of Stacey Plaskett\" through the Democratic Party, on top of maximum personal donations from Epstein, Kahn and Indyke.</li><li>Plaskett previously worked for the USVI Economic Development Authority.</li></ul>",
+ note:"Plaskett said in 2019 she would give up Epstein-linked money.",
+ c:["EFTA02809262","EFTA02337340"]},
+
+{id:"civic",lane:"out",g:"Politics & civic",tag:"The $50K-a-year condition",name:"USVI charity requirement",amt:"$50K/yr",
+ teaser:"Southern Trust owed local charity as part of its tax break. Some recipients say they never got it.",
+ body:"<ul><li>Queen Louise Home, $75K. Epstein's note: \"Delivered to carmen govt house.\"</li><li>Islands Engaged, $50K check, June 2018.</li><li>100 Chromebooks, $42,621. Kahn asked whether to pay \"from STC or Enhanced.\"</li><li>In 2019, EDA counsel noted some listed recipients \"now allege that they have no evidence of having received such monies.\"</li></ul>",
+ c:["EFTA00711169","EFTA01370674","EFTA02510079","EFTA02814338"]},
+
+{id:"edwards",lane:"out",g:"Enhanced Education's checks",tag:"Feb 2019",name:"Brad Edwards' chosen charity",amt:"",
+ teaser:"Epstein settled a fight with a survivors' lawyer with a check from his charity.",
+ body:"<ul><li>2015, Epstein: \"happy to give 1 miillion to crime victims rights charity... nice pr.\"</li><li>Jan 2019: \"Think about an increased amount. That benefits Courtney and helps to resolve cvra.\"</li><li>Jan 24, 2019: Edwards names the National Crime Victim Bar Association.</li><li>Feb 1, 2019: \"check fed ex ed will arrive monday, from enhanced education.\"</li></ul>",
+ note:"No wrongdoing by Edwards is suggested. He chose a victims' charity. The point is whose money paid: Epstein's tax-exempt foundation, not Epstein. Comment requested.",
+ c:["EFTA00843993","EFTA01009337","EFTA02626876","EFTA02627561","EFTA01028726"]},
+
+{id:"science",lane:"out",g:"Enhanced Education's checks",tag:"Grants & consulting",name:"Scientists & think tanks",amt:"$500K+",
+ teaser:"Goertzel, Minsky, Joscha Bach, and a grant list that includes a Lithuanian event company.",
+ body:"<ul><li><strong>Ben Goertzel:</strong> $75K personally (2008 to 2009), $110K to Humanity+ (2011 to 2013), then $150K and $125K more. In Dec 2013 he sent $45K back and got $60K from Southern Trust.</li><li><strong>Marvin Minsky:</strong> monthly $8,333.33 consulting wires, 2011 to 2012.</li><li><strong>Joscha Bach:</strong> wires from Enhanced Education's Deutsche Bank account, 2016 to 2017.</li><li><strong>2017 grants:</strong> Humanity+ $115K, Hasty Pudding $50K, ASU $25K, and UAB Fors Projektai of Vilnius, $75K, listed as a 501(c)(3). It's a private company.</li></ul>",
+ c:["EFTA02816240","EFTA00979293","EFTA00287078","EFTA01365138","EFTA00811971","EFTA01409890"]},
+
+{id:"odd",lane:"out",g:"Enhanced Education's checks",tag:"Coded as charity",name:"A fine, a cello, a gift",amt:"$375K+",
+ teaser:"An environmental fine, an antique cello and a dental-school gift in his girlfriend's name.",
+ body:"<ul><li><strong>$160,000 DPNR fine</strong> (2017), booked as \"Charitable contributions.\" Not on the 2017 grant list.</li><li><strong>A 1927 Soffritti cello</strong>, bought \"for investment\" for $165K and loaned to a cellist.</li><li><strong>$50,000 to Columbia dental</strong> \"as a donation from Karyna Shuliak.\"</li><li><strong>Search-engine cleanup</strong> invoices from Shears Consulting, 2013 to 2014.</li><li><strong>Education Advance:</strong> $55K in 2017. Its address was Kahn's office.</li></ul>",
+ c:["EFTA00615501","EFTA00148030","EFTA01159838","EFTA00359778","EFTA00669095","EFTA00811971"]},
+
+{id:"grantees",lane:"out",g:"Gratitude America's checks",tag:"From the $10M",name:"Gratitude America grants",amt:"$453K",
+ teaser:"Of Black's $10M, the outside grants we can see add up to under half a million.",
+ body:"<ul><li>Melanoma Research Alliance, co-founded by the Blacks: $225,000.</li><li>Bruce and Marsha Moskowitz Foundation: $150,000.</li><li>Cancer Research Wellness Institute: $50,000.</li><li>Baleto Teatras, Lithuania: $28,493.</li><li>2016 990-PF: $580,000 in grants paid.</li></ul>",
+ c:["EFTA00027019","EFTA01345259"]},
+
+{id:"estate",lane:"out",g:"Where it ended up",tag:"Dec 31, 2019",name:"The Estate",amt:"$634.8M",
+ teaser:"What was left when he died. Indyke and Kahn ran it.",
+ body:"<ul><li>$634.8M at the end of 2019, per the estate's own accounting.</li><li>The co-executors were the same two men who ran Southern Trust's books and legal work.</li></ul>",
+ c:["EFTA00075562"]}
+];
+
+/* ---------- Flows: from, to, amount, label, cites, promise ---------- */
+var F = [
+["black","stc","$158M","\"Algorithms\" and fees, 2013 to 2017",["EFTA02465679","EFTA00027019"]],
+["black","bv70","","Black's own LLC holds his cars and yacht",["EFTA01201722"]],
+["black","ee","$10.5M","Promised Dec 2014. Draft receipt. No wire found",["EFTA00716151","EFTA00584573"],1],
+["black","universities","$5M+","Gifts Epstein directed, Dec 2014",["EFTA00716151","EFTA01110649"]],
+["bv70","gratitude","$10M","Oct 14, 2015. The \"fees\" became a \"donation\"",["EFTA00587879","EFTA00639892"]],
+["bv70","pland","$30.5M","Loans, Mar to Apr 2017",["EFTA00589279","EFTA00594105"]],
+["pland","bv70","$10M","Oct 2, 2018. Return of the donation, or loan repayment",["EFTA00027019","EFTA01425264"]],
+["pland","stc","$30.5M","\"money never left STC\"",["EFTA01045336"]],
+["rothschild","stc","$25M","Dec 2015, days after the DOJ penalty",["EFTA00584893","EFTA00027019"]],
+["usvi","stc","$80.6M","Taxes avoided, USVI estimate",["EFTA01166297","EFTA00162121"]],
+["usvi","ftc","","EDC benefits, 1999 to 2009",["EFTA02814265"]],
+["couq","wexner","$46M","To Wexner's YLK Charitable Fund, 2008",["EFTA00163119"]],
+["ee","wexner","$528,820","$124,232 to Wexner personally, rest to his family fund, 2009 to 2010",["EFTA02816240","EFTA02806228"]],
+["ee","couq","$440K","Between Epstein's two foundations, 2008 to 2010",["EFTA00299927","EFTA02816240"]],
+["jeepers","dubin","~$134M","Capital account tied to Highbridge, year-end 2006",["EFTA00286388"]],
+["dubin","ftc","","Client account memos",["EFTA00286387"]],
+["jeepers","personal","","Into Epstein's personal checking",["EFTA00027019"]],
+["art","haze","$30.4M","Sotheby's and Christie's proceeds",["EFTA00027019"]],
+["haze","pland","$15M","Transfer",["EFTA00027019"]],
+["haze","southernfin","","Transfers",["EFTA00027019"]],
+["stc","southernfin","$167.5M","Wholly owned subsidiary",["EFTA01079665"]],
+["stc","haze","$60.9M","Consolidated on Southern Trust's books",["EFTA01478437"]],
+["ftc","southernfin","","Merged",["EFTA00299953"]],
+["stc","investments","~$80M","Honeycomb and Valar",["EFTA00027019"]],
+["southernfin","investments","~$40M","Boothbay, Ito, Neoteny 3",["EFTA00027019"]],
+["caterpillar","investments","$10M","Honeycomb",["EFTA00027019"]],
+["stc","people","$280K+","Rød-Larsen, Goertzel",["EFTA02704621","EFTA01191403"]],
+["stc","advisers","$1M+","Indyke, Kahn, accountants, staff",["EFTA00689466","EFTA02514464"]],
+["stc","political","$13K to $15K","\"for the benefit of Stacey Plaskett\"",["EFTA02809262"]],
+["stc","civic","$50K/yr","Tax-deal charity condition",["EFTA01166297","EFTA00711169"]],
+["ee","civic","$42,621","Chromebooks: \"from STC or Enhanced\"",["EFTA02510079"]],
+["stc","personal","","Funneled to Epstein's accounts, per USVI",["EFTA00162121"]],
+["personal","aviation","","Aircraft costs",["EFTA02810827"]],
+["personal","nes","","Credit cards",["EFTA02810827"]],
+["personal","property","","Islands, houses, staff",["EFTA02810827"]],
+["ee","edwards","","Check by FedEx, Feb 2019",["EFTA01028726"]],
+["ee","science","$500K+","Grants and consulting",["EFTA02816240","EFTA00811971"]],
+["stc","science","$60K","To Goertzel's Novamente, Dec 2013",["EFTA00979293"]],
+["ee","odd","$375K+","Fine, cello, gifts",["EFTA00615501","EFTA01159838"]],
+["ee","universities","$25K","Origins money rerouted to MIT, 2019",["EFTA02607369"]],
+["gratitude","grantees","$453K","Visible outside grants",["EFTA00027019"]],
+["gratitude","universities","","Black asks ASU to send Origins money here, 2018",["EFTA00317137"]],
+["butterfly","personal","","Beneficiaries: Indyke, Kahn, Shuliak",["EFTA01373616"]],
+["personal","estate","$634.8M","At death",["EFTA00075562"]],
+["stc","estate","","Southern Trust assets",["EFTA00075562"]]
+];
+
+/* ---------- Said vs record ---------- */
+var PVR = [
+["Southern Trust","An \"extensive DNA database\" and data-mining platform, run from the USVI.","The only DNA spending found: a $30K invoice from Ben Goertzel. Kahn told him what to write on it.",["EFTA01166297","EFTA01191403"]],
+["Leon Black","\"A series of financial algorithms,\" already delivered, for $23.5M.","Same week, same money, in Kahn's words: \"fees,\" paid through entities picked to \"maximize deductions.\"",["EFTA01116979","EFTA00639892"]],
+["Edmond de Rothschild","\"Risk analysis and estate planning\" and \"certain algorithms.\"","A fee that dropped from $25M to $10M if the bank's DOJ penalty topped $75M. The penalty was $45.245M. The fee was $25M.",["EFTA00310331","EFTA00584893"]],
+["Enhanced Education","Harvard's Program for Evolutionary Dynamics was founded with a \"$30 million grant.\"","Harvard's 2020 report: $6.5M for PED in 2003, $9.1M total from Epstein from 1998 to 2008.",["EFTA02570766","EFTA01114852"]],
+["Leon Black to Enhanced Education","\"10,5 to enhanced education next week.\" A receipt was drafted.","No wire found. The Dec 2014 list of Black gifts leaves Enhanced Education off.",["EFTA00716151","EFTA00584573","EFTA02465679"]],
+["Black's office, Oct 2015","$4.75M, then $10M, to Epstein's foundation as a \"charitable donation.\"","$10M went to Gratitude America instead. In 2018, $10M went from Plan D back to BV70.",["EFTA00639892","EFTA00587879","EFTA01425264"]],
+["Southern Trust to the EDC","5 to 10 full-time employees, mostly local. $50K a year to local charity.","13 people in six years, mostly assistants and support staff. Some listed charities say they have no record of the money.",["EFTA00162121","EFTA02814338"]]
+];
+
+/* ---------- Render ---------- */
+var byId = {}; N.forEach(function(n){ byId[n.id]=n; });
+var used = {}; // efta -> [node ids]
+function useCite(id, nid){ if(!SRC[id]) return; (used[id]=used[id]||[]); if(used[id].indexOf(nid)<0) used[id].push(nid); }
+function esc(s){ return String(s).replace(/&(?!amp;)/g,"&amp;").replace(/</g,"&lt;"); }
+function chip(id){
+  var s = SRC[id]; if(!s) return "";
+  return '<a class="efta" href="'+url(id)+'" target="_blank" rel="noopener" title="'+s[1].replace(/"/g,"&quot;")+'"><i class="'+s[0]+'">'+s[0]+'</i>'+id+'</a>';
+}
+function linksOf(id){
+  var s = {};
+  F.forEach(function(f){ if(f[0]===id) s[f[1]]=1; if(f[1]===id) s[f[0]]=1; });
+  return Object.keys(s);
+}
+function flowRow(f, dir){
+  var other = dir==="in" ? f[0] : f[1];
+  var o = byId[other]; if(!o) return "";
+  return '<li class="'+(f[5]?"promise":"")+'"><span class="flow-dir" aria-hidden="true">'+(dir==="in"?"←":"→")+'</span>'+
+    '<button class="flow-who" data-go="'+other+'">'+(dir==="in"?"From ":"To ")+esc(o.name)+'</button>'+
+    '<span class="flow-amt">'+(f[2]||"")+'</span>'+
+    '<span class="flow-lbl">'+esc(f[3])+'<span class="eftas">'+f[4].map(chip).join("")+'</span></span></li>';
+}
+
+function build(){
+  var cols = {in:document.getElementById("col-in"),hub:document.getElementById("col-hub"),out:document.getElementById("col-out")};
+  var lastG = {};
+  N.forEach(function(n){
+    n.c.forEach(function(id){ useCite(id,n.id); });
+    var ins = F.filter(function(f){return f[1]===n.id;}), outs = F.filter(function(f){return f[0]===n.id;});
+    ins.concat(outs).forEach(function(f){ f[4].forEach(function(id){ useCite(id,n.id); }); });
+    var col = cols[n.lane];
+    if(lastG[n.lane]!==n.g){ var g=document.createElement("div"); g.className="mm-group"; g.textContent=n.g; col.appendChild(g); lastG[n.lane]=n.g; }
+    var el = document.createElement("article");
+    el.className="node"; el.id="node-"+n.id; el.dataset.id=n.id; el.dataset.lane=n.lane;
+    var text = [n.name,n.tag,n.teaser,n.body.replace(/<[^>]+>/g," "),n.note||"",n.c.join(" ")].concat(ins.concat(outs).map(function(f){return f[4].join(" ")+" "+f[3];})).join(" ").toLowerCase();
+    el.dataset.text = text;
+    var bid = "nb-"+n.id;
+    el.innerHTML =
+      '<button class="node-head" aria-expanded="false" aria-controls="'+bid+'">'+
+        '<span class="node-tag">'+esc(n.tag)+'</span>'+
+        '<span class="node-name">'+esc(n.name)+'</span>'+
+        '<span class="node-amt'+(n.amt?"":" soft")+'">'+(n.amt||"")+'</span>'+
+        '<span class="node-teaser">'+esc(n.teaser)+'</span>'+
+        '<span class="node-more">'+(n.c.length)+' DOJ file'+(n.c.length===1?"":"s")+'</span>'+
+      '</button>'+
+      '<div class="node-body" id="'+bid+'" hidden>'+ n.body +
+        (n.note?'<div class="node-note">'+n.note+'</div>':"")+
+        (ins.length?'<div class="node-sub">Money in</div><ul class="flows">'+ins.map(function(f){return flowRow(f,"in");}).join("")+'</ul>':"")+
+        (outs.length?'<div class="node-sub">Money out</div><ul class="flows">'+outs.map(function(f){return flowRow(f,"out");}).join("")+'</ul>':"")+
+        '<div class="node-sub">Receipts</div><div class="eftas">'+n.c.map(chip).join("")+'</div>'+
+        '<div class="node-actions"><button class="mm-btn-trace" data-trace="'+n.id+'">Trace this money</button><button class="mm-btn-link" data-copy="'+n.id+'">Copy link</button></div>'+
+      '</div>';
+    col.appendChild(el);
+  });
+
+  // Said vs record
+  document.getElementById("mmPvr").innerHTML = PVR.map(function(p){
+    p[3].forEach(function(id){ useCite(id,"pvr"); });
+    return '<div class="pvr"><h4>'+esc(p[0])+'</h4><p class="said">'+esc(p[1])+'</p><p class="rec">'+esc(p[2])+'</p><div class="eftas">'+p[3].map(chip).join("")+'</div></div>';
+  }).join("");
+
+  // Receipts
+  var tiers = [["A","Tier A: Records","Bank exhibits, signed contracts, government certificates, tax returns."],["B","Tier B: Working papers","Emails, drafts, ledgers and forensic analysis. Strong evidence of what insiders said and planned."],["C","Tier C: Claims","Lawsuit allegations, press pitches and statements by a party. Reported as claims, not facts."]];
+  var html = "", start = 1;
+  tiers.forEach(function(t){
+    var ids = Object.keys(used).filter(function(id){return SRC[id][0]===t[0];}).sort();
+    if(!ids.length) return;
+    html += '<h3 class="mm-tier-h">'+t[1]+'</h3><p class="mm-tier-p">'+t[2]+'</p><ol class="mm-receipts" start="'+start+'" style="counter-reset:r '+(start-1)+'">';
+    ids.forEach(function(id){
+      var where = used[id].map(function(nid){ return nid==="pvr" ? '<button data-goto="mmPvr">Said vs. Record</button>' : '<button data-go="'+nid+'">'+esc(byId[nid].name)+'</button>'; }).join(", ");
+      html += '<li><a href="'+url(id)+'" target="_blank" rel="noopener">'+id+'</a> '+esc(SRC[id][1])+'<span class="in">Cited in: '+where+'</span></li>';
+    });
+    html += '</ol>'; start += ids.length;
+  });
+  document.getElementById("mmReceipts").innerHTML = html;
+}
+
+/* ---------- Behavior ---------- */
+function setOpen(el, open){
+  var b = el.querySelector(".node-head"), body = el.querySelector(".node-body");
+  b.setAttribute("aria-expanded", open?"true":"false"); body.hidden = !open; el.classList.toggle("open", open);
+}
+function go(id, opts){
+  var el = document.getElementById("node-"+id); if(!el) return;
+  if(el.classList.contains("hide")){ clearSearch(); }
+  var lanes = document.getElementById("mmLanes");
+  if(window.matchMedia("(max-width:900px)").matches){ setOnly("all"); }
+  if(lanes.classList.contains("tracing") && !el.classList.contains("lit")) clearTrace();
+  setOpen(el, true);
+  el.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto":"smooth", block:"start"});
+  el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  if(!opts || !opts.noHash){ try{ history.replaceState(null,"","#"+id); }catch(e){} }
+}
+var traceEl, lanesEl;
+function trace(id){
+  var n = byId[id]; var links = linksOf(id);
+  lanesEl.classList.add("tracing");
+  lanesEl.querySelectorAll(".node").forEach(function(el){
+    var on = el.dataset.id===id || links.indexOf(el.dataset.id)>=0;
+    el.classList.toggle("lit", on); el.classList.toggle("focus", el.dataset.id===id);
+  });
+  traceEl.innerHTML = '<span><b>Tracing:</b> '+esc(n.name)+', '+links.length+' connection'+(links.length===1?"":"s")+' lit up.</span><button class="mm-btn-sm" id="mmClear">Clear</button>';
+  traceEl.classList.add("on");
+  document.getElementById("mmClear").addEventListener("click", clearTrace);
+}
+function clearTrace(){
+  lanesEl.classList.remove("tracing");
+  lanesEl.querySelectorAll(".node").forEach(function(el){ el.classList.remove("lit","focus"); });
+  traceEl.classList.remove("on"); traceEl.innerHTML="";
+}
+function setOnly(which){
+  document.querySelectorAll("[data-only]").forEach(function(b){ b.setAttribute("aria-pressed", b.dataset.only===which?"true":"false"); });
+  lanesEl.classList.remove("only-in","only-hub","only-out");
+  if(which!=="all") lanesEl.classList.add("only-"+which);
+}
+function clearSearch(){ var s=document.getElementById("mmSearch"); s.value=""; filter(""); }
+function filter(q){
+  q = q.trim().toLowerCase(); var any=false;
+  lanesEl.querySelectorAll(".node").forEach(function(el){
+    var hit = !q || el.dataset.text.indexOf(q)>=0;
+    el.classList.toggle("hide", !hit); if(hit) any=true;
+  });
+  lanesEl.querySelectorAll(".mm-group").forEach(function(g){
+    var sib=g.nextElementSibling, vis=false;
+    while(sib && !sib.classList.contains("mm-group")){ if(!sib.classList.contains("hide")) vis=true; sib=sib.nextElementSibling; }
+    g.style.display = vis?"":"none";
+  });
+  document.getElementById("mmEmpty").style.display = any?"none":"block";
+  if(q && /^efta\d{8}$/.test(q)){ lanesEl.querySelectorAll(".node:not(.hide)").forEach(function(el){ setOpen(el,true); }); }
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  build();
+  var nav=document.querySelector("header.nav"); var setNav=function(){ if(nav) document.documentElement.style.setProperty("--navh", nav.offsetHeight+"px"); }; setNav(); window.addEventListener("resize", setNav);
+  traceEl = document.getElementById("mmTrace"); lanesEl = document.getElementById("mmLanes");
+  document.addEventListener("click", function(e){
+    var t = e.target.closest("button"); if(!t) return;
+    if(t.classList.contains("node-head")){ var el=t.closest(".node"); setOpen(el, t.getAttribute("aria-expanded")!=="true"); return; }
+    if(t.dataset.go){ go(t.dataset.go); return; }
+    if(t.dataset.goto){ document.getElementById(t.dataset.goto).scrollIntoView({behavior:"smooth"}); return; }
+    if(t.dataset.trace){ trace(t.dataset.trace); var el2=document.getElementById("node-"+t.dataset.trace); if(window.matchMedia("(max-width:900px)").matches) setOnly("all"); return; }
+    if(t.dataset.copy){
+      var link = location.href.split("#")[0]+"#"+t.dataset.copy;
+      var done=function(){ var o=t.textContent; t.textContent="Copied"; setTimeout(function(){t.textContent=o;},1400); };
+      if(navigator.clipboard){ navigator.clipboard.writeText(link).then(done, function(){ prompt("Copy this link:", link); }); } else { prompt("Copy this link:", link); }
+      return;
+    }
+    if(t.dataset.only){ setOnly(t.dataset.only); return; }
+    if(t.id==="mmExpand"){
+      var openAll = t.textContent==="Open all";
+      lanesEl.querySelectorAll(".node:not(.hide)").forEach(function(el){ setOpen(el, openAll); });
+      t.textContent = openAll ? "Close all" : "Open all";
+    }
+  });
+  var timer; document.getElementById("mmSearch").addEventListener("input", function(e){ clearTimeout(timer); var v=e.target.value; timer=setTimeout(function(){ filter(v); },120); });
+  var h = location.hash.replace("#","");
+  if(h && byId[h]) setTimeout(function(){ go(h,{noHash:true}); }, 250);
+});
+})();
+
+</script>
+</body>
+</html>
