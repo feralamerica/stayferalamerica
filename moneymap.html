@@ -189,6 +189,7 @@
 .efta.lead i.P{background:#6b5a2c}.efta.lead i.R{background:#2e7d4f}
 .efta.lead i{text-transform:uppercase;letter-spacing:.06em}
 @media(max-width:560px){.nfi-list li{grid-template-columns:1fr}}
+#flow{scroll-margin-top:calc(var(--navh,69px) - 40px)}
 </style>
 </head>
 <body>
@@ -490,7 +491,7 @@ var FOLDER = {
 };
 
 /* ---------- Needs further investigation ----------
-   node id -> [ {who, files (how many library files mention the search term), q (search term), items:[[efta, gist, "r" read in full | "p" search preview]]} ] */
+   node id -> [ {who, files (how many library files mention the search term), q (search term), items:[[efta, gist]]} ] */
 var LEADS = {
 black:[{who:"Leon Black",files:8500,q:"Leon Black",items:[
  ["EFTA02731082","SDNY prosecutors' Dec 2019 memo on possible co-conspirators: a victim says Epstein sent her to massage Black around 2011 and Black initiated sexual contact; Epstein \"laughed it off.\" (Allegation.)","r"],
@@ -633,11 +634,11 @@ edwards:[{who:"Context: Brad Edwards' work for victims",files:2580,q:"Brad Edwar
 
 function leadsHTML(id){
   var groups = LEADS[id]; if(!groups) return "";
-  var h = '<div class="nfi"><div class="nfi-h">Needs further investigation</div><p class="nfi-p">More files in the DOJ library that bear on this box. Items marked <b>preview</b> were found through the library\'s search and haven\'t been read in full yet; <b>read</b> means read in full. Everything here is a lead, not a finding.</p>';
+  var h = '<div class="nfi"><div class="nfi-h">Needs further investigation</div><p class="nfi-p">More files in the DOJ library that bear on this box. Everything here is a lead, not a finding.</p>';
   groups.forEach(function(g){
     h += '<div class="nfi-who">'+esc(g.who)+(g.files?' <span>'+g.files.toLocaleString()+' files mention "'+esc(g.q)+'"</span>':'')+'</div><ul class="nfi-list">';
     g.items.forEach(function(it){
-      h += '<li><a class="efta lead" href="'+url(it[0])+'" target="_blank" rel="noopener"><i class="'+(it[2]==="r"?"R":"P")+'">'+(it[2]==="r"?"read":"preview")+'</i>'+it[0]+'</a><span>'+esc(it[1])+'</span></li>';
+      h += '<li><a class="efta lead" href="'+url(it[0])+'" target="_blank" rel="noopener">'+it[0]+'</a><span>'+esc(it[1])+'</span></li>';
     });
     h += '</ul>';
   });
@@ -936,7 +937,7 @@ function build(){
         (outs.length?'<div class="node-sub">Money out</div><ul class="flows">'+outs.map(function(f){return flowRow(f,"out");}).join("")+'</ul>':"")+
         '<div class="node-sub">Receipts</div><div class="eftas">'+n.c.map(chip).join("")+'</div>'+
         leadsHTML(n.id)+
-        '<div class="node-actions"><button class="mm-btn-trace" data-trace="'+n.id+'">Trace this money</button><button class="mm-btn-link" data-copy="'+n.id+'">Copy link</button></div>'+
+        '<div class="node-actions"><button class="mm-btn-trace" data-trace="'+n.id+'">Trace this money ↑</button><button class="mm-btn-link" data-copy="'+n.id+'">Copy link</button></div>'+
       '</div>';
     col.appendChild(el);
   });
@@ -1100,7 +1101,7 @@ document.addEventListener("DOMContentLoaded", function(){
     if(t.classList.contains("node-head")){ var el=t.closest(".node"); setOpen(el, t.getAttribute("aria-expanded")!=="true"); return; }
     if(t.dataset.go){ go(t.dataset.go); return; }
     if(t.dataset.goto){ document.getElementById(t.dataset.goto).scrollIntoView({behavior:"smooth"}); return; }
-    if(t.dataset.trace){ trace(t.dataset.trace); var el2=document.getElementById("node-"+t.dataset.trace); if(window.matchMedia("(max-width:900px)").matches) setOnly("all"); return; }
+    if(t.dataset.trace){ var tid=t.dataset.trace; trace(tid); if(fxSel!==tid) fxSelect(tid,true); var fl=document.getElementById("flow"); if(fl){ fl.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth", block:"start"}); } return; }
     if(t.dataset.copy){
       var link = location.href.split("#")[0]+"#"+t.dataset.copy;
       var done=function(){ var o=t.textContent; t.textContent="Copied"; setTimeout(function(){t.textContent=o;},1400); };
