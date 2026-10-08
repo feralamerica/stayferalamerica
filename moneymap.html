@@ -149,7 +149,10 @@
 #fxSvg.dim .nd{opacity:.25}#fxSvg.dim .lk{stroke-opacity:.06}
 #fxSvg.dim .nd.on{opacity:1}#fxSvg.dim .nd.sel rect{stroke:var(--red-bright);stroke-width:2.5}
 #fxSvg.dim .lk.on{stroke:var(--red-bright);stroke-opacity:.85}
-.fx-detail{margin-top:12px;background:var(--navy-panel);border:1px solid var(--navy-line);border-left:3px solid var(--red-bright);border-radius:10px;padding:14px 16px;display:none}
+.fx-detail{position:absolute;z-index:20;left:8px;top:0;margin:0;background:var(--navy-panel);border:1px solid var(--navy-line);border-top:3px solid var(--red-bright);border-radius:10px;padding:14px 16px;display:none;box-shadow:0 18px 44px rgba(0,0,0,.6)}
+.fx-detail::before{content:"";position:absolute;left:var(--ax,40px);top:-9px;width:12px;height:12px;margin-left:-6px;background:var(--red-bright);transform:rotate(45deg);z-index:-1}
+.fx-detail.up{border-top:1px solid var(--navy-line);border-bottom:3px solid var(--red-bright)}
+.fx-detail.up::before{top:auto;bottom:-9px}
 .fx-detail.on{display:block}
 .fx-detail .t{font:600 .64rem var(--stencil);letter-spacing:.16em;text-transform:uppercase;color:var(--muted-dim)}
 .fx-detail h3{font-family:var(--display);text-transform:uppercase;font-size:1.5rem;margin:2px 0 4px;display:flex;gap:12px;align-items:baseline;flex-wrap:wrap}
@@ -1022,8 +1025,25 @@ function fxSelect(id, keep){
   svg.querySelectorAll(".nd").forEach(function(g){ g.parentNode.appendChild(g); });
   var n=byId[id];
   det.innerHTML='<div class="t">'+esc(n.tag)+' · '+links.length+' connection'+(links.length===1?"":"s")+'</div><h3>'+esc(n.name)+(n.amt?' <b>'+n.amt+'</b>':'')+'</h3><p>'+esc(n.teaser)+'</p>'+
-    '<div class="row"><button class="mm-btn-trace" data-open="'+id+'">Open the receipts ↓</button><button class="mm-btn-link" data-fxclear="1">Clear</button></div>';
+    '<div class="row"><button class="mm-btn-trace" data-open="'+id+'">Open the receipts ↓</button><button class="mm-btn-link" data-fxclear="1">Close</button></div>';
   det.classList.add("on");
+  fxPlace(id);
+}
+/* Float the detail card right under the selected box (or above it near the bottom of the chart) */
+function fxPlace(id){
+  var det=document.getElementById("fxDetail"), panel=det.parentNode;
+  var g=document.querySelector('#fxSvg .nd[data-id="'+id+'"]'); if(!g) return;
+  var pr=panel.getBoundingClientRect(), r=g.getBoundingClientRect();
+  var w=Math.min(380, pr.width-16), cx=r.left-pr.left+r.width/2;
+  var left=Math.max(8, Math.min(pr.width-w-8, cx-w/2));
+  det.style.width=w+"px"; det.style.left=left+"px";
+  det.style.setProperty("--ax", Math.max(18, Math.min(w-18, cx-left))+"px");
+  det.classList.remove("up");
+  var below=r.bottom-pr.top+10; det.style.top=below+"px";
+  var h=det.offsetHeight, above=r.top-pr.top-h-10;
+  if(below+h>pr.height-6 && above>=0){ det.style.top=above+"px"; det.classList.add("up"); }
+  var dr=det.getBoundingClientRect(), vh=window.innerHeight||document.documentElement.clientHeight;
+  if(dr.bottom>vh || dr.top<0){ det.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth", block:"nearest"}); }
 }
 function fxInit(){
   var svg=document.getElementById("fxSvg"); if(!svg) return;
@@ -1031,6 +1051,8 @@ function fxInit(){
   var t; window.addEventListener("resize",function(){ clearTimeout(t); t=setTimeout(fxDraw,150); });
   svg.addEventListener("click",function(e){ var g=e.target.closest(".nd"); if(g) fxSelect(g.getAttribute("data-id")); });
   svg.addEventListener("keydown",function(e){ var g=e.target.closest(".nd"); if(!g) return; if(e.key==="Enter"||e.key===" "){ e.preventDefault(); var id=g.getAttribute("data-id"); if(fxSel===id){ go(id); trace(id);} else fxSelect(id); } });
+  document.addEventListener("keydown",function(e){ if(e.key==="Escape" && fxSel){ var k=fxSel; fxSelect(k); var g=document.querySelector('#fxSvg .nd[data-id="'+k+'"]'); if(g) g.focus(); } });
+  svg.addEventListener("click",function(e){ if(!e.target.closest(".nd") && fxSel) fxSelect(fxSel); });
   document.getElementById("fxDetail").addEventListener("click",function(e){
     var b=e.target.closest("button"); if(!b) return;
     if(b.dataset.open){ var id=b.dataset.open; go(id); trace(id); }
