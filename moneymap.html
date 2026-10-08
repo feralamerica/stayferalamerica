@@ -174,6 +174,21 @@
 .light .mm-receipts .in button{color:#3f5f9c}
 .light .prose a{color:#0a1730}
 .light .prose p[style*="Stay"],.light p.stay{color:#0a1730!important}
+
+/* ===== Needs further investigation ===== */
+.nfi{margin-top:16px;border:1px dashed #b98a2e;border-radius:10px;padding:12px 12px 6px;background:rgba(185,138,46,.07)}
+.nfi-h{font:700 .7rem var(--stencil);letter-spacing:.16em;text-transform:uppercase;color:#f0b44c;display:flex;align-items:center;gap:8px}
+.nfi-h::before{content:"";width:8px;height:8px;border-radius:50%;background:#f0b44c}
+.nfi-p{font-size:.8rem!important;color:var(--muted-dim)!important;margin:6px 0 4px!important;line-height:1.45}
+.nfi-p b{color:var(--silver)}
+.nfi-who{font:600 .82rem var(--stencil);letter-spacing:.06em;text-transform:uppercase;color:#fff;margin:12px 0 4px}
+.nfi-who span{font:500 .72rem var(--body);text-transform:none;letter-spacing:0;color:var(--muted-dim);margin-left:6px}
+.nfi-list{list-style:none;padding:0!important;margin:0!important}
+.nfi-list li{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;align-items:start;padding:7px 0;border-bottom:1px solid rgba(31,63,116,.6);margin:0!important;font-size:.84rem;line-height:1.45;color:var(--muted)}
+.nfi-list li:last-child{border-bottom:0}
+.efta.lead i.P{background:#6b5a2c}.efta.lead i.R{background:#2e7d4f}
+.efta.lead i{text-transform:uppercase;letter-spacing:.06em}
+@media(max-width:560px){.nfi-list li{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -292,6 +307,7 @@
       <span><i class="sw" style="background:#4f6ea8"></i>B: working papers</span>
       <span><i class="sw" style="background:#8a5a1f"></i>C: claims</span>
       <span><s>$10.5M</s>&nbsp;promised, not found paid</span>
+      <span><i class="sw" style="background:#f0b44c"></i>Needs further investigation: leads inside the boxes</span>
     </div>
   </div>
 </section>
@@ -451,12 +467,181 @@ var SRC = {
 var VI = {"EFTA02806228":1,"EFTA02809262":1,"EFTA02810827":1,"EFTA02814338":1,"EFTA02816240":1,"EFTA02814265":1};
 function url(id){
   var n = parseInt(id.slice(4),10), f;
-  if (VI[id]) f = "Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)";
+  if (typeof FOLDER!=="undefined" && FOLDER[id]) f = FOLDER[id];
+  else if (VI[id]) f = "Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)";
   else if (n < 40000) f = "DataSet 8";
   else if (n < 1250000) f = "DataSet 9";
-  else if (n < 2000000) f = "DataSet 10";
+  else if (n < 2220000) f = "DataSet 10";
   else f = "DataSet 11";
   return "https://www.justice.gov/epstein/files/" + encodeURI(f) + "/" + id + ".pdf";
+}
+
+/* ---------- Extra folders for files outside the default DataSet ranges ---------- */
+var FOLDER = {
+"EFTA02731069":"DataSet 12","EFTA02731655":"DataSet 12","EFTA02731783":"DataSet 12","EFTA02731488":"DataSet 12","EFTA02731636":"DataSet 12","EFTA02731578":"DataSet 12","EFTA02731082":"DataSet 12","EFTA02857849":"DataSet 12",
+"EFTA02806220":"Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)",
+"EFTA02815448":"Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)",
+"EFTA02807570":"Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)",
+"EFTA02814983":"Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)",
+"EFTA02815839":"Court Records/Government of the United States Virgin Islands v. JPMorgan Chase Bank, N.A., No. 122-cv-10904 (S.D.N.Y. 2022)",
+"EFTA02819265":"Court Records/v. Indyke, No. 119-cv-10476 (S.D.N.Y. 2019)",
+"EFTA02828994":"Court Records/United States v. Maxwell, No. 120-cr-00330 (S.D.N.Y. 2020) - Trial Transcripts",
+"EFTA02772641":"Court Records/Epstein v. Rothstein, No. 50-2009-CA-040800-XXXX-MB (Fla. 15th Cir. Ct. 2009)"
+};
+
+/* ---------- Needs further investigation ----------
+   node id -> [ {who, files (how many library files mention the search term), q (search term), items:[[efta, gist, "r" read in full | "p" search preview]]} ] */
+var LEADS = {
+black:[{who:"Leon Black",files:8500,q:"Leon Black",items:[
+ ["EFTA02731082","SDNY prosecutors' Dec 2019 memo on possible co-conspirators: a victim says Epstein sent her to massage Black around 2011 and Black initiated sexual contact; Epstein \"laughed it off.\" (Allegation.)","r"],
+ ["EFTA00154692","FBI case summary: after that interview, \"The Manhattan District Attorney's office began looking into allegations against Leon Black.\"","r"],
+ ["EFTA02731578","May 2021: an AUSA, after FBI interviews, is \"not inclined to open based on the other victim.\"","r"],
+ ["EFTA02731655","Aug 2021 SDNY memo to file: a lawyer refers a woman who says Black violently assaulted her at Epstein's townhouse in 2001; details match a second, unrelated woman's account. (Allegation.)","r"],
+ ["EFTA02731783","Oct 2021 to June 2023: Manhattan DA confirms it is investigating Black; in Feb 2023 a new witness \"trafficked by Maxwell and Epstein\" alleges abuse by Black.","r"],
+ ["EFTA02731488","May 2023 referral notes: a woman says she was 16 when Black assaulted her at the townhouse around 2001 to 2002. (Allegation.)","r"],
+ ["EFTA02731636","June 2023: \"Leon Black/Additional HT Subject Referral,\" with fields for victim identifiers and \"Potential targets.\"","r"],
+ ["EFTA00155037","\"Exhibit C\": an undated, partly coded journal. One entry says \"Leon\" bit her at Epstein's house and Maxwell sent her home. Unknown transcriber; names others, unverified.","r"],
+ ["EFTA00096366","2020 AUSA notes: a woman describes an abusive relationship with Black, 2010 to 2014, money called \"a loan,\" and an NDA. (Allegation.)","r"],
+ ["EFTA02857849","2020 FBI interview: a woman says Epstein introduced her to Black in 2004 and Black's assistant set up four encounters.","r"],
+ ["EFTA00155032","Jan 2023 USVI settlement: Black pays $62.5M, admits nothing; recitals say Epstein used Black's $158M to fund his USVI operations.","r"]
+]}],
+
+stc:[{who:"The Black contracts",files:0,q:"",items:[
+ ["EFTA00298416","Signed Feb 13, 2013: $23.5M \"Estate Planning Service Letter,\" payable only if Black is \"satisfied with the efficacy\"; work routed through Paul Weiss and McDermott for privilege; Black indemnifies Epstein.","r"],
+ ["EFTA00691917","Apr 2013 draft: annual fee as a percentage of the \"Black Family Net Worth,\" plus a share of taxes \"eliminated\" or \"deferred.\"","r"],
+ ["EFTA01111957","May 2013 draft: Black pays 30% of the \"Benefits\" for 10 more years; the deal ends if Epstein is \"convicted for a felony offense.\"","r"],
+ ["EFTA00585670","Dec 31, 2015 invoice to Black: $35,000,000.","r"],
+ ["EFTA00624906","Mar 27, 2017: a $10M invoice wired to Plan D, packaged with a $28.5M Plan D promissory note to Black.","r"],
+ ["EFTA01480815","JPMorgan onboarding: \"The issues surrounding Jeffrey are well known\"; Southern Trust's first $15M came from Black.","r"],
+ ["EFTA00305986","Oct 2015 \"Leon Black: Decisions Needed ASAP\": Epstein's agenda for Black's plane, boat, art, trusts and \"Many wires needed: Fee.\"","r"]
+]}],
+
+wexner:[{who:"Les Wexner",files:1750,q:"Wexner",items:[
+ ["EFTA01481286","The Wexner Children's Trust II, dated Feb 25, 1998: Leslie Wexner as grantor, Jeffrey Epstein as trustee.","p"],
+ ["EFTA01119778","Nov 6, 2007: $3,458,416.55 from Financial Trust to Darren Indyke's attorney trust account to pay off a note owed to The Wexner Children's Trust II.","p"],
+ ["EFTA00435950","Merrill Lynch wire instructions for a distribution to The Wexner Children's Trust II.","p"],
+ ["EFTA02731069","SDNY memo: Wexner's company bought 9 E. 71st St. in 1989 and agreed to sell it to Epstein around 1998 for $20M; mentions Epstein's power of attorney.","p"],
+ ["EFTA00298036","Epstein's lawyers' file index: \"Wexner Sale of Nine East 71st Street Corporation to NES, LLC\" and a \"Wexner Trusts\" binder.","p"],
+ ["EFTA01514157","Bank statement: a $75,000 book transfer from Leslie H. Wexner's personal account, reference \"CONSULTANT.\" (Year and recipient account to confirm.)","p"],
+ ["EFTA00227381","Documents signed by Leslie and Abigail Wexner and Wexner Personal Holdings Corporation (to read).","p"],
+ ["EFTA00102702","Wexner Foundation donor record: a $185,000 donation from Jeffrey Epstein, July 1994.","p"],
+ ["EFTA01249848","Aug 2019 FBI intake: a caller says the Wexner Foundation appointed Epstein a trustee. (Tip, unverified.)","p"],
+ ["EFTA00518681","Epstein's own note: \"wexner necklaace ... taxes, new albany, bankrupt.\" (Context unknown.)","p"],
+ ["EFTA00649159","Dec 2010: Epstein asks a publicist to \"remove wexner foundation reference\" from a blog post.","p"],
+ ["EFTA00798039","Victims' lawyers' list of people whose identities were \"conveyed to Jeffrey Epstein\" in connection with his 2007 non-prosecution agreement, including both Wexners.","p"],
+ ["EFTA02819265","Civil subpoena request for all documents on Epstein's \"interest or control over business or personal assets of Leslie Wexner or Abigail Wexner.\"","p"],
+ ["EFTA02806220","Feb 2023: process server's attempts to serve Wexner in the USVI v. JPMorgan case.","p"]
+]}],
+
+dubin:[{who:"Glenn Dubin",files:760,q:"Glenn Dubin",items:[
+ ["EFTA00731201","Legal memo weighing claims by Epstein's Jeepers Inc. against D.B. Zwirn, Glenn Dubin and Highbridge over Jeepers' investments in D.B. Zwirn funds.","p"],
+ ["EFTA01088604","Settlement terms: Dubin signs an Assignment of Economic Interest and transfers to Jeepers \"any and all distributions\" on a fund interest he holds.","p"],
+ ["EFTA01200065","Settlement between Dubin and the \"Epstein Parties\": a \"Backstop Payment\" by Dubin, with Jeepers to pass certain distributions back.","p"],
+ ["EFTA00292758","The Assignment of Economic Interest Agreement, effective Aug 1, 2011, Glenn Dubin to Jeepers Inc.","p"],
+ ["EFTA01204890","Distribution notices under the 2011 assignment, wired to Jeepers: $222,549 (Nov 2014). Others: $166,912 (Dec 2014), $244,778 (June 2015), $183,754 (Dec 2015), $118,050 (Oct 2016), $46,854 (July 2017).","p"],
+ ["EFTA00614037","2006 memos from Epstein, as Financial Trust president, to Glenn Dubin about account activity.","p"],
+ ["EFTA01249101","FBI record of a victim's account naming Glenn and Eva Dubin in Palm Beach. (Allegation; the Dubins have denied such claims.)","p"],
+ ["EFTA02772641","Notice that a Jane Doe plaintiff will depose Glenn Dubin (Epstein v. Rothstein file).","p"]
+]}],
+
+rothschild:[{who:"Ariane de Rothschild",files:4500,q:"Ariane de Rothschild",items:[
+ ["EFTA01119622","Dec 15, 2015: a second Southern Trust invoice to Ariane de Rothschild, $15,000,000, \"pursuant to Agreement dated 3 November 2015.\"","p"],
+ ["EFTA00586695","Same $15M invoice, addressed to Edmond de Rothschild (Suisse).","p"],
+ ["EFTA01191842","\"Letter of Agreement\" between Southern Trust and Ariane de Rothschild for Edmond de Rothschild (Genève) S.A.","p"],
+ ["EFTA01203396","Another letter-agreement version, for Edmond de Rothschild (Suisse) S.A., signed as CEO.","p"],
+ ["EFTA00708380","June 2015 message from Ariane de Rothschild: \"Thank god he doesn't have to go to see Doj.\"","p"],
+ ["EFTA02508314","Mar 2015: she asks whether \"Kathy\" (likely Kathy Ruemmler) could come to Paris: \"Doj + int'l legal shifts + succession plans.\"","p"],
+ ["EFTA01058119","Dec 2016: a family agreement \"up for renegotiation in 2017.\"","p"],
+ ["EFTA00929247","Dec 2017: \"significant progress to make before signing any agreement.\"","p"],
+ ["EFTA02065308","Jan 2016: Epstein's office sends handling info for his jet (N212JE) at Bogotá (SKBO) to her staff.","p"],
+ ["EFTA00695255","Nov 2014 exchange about ordering bronze furniture \"for the island\" from an Israeli designer.","p"]
+]}],
+
+investments:[{who:"Joi Ito / MIT Media Lab",files:8187,q:"Joi Ito",items:[
+ ["EFTA01946492","\"Last year we donated $100,000 ... current year $150,000 donation\" to the Media Lab, with an unrestricted gift letter to Ito.","p"],
+ ["EFTA00349050","Apr 2015: Ito's office drafts letters for Epstein's visa paperwork (\"add 'Inc.' after Southern Trust Company\").","p"],
+ ["EFTA00349074","The same thread's \"Letter of Guarantee\" attachment.","p"],
+ ["EFTA02387382","Dec 2014: Ito to Epstein: \"Sorry to pester you,\" re: the \"Leon Black Gift.\"","p"],
+ ["EFTA01194543","$5M irrevocable pledge from the Black family to the Media Lab, signed by Ito.","p"],
+ ["EFTA00317477","Apr 2016: Epstein's office arranges a Media Lab visit; \"Jeffrey has asked Larry Summers to join.\"","p"]
+]}],
+
+people:[
+ {who:"Terje Rød-Larsen / IPI",files:3370,q:"Rod-Larsen",items:[
+  ["EFTA00962158","June 2013: \"These are the wiring instructions for the 5 million from the foundation for IPI.\" (Which foundation: to confirm.)","p"],
+  ["EFTA00632253","Rød-Larsen forwards Epstein a 2013 Gates Foundation grant agreement for IPI, with wire instructions.","p"],
+  ["EFTA00972411","Oct 2013: \"IPI request for general operating support\" sent to Epstein.","p"],
+  ["EFTA01868583","2011: Rød-Larsen sends Epstein a draft IPI agreement and memo.","p"],
+  ["EFTA01761566","May 2013: IPI mission material forwarded to Epstein, including an effort to get a reaction \"from Taliban.\"","p"],
+  ["EFTA02320631","2011 flight record: Rød-Larsen and family as passengers, Bermuda.","p"]]},
+ {who:"Larry Summers",files:5790,q:"Larry Summers",items:[
+  ["EFTA01681865","Ledger: Southern Trust paid \"L H Summers\" $1,196 on Nov 7, 2014. This appears to settle the trip invoices.","p"],
+  ["EFTA00297967","Nov 2014 \"Invoice from Larry Summers to STC\"; Epstein replies \"ok.\"","p"],
+  ["EFTA00986206","Mar 2014: invoices for Summers' flights to Kazakhstan sent to Epstein's circle for reimbursement.","p"],
+  ["EFTA01941328","Dec 2013: Epstein invites Summers to the island with Ehud Barak.","p"],
+  ["EFTA02148290","Feb 2013: flight logistics arranged for Summers and Woody Allen.","p"],
+  ["EFTA00509655","2019 iMessages between Summers and Epstein.","p"]]},
+ {who:"Paul Barrett",files:5404,q:"Paul Barrett",items:[
+  ["EFTA00715307","Dec 2012: Financial Trust's JPMorgan account \"managed by Paul Barrett\" holds about $19M.","p"],
+  ["EFTA02720699","Nov 2012: Kahn lists \"JP Morgan FTC Paul Barrett account $17,700,000\" while funding Epstein's personal account.","p"],
+  ["EFTA01037801","June 2018: Barrett's Alpha Group Capital reports a $166.1M consolidated Epstein portfolio.","p"],
+  ["EFTA02622914","Sept 2018: Barrett pitches Epstein a pre-IPO deal with a placement fee and 5% performance fee.","p"],
+  ["EFTA01435460","Sept 2018: Deutsche Bank options execution agreement sent for signature.","p"],
+  ["EFTA01387449","Haze Trust holdings report on Alpha Group Capital letterhead.","p"]]}
+],
+
+political:[{who:"Stacey Plaskett",files:240,q:"Plaskett",items:[
+ ["EFTA02815448","USVI filing: Cecile de Jongh asked Epstein to give $13,000 to the Democratic Party for Plaskett; Plaskett asked him to give the maximum to the DCCC.","p"],
+ ["EFTA02807570","Epstein tried to give $30,000 to the DCCC to assist Plaskett.","p"],
+ ["EFTA02394173","Kellerhals thanks Epstein, Indyke and Kahn for agreeing to give $5,400 each to Plaskett's campaign.","p"],
+ ["EFTA01352992","July 2018 check from Epstein's account: $2,700 to \"Virgin Islands for Plaskett.\"","p"],
+ ["EFTA02814983","Plaskett testified the contributions came after she left USVI government and that Epstein never asked her for anything.","p"],
+ ["EFTA00026723","Plaskett said she would give Epstein's contributions to charity.","p"]
+]}],
+
+advisers:[{who:"Erika Kellerhals",files:5050,q:"Kellerhals",items:[
+ ["EFTA00080250","Deutsche Bank exhibit: $23,000,000 wired to Kellerhals Ferguson Kroblin PLLC on Nov 13, 2015, and a further transfer in Feb 2016. (Purpose to confirm.)","p"],
+ ["EFTA00313088","Kellerhals and Indyke sign as trustees of the J. Epstein Virgin Islands Foundation (Enhanced Education).","p"],
+ ["EFTA01298025","Kellerhals and Beller, as Butterfly Trust trustees, add beneficiaries (one of many amendments).","p"],
+ ["EFTA00313323","Kellerhals designates Richard Kahn as successor trustee.","p"],
+ ["EFTA01386010","Feb 2015 Deutsche Bank onboarding for the Butterfly Trust: trustees Beller and Kellerhals.","p"],
+ ["EFTA02815839","USVI filing: legal-fee payments from Epstein accounts, including Kellerhals' firm and $250,000 payments to Darren K. Indyke PLLC.","p"]
+]}],
+
+science:[
+ {who:"Marvin Minsky",files:1370,q:"Minsky",items:[
+  ["EFTA00287078","Aug 1, 2011 consulting agreement between Minsky and Enhanced Education.","r"],
+  ["EFTA01587572","A $50,000 foundation wire to Marvin Minsky.","p"],
+  ["EFTA00924646","Nov 2011: Epstein and Minsky plan a \"Future in Computing\" conference in the Virgin Islands.","p"],
+  ["EFTA00920401","Oct 2011: Cecile de Jongh (the USVI governor's wife) coordinates the \"Minsky Conference\" with Epstein.","p"],
+  ["EFTA00105365","MIT's outside review: Epstein's MIT gifts began with $100,000 to Minsky in 2002.","p"]]},
+ {who:"Joscha Bach",files:4060,q:"Joscha Bach",items:[
+  ["EFTA01669910","Apr 2018: Enhanced Education check for $40,000 to Joscha Bach.","p"],
+  ["EFTA00811927","Budget line: \"Gratitude to Humanity Plus - Joscha Bach (50,000).\"","p"],
+  ["EFTA01960539","Aug 2013: Bach says Harvard needs proof of a stipend of about $100K a year for 2 to 3 years for his visa.","p"],
+  ["EFTA00630075","Lawyers press Indyke to \"quickly fund\" a retainer for Bach.","p"],
+  ["EFTA01790356","Oct 2013: Joi Ito works on Bach's \"visa and appointment.\"","p"],
+  ["EFTA02272878","Jan 2019: Epstein approves paying flights for Bach and family \"from foundation.\"","p"]]}
+],
+
+edwards:[{who:"Context: Brad Edwards' work for victims",files:2580,q:"Brad Edwards",items:[
+ ["EFTA01480957","Press account: Epstein sued Edwards in 2009 to try to get him to drop victims' sex-abuse suits.","p"],
+ ["EFTA01650229","Oct 2019: the FBI Victim Services Division arranges briefings for Epstein victims with Edwards' firm as counsel.","p"],
+ ["EFTA01027808","Jan 2019: Edwards' \"foundation donation\" email naming the crime-victims charity, forwarded by Epstein to Kahn.","r"]
+]}]
+};
+
+function leadsHTML(id){
+  var groups = LEADS[id]; if(!groups) return "";
+  var h = '<div class="nfi"><div class="nfi-h">Needs further investigation</div><p class="nfi-p">More files in the DOJ library that bear on this box. Items marked <b>preview</b> were found through the library\'s search and haven\'t been read in full yet; <b>read</b> means read in full. Everything here is a lead, not a finding.</p>';
+  groups.forEach(function(g){
+    h += '<div class="nfi-who">'+esc(g.who)+(g.files?' <span>'+g.files.toLocaleString()+' files mention "'+esc(g.q)+'"</span>':'')+'</div><ul class="nfi-list">';
+    g.items.forEach(function(it){
+      h += '<li><a class="efta lead" href="'+url(it[0])+'" target="_blank" rel="noopener"><i class="'+(it[2]==="r"?"R":"P")+'">'+(it[2]==="r"?"read":"preview")+'</i>'+it[0]+'</a><span>'+esc(it[1])+'</span></li>';
+    });
+    h += '</ul>';
+  });
+  return h + '</div>';
 }
 
 /* ---------- Nodes ---------- */
@@ -487,10 +672,10 @@ var N = [
  note:"Wexner has not been charged with any crime and says he cut ties with Epstein long before 2019.",
  c:["EFTA00163119","EFTA00077556","EFTA00068096","EFTA02816240","EFTA02806228"]},
 
-{id:"dubin",lane:"in",g:"The original fortune",tag:"Highbridge Capital",name:"Glenn Dubin / Highbridge",amt:"",
- teaser:"Highbridge-related records show an Epstein company, Jeepers Inc., with a capital account worth about $134.4M at the end of 2006.",
- body:"<ul><li>A year-end 2006 statement puts Jeepers Inc.'s capital account at about $134.4M.</li><li><strong>Aug 1, 2011:</strong> an assignment of economic interest from Glenn Dubin appears in Epstein's files.</li><li>Memos on Financial Trust client accounts name Dubin, Dan Zwirn and Brooks Reynolds.</li></ul>",
- note:"These are investment records, not allegations. What the 2011 interest covered and what it was worth is an open question.",
+{id:"dubin",lane:"in",g:"The original fortune",tag:"Highbridge Capital",name:"Glenn Dubin / Highbridge",amt:"$983K+",
+ teaser:"A 2011 settlement over Epstein's losses in D.B. Zwirn funds had Dubin assign fund distributions to Epstein's Jeepers Inc.",
+ body:"<ul><li>Epstein's lawyers weighed claims by Jeepers Inc. against D.B. Zwirn, Glenn Dubin and Highbridge over Jeepers' investments in D.B. Zwirn funds.</li><li>The resolution: a settlement with a \"Backstop Payment\" from Dubin and an <strong>Assignment of Economic Interest, effective Aug 1, 2011</strong>, sending distributions on a Dubin fund interest to Jeepers.</li><li>Distribution notices show at least <strong>$982,897</strong> wired to Jeepers from Nov 2014 to July 2017.</li><li>A 2006 statement put Jeepers' capital account at about $134.4M.</li></ul>",
+ note:"These are investment and settlement records, not allegations. The Dubins have denied the abuse claims made against them.",
  c:["EFTA00286388","EFTA01200058","EFTA00286387","EFTA00614037"]},
 
 {id:"usvi",lane:"in",g:"Public money",tag:"U.S. Virgin Islands",name:"USVI tax breaks",amt:"$80.6M",
@@ -591,9 +776,9 @@ var N = [
  c:["EFTA00716151","EFTA01110649","EFTA02465679","EFTA00317137","EFTA02630295","EFTA02607369","EFTA01008512","EFTA02604997","EFTA01032960"]},
 
 {id:"people",lane:"out",g:"People",tag:"Paid by Southern Trust",name:"Rød-Larsen, Goertzel, Summers",amt:"$280K+",
- teaser:"A peace envoy, an AI researcher, and a former Treasury secretary's travel invoices.",
- body:"<ul><li><strong>Terje Rød-Larsen</strong>, then president of the International Peace Institute: $250,000 on Feb 21, 2015.</li><li><strong>Ben Goertzel / Novamente:</strong> $30,000 for \"Algorithm DNA database management.\" Kahn supplied the wording.</li><li><strong>Larry Summers:</strong> Kahn asked whether to pay four trip invoices ($1,195.65) \"from stc.\" Payment not shown.</li><li><strong>Paul Barrett</strong>, then Epstein's Deutsche Bank adviser: a 2017 proposal for $250K a year \"paid from STC.\"</li></ul>",
- note:"A request or proposal is not proof of payment. Comment requested from Rød-Larsen.",
+ teaser:"A peace envoy, an AI researcher, a former Treasury secretary's travel invoices, and the banker who managed Epstein's money.",
+ body:"<ul><li><strong>Terje Rød-Larsen</strong>, then president of the International Peace Institute: $250,000 on Feb 21, 2015.</li><li><strong>Ben Goertzel / Novamente:</strong> $30,000 for \"Algorithm DNA database management.\" Kahn supplied the wording.</li><li><strong>Larry Summers:</strong> Kahn asked whether to pay four trip invoices ($1,195.65) \"from stc\"; Epstein said \"ok,\" and a ledger shows $1,196 paid to \"L H Summers\" on Nov 7, 2014.</li><li><strong>Paul Barrett</strong>, a former JPMorgan private-bank managing director who later ran Alpha Group Capital, which managed Epstein money: a 2017 proposal for $250K a year \"paid from STC.\"</li></ul>",
+ note:"A proposal is not proof of payment. Comment requested from Rød-Larsen.",
  c:["EFTA02704621","EFTA01191403","EFTA00979293","EFTA02675662","EFTA02650474"]},
 
 {id:"advisers",lane:"out",g:"People",tag:"Lawyers, accountants, staff",name:"The gatekeepers",amt:"$1M+",
@@ -656,6 +841,7 @@ var F = [
 ["ee","wexner","$528,820","$124,232 to Wexner personally, rest to his family fund, 2009 to 2010",["EFTA02816240","EFTA02806228"]],
 ["ee","couq","$440K","Between Epstein's two foundations, 2008 to 2010",["EFTA00299927","EFTA02816240"]],
 ["jeepers","dubin","~$134M","Capital account tied to Highbridge, year-end 2006",["EFTA00286388"]],
+["dubin","jeepers","$983K+","Distributions assigned under the 2011 settlement, 2014 to 2017",["EFTA01200058"]],
 ["dubin","ftc","","Client account memos",["EFTA00286387"]],
 ["jeepers","personal","","Into Epstein's personal checking",["EFTA00027019"]],
 ["art","haze","$30.4M","Sotheby's and Christie's proceeds",["EFTA00027019"]],
@@ -733,7 +919,7 @@ function build(){
     if(lastG[n.lane]!==n.g){ var g=document.createElement("div"); g.className="mm-group"; g.textContent=n.g; col.appendChild(g); lastG[n.lane]=n.g; }
     var el = document.createElement("article");
     el.className="node"; el.id="node-"+n.id; el.dataset.id=n.id; el.dataset.lane=n.lane;
-    var text = [n.name,n.tag,n.teaser,n.body.replace(/<[^>]+>/g," "),n.note||"",n.c.join(" ")].concat(ins.concat(outs).map(function(f){return f[4].join(" ")+" "+f[3];})).join(" ").toLowerCase();
+    var text = [n.name,n.tag,n.teaser,n.body.replace(/<[^>]+>/g," "),n.note||"",n.c.join(" ")].concat(ins.concat(outs).map(function(f){return f[4].join(" ")+" "+f[3];})).concat((LEADS[n.id]||[]).map(function(g){return g.who+" "+g.items.map(function(i){return i[0]+" "+i[1];}).join(" ");})).join(" ").toLowerCase();
     el.dataset.text = text;
     var bid = "nb-"+n.id;
     el.innerHTML =
@@ -749,6 +935,7 @@ function build(){
         (ins.length?'<div class="node-sub">Money in</div><ul class="flows">'+ins.map(function(f){return flowRow(f,"in");}).join("")+'</ul>':"")+
         (outs.length?'<div class="node-sub">Money out</div><ul class="flows">'+outs.map(function(f){return flowRow(f,"out");}).join("")+'</ul>':"")+
         '<div class="node-sub">Receipts</div><div class="eftas">'+n.c.map(chip).join("")+'</div>'+
+        leadsHTML(n.id)+
         '<div class="node-actions"><button class="mm-btn-trace" data-trace="'+n.id+'">Trace this money</button><button class="mm-btn-link" data-copy="'+n.id+'">Copy link</button></div>'+
       '</div>';
     col.appendChild(el);
