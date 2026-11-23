@@ -13,3 +13,4 @@
 | tip-bg-alt-binders.jpg | Alternate | "Filefolders Business," Michal Kulesza, https://stocksnap.io/photo/filefolders-business-6RHKEELJ8F | CC0 1.0 |
 
 Credit is not required for CC0 or Public Domain images, but it's good practice to keep this list.
+| murdaugh-ap.jpg / murdaugh-cover.jpg | Murdaugh Ledger page and card | AP Photo/James Pollard | Associated Press: confirm license before publishing |

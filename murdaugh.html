@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Alex Murdaugh: 101 state charges, 22 federal counts, and the murder verdict South Carolina threw out. Every count, every sentence, every filing, sourced.">
+<link rel="icon" href="favicon-32.png">
+<title>The Murdaugh Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: sardonic, evidence first, Feral America investigation
+   IDEA: a prosecutor's charge ledger, stamped and cross-referenced
+   PICTURE: 101 boxes, one per state charge, 22 stamped guilty
+   COLOUR and TYPE: white paper, ink, court-stamp red, marsh slate; Archivo over Source Serif 4
+   LAYOUT: masthead, ledger hero, status board, count tables, files, receipts */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#111416);--ink:light-dark(#141414,#ecebe7);--mute:light-dark(#5b5f63,#a3a8ab);--red:light-dark(#c8102e,#ff5a6e);--slate:light-dark(#2f5d62,#7fb3b8);--panel:light-dark(#eef3f3,#1a2124);--rule:light-dark(#d6dcdc,#2c3438)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Source Serif 4",Georgia,serif;overflow-x:clip}
+h1,h2,h3,.mast,.nav,.lab,th,.stat b{font-family:Archivo,"Helvetica Neue",Arial,sans-serif}
+h1{font-size:clamp(34px,6vw,52px);line-height:1.05;margin:.2em 0 .3em;text-wrap:balance;font-weight:800}
+h2{font-size:clamp(26px,3.4vw,34px);line-height:1.1;margin:0 0 .5em;text-wrap:balance;font-weight:800}
+h3{font-size:19px;margin:1.4em 0 .3em;font-weight:800}
+p{max-width:68ch;margin:0 0 1em}
+a{color:var(--slate);text-underline-offset:3px}
+a:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.band{padding:clamp(28px,4vw,64px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.mast{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px max(5vw,16px);border-bottom:3px solid var(--ink);font-weight:800;font-size:15px}
+.mast span{color:var(--red)}
+.nav{display:flex;gap:18px;overflow-x:auto;padding:10px max(5vw,16px);border-bottom:1px solid var(--rule);font-size:14px;font-weight:500;background:var(--bg)}
+.nav a{flex:none;color:var(--ink);text-decoration:none;padding:10px 0}
+.nav a:hover{color:var(--red)}
+@media(min-width:900px){.nav{position:sticky;top:0;z-index:5}}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(24px,4vw,56px);align-items:center}
+.dek{font-size:19px;color:var(--mute)}
+.by{font-size:14px;color:var(--mute);font-family:Archivo,sans-serif}
+.ledger{background:var(--panel);padding:clamp(16px,2.5vw,28px);border-top:6px solid var(--ink)}
+.ledger .lab{font-size:14px;font-weight:800;margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:5px}
+.grid i{aspect-ratio:1;border:2px solid var(--mute);display:block}
+.grid i.g{background:var(--red);border-color:var(--red)}
+.key{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:14px;font-size:14px;font-family:Archivo,sans-serif}
+.key em{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px;border:2px solid var(--mute)}
+.key em.g{background:var(--red);border-color:var(--red)}
+.big{font:800 clamp(40px,7vw,64px)/1 Archivo,sans-serif;color:var(--red)}
+.punch{font-size:20px;font-weight:600}
+.photo{margin:0 auto;max-width:1240px}.photo img{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover}.photo figcaption{font-size:14px;color:var(--mute);padding-top:8px;font-family:Archivo,sans-serif}.photo figcaption span{white-space:nowrap}
+.alt{background:var(--panel)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;border-top:2px solid var(--ink)}
+.stat{padding:18px 16px 18px 0;border-bottom:1px solid var(--rule)}
+.stat b{display:block;font-size:clamp(24px,3vw,30px);line-height:1.1;color:var(--ink)}
+.stat span{font-size:15px;color:var(--mute)}
+table{border-collapse:collapse;width:100%;margin:12px 0 8px;font-size:16px}
+th{text-align:left;font-size:14px;border-bottom:2px solid var(--ink);padding:8px 10px 8px 0}
+td{border-bottom:1px solid var(--rule);padding:9px 10px 9px 0;vertical-align:top}
+td.n,th.n{text-align:right;white-space:nowrap}
+.note{font-size:14px;color:var(--mute)}
+.tl{list-style:none;padding:0;margin:0;max-width:820px}
+.tl li{display:grid;grid-template-columns:9.5em minmax(0,1fr);gap:16px;padding:10px 0;border-bottom:1px solid var(--rule)}
+.tl time{font:800 15px/1.5 Archivo,sans-serif;white-space:nowrap}
+.tl .hot time{color:var(--red)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:28px}
+.links{list-style:none;padding:0;margin:0}
+.links li{padding:9px 0;border-bottom:1px solid var(--rule)}
+.links small{display:block;color:var(--mute);font-size:14px}
+.fence{border-left:6px solid var(--red);padding:4px 0 4px 20px;max-width:820px}
+.receipts{padding-left:1.4em;max-width:900px;font-size:15px}
+.receipts li{margin-bottom:8px}
+.feral{font:800 28px Archivo,sans-serif;color:var(--red);margin-top:1em}
+footer{border-top:3px solid var(--ink);font-size:14px;color:var(--mute)}
+.scroll{overflow-x:auto}
+@media(max-width:600px){.hero{grid-template-columns:minmax(0,1fr)}.tl li{grid-template-columns:minmax(0,1fr);gap:2px}table{font-size:14px}.stack thead{display:none}.stack tr{display:grid;padding-block:10px;border-bottom:1px solid var(--rule)}.stack td{display:flow-root;border:0;padding:3px 0;padding-inline-start:8em;text-align:start}.stack td::before{content:attr(data-l);float:inline-start;width:7.5em;margin-inline-start:-8em;white-space:normal;color:var(--mute);font-size:13px}.stack td:empty{display:none}.grid{gap:3px}}
+@media(prefers-reduced-motion:no-preference){.grid i.g{animation:stamp .35s ease-out both}@keyframes stamp{from{transform:scale(1.6);opacity:0}to{transform:none;opacity:1}}}
+</style>
+<script>new MutationObserver(()=>{for(const c of document.querySelectorAll('.stack td:not([data-l])')){let i=0,p=c;while(p=p.previousElementSibling)i+=p.colSpan;c.dataset.l=c.closest('table').rows[0].cells[i]?.textContent||''}}).observe(document,{childList:true,subtree:true})</script>
+</head>
+<body>
+
+<div class="mast"><a href="index.html" style="color:inherit;text-decoration:none">FERAL <span>AMERICA</span></a><a href="index.html#projects" style="color:inherit;text-decoration:none">Investigations</a></div>
+<nav class="nav scroll" aria-label="Sections">
+<a href="#now">The case now</a><a href="#state">State counts</a><a href="#federal">Federal counts</a><a href="#murders">The murder case</a><a href="#clerk">The clerk</a><a href="#orbit">The orbit</a><a href="#timeline">Timeline</a><a href="#files">Records and filings</a><a href="#press">Press file</a><a href="#receipts">Receipts</a>
+</nav>
+
+<header class="band">
+<div class="wrap hero">
+<div>
+<p class="by">Investigation · Sue Selle · Updated November 23, 2026</p>
+<h1>The Murdaugh Ledger: 101 state charges, 22 federal counts, one overturned murder verdict</h1>
+<p class="dek">Every count he admitted, every sentence he is serving, and the murder case South Carolina gets to try all over again in April. With links to the filings.</p>
+</div>
+<figure class="ledger" aria-label="101 state charges, 22 of them pleaded guilty">
+<div class="lab">South Carolina State Grand Jury charges against Alex Murdaugh</div>
+<div class="grid" id="grid"></div>
+<div class="key"><span><em class="g"></em>22 he pleaded guilty to (Nov. 2023)</span><span><em></em>79 dropped under the plea deal</span></div>
+</figure>
+</div>
+</header>
+
+<section class="band" style="padding-top:0">
+<figure class="photo">
+<img src="murdaugh-ap.jpg" width="1600" height="900" alt="Alex Murdaugh in an orange SCDC inmate jumpsuit and handcuffs, standing among men in suits in a courtroom">
+<figcaption>Alex Murdaugh in court in an SCDC inmate jumpsuit. <span>(AP Photo/James Pollard)</span></figcaption>
+</figure>
+</section>
+
+<section class="band" style="padding-top:0">
+<div class="wrap">
+<p>I went looking for the jail calls and fell straight down the hole. Every round of indictments, every plea sheet, every sentencing memo. The man stole from a dead housekeeper's sons, a highway patrolman hurt on the job, the estates of the dead, and his own family's law firm and he kept it up for more than a decade.</p>
+<p>The state charged him 101 times for the money alone. He pleaded to 22 of them. The feds got him on 22 more.</p>
+<p class="punch">And in May, the murder convictions went in the trash because the clerk of court wanted to sell a book.</p>
+<p>So I built the ledger. All of it in one place, sourced to the paper, with the files linked so you can check me.</p>
+</div>
+</section>
+
+<section class="band alt" id="now">
+<div class="wrap">
+<h2>The case right now</h2>
+<div class="stats">
+<div class="stat"><b>Overturned</b><span>Murder convictions vacated 5 to 0 by the S.C. Supreme Court, May 13, 2026 [1]</span></div>
+<div class="stat"><b>April 5, 2027</b><span>Retrial date set by Judge Debra McCaslin [2]</span></div>
+<div class="stat"><b>Not Colleton</b><span>Venue moved outside the 14th Circuit; case is headed to Sumter County [3][4]</span></div>
+<div class="stat"><b>40 + 27 years</b><span>Federal and state financial sentences, running concurrently, still in force [5][6]</span></div>
+</div>
+<h3>What is live this month</h3>
+<p>On Nov. 13 the defense asked McCaslin to toss the original murder indictments, arguing lead SLED agent David Owen misled the grand jury about blood on Murdaugh's shirt. Prosecutors called it a single mistake, not bad faith. She promised a written ruling, and the latest reports say she denied it [7][8]. Even a win would not have bought him much: prosecutors could simply go back to a grand jury [7]. The next pretrial hearing is Jan. 20 in Sumter County [4].</p>
+<p>Also live: on Nov. 17 McCaslin ordered sealed records from the first trial released, including the Juror 785 transcripts and the investigation into the clerk. The State has until Nov. 30 to finish redactions, and audio and video may take longer [9].</p>
+<p>Meanwhile the defense won outside DNA testing on material from under Maggie Murdaugh's fingernails, and lost the fight to keep his own 2023 testimony out of the retrial [10].</p>
+</div>
+</section>
+
+<section class="band" id="state">
+<div class="wrap">
+<h2>The state counts: 101 charged, 22 admitted</h2>
+<p>The charges came in waves. A State Grand Jury dropped 27 charges in November 2021 alone, covering about $5 million across five counties [11]. By mid 2022 he was facing 71 charges in 15 indictments [12]. Another nine landed in August 2022 for stealing roughly $420,000 from the family firm [13]. The tax evasion indictment in April 2023 brought the total to 101 [14].</p>
+<p>On Nov. 17, 2023 he pleaded guilty to 22 of them, picked by prosecutors to cover each victim and each kind of crime, in exchange for 27 years [15][16]. The deal resolved all 101 [17]. Prosecutor Creighton Waters said it was likely the longest white collar sentence in state history [16].</p>
+<div class="scroll">
+<table class="stack">
+<thead><tr><th>Charge he pleaded guilty to</th><th class="n">Counts</th><th class="n">Max each</th></tr></thead>
+<tbody>
+<tr><td>Money laundering</td><td class="n">7</td><td class="n">20 years</td></tr>
+<tr><td>Breach of trust with fraudulent intent, $10,000 or more</td><td class="n">6</td><td class="n">10 years</td></tr>
+<tr><td>Obtaining signature or property by false pretenses, $10,000 or more</td><td class="n">4</td><td class="n">10 years</td></tr>
+<tr><td>Breach of trust with fraudulent intent, $2,000 to $10,000</td><td class="n">1</td><td class="n">5 years</td></tr>
+<tr><td>Forgery, $10,000 or more</td><td class="n">1</td><td class="n">10 years</td></tr>
+<tr><td>Computer crimes, $10,000 or more</td><td class="n">1</td><td class="n">10 years</td></tr>
+<tr><td>Criminal conspiracy (tied to the narcotics distribution case)</td><td class="n">1</td><td class="n">5 years</td></tr>
+<tr><td>Willful attempt to evade or defeat a tax, $10,000 or more</td><td class="n">1</td><td class="n">5 years</td></tr>
+<tr><td><b>Total</b></td><td class="n"><b>22</b></td><td class="n"></td></tr>
+</tbody>
+</table>
+</div>
+<p class="note">Breakdown from the plea terms as reported by The State [18]. The 79 charges he did not plead to were dismissed under the deal. The full 101 count list lives in the State Grand Jury indictments; see Records and filings below.</p>
+<h3>Who he stole from</h3>
+<p>The plea covered 18 victims [19]. The named ones in the indictments and plea coverage include the estate of Gloria Satterfield, the Murdaughs' longtime housekeeper; the estate of Hakeem Pinckney, whose $309,581 settlement prosecutors say he drained [20]; Natarsha Thomas, whose $325,000 settlement prosecutors say he flipped into a money order for a relative [21]; Thomas Moore; the Badger family; a highway patrolman injured in the line of duty [11]; and the law firm his great grandfather founded. The tax counts allege $9,067,706 in unreported income and $619,391 in state tax dodged [14].</p>
+</div>
+</section>
+
+<section class="band alt" id="federal">
+<div class="wrap">
+<h2>The federal counts: 22 pleas, 40 years</h2>
+<p>He pleaded guilty to 22 federal crimes in September 2023. On April 1, 2024, U.S. District Judge Richard Gergel gave him 40 years, nearly double the 17.5 to 22 years prosecutors had asked for after saying he failed a polygraph and breached the plea agreement [5][22].</p>
+<div class="scroll">
+<table class="stack">
+<thead><tr><th>Scheme</th><th>Years</th><th>Counts</th></tr></thead>
+<tbody>
+<tr><td>Settlement checks made out to "Palmetto State Bank" and handed to banker Russell Laffitte</td><td>2011 to 2021</td><td>Conspiracy to commit wire and bank fraud (1), bank fraud (1), wire fraud (2)</td></tr>
+<tr><td>The fake "Forge" account, a bogus company account in his own name used to launder client settlements</td><td>2017 to 2021</td><td>Wire fraud (3), money laundering (14)</td></tr>
+<tr><td>The Satterfield insurance money, steered through attorney Cory Fleming. $3,483,431.95 went into "Forge." The estate got nothing.</td><td>2018 to 2020</td><td>Conspiracy to commit wire fraud (1)</td></tr>
+<tr><td>Wider diversion of client and firm money: fake fees, fake annuities, invented expenses</td><td>2005 to 2021</td><td>Described in the plea; no separate counts assigned</td></tr>
+</tbody>
+</table>
+</div>
+<div class="stats" style="margin-top:20px">
+<div class="stat"><b>$8,762,731.88</b><span>Restitution ordered</span></div>
+<div class="stat"><b>$10,034,377.95</b><span>Forfeiture</span></div>
+<div class="stat"><b>480 months</b><span>30 years on the fraud counts plus 10 consecutive on money laundering</span></div>
+</div>
+<p class="note">Figures from the U.S. Attorney's Office sentencing release [5].</p>
+</div>
+</section>
+
+<section class="band" id="murders">
+<div class="wrap">
+<h2>The murder case, start to restart</h2>
+<p>On June 7, 2021, Maggie Murdaugh, 52, and Paul Murdaugh, 22, were shot to death near the dog kennels at Moselle, the family's hunting property in Colleton County. Alex called 911 at 10:07 that night [23].</p>
+<p>The State's theory: he killed them to buy sympathy and time while his thefts were about to come out [7]. In March 2023 a Colleton County jury convicted him on two counts of murder and two weapons counts, and Judge Clifton Newman gave him two life sentences without parole.</p>
+<p>In January 2024 retired Chief Justice Jean Toal denied him a new trial after hearing from jurors and the clerk [24]. The S.C. Supreme Court heard his appeal Feb. 11, 2026 and reversed on May 13. Unanimous. The justices found the clerk's improper outside influence on the jury so egregious the State could not rebut the presumption of prejudice [1]. They also took up whether the jury should ever have heard so much about the financial crimes, while saying they did not need to decide it [25].</p>
+<p>Today he is legally presumed innocent of the murders. He is still serving 40 years on the money cases either way.</p>
+</div>
+</section>
+
+<section class="band alt" id="clerk">
+<div class="wrap">
+<h2>The clerk who blew up the verdict</h2>
+<p>Becky Hill ran the courtroom, the exhibits and the jury. Jurors said she told them to watch his body language when he testified and not to be fooled by him [26]. She was writing a book about the trial at the time [27].</p>
+<p>On Dec. 8, 2025 she pleaded guilty to four state charges: obstruction of justice and perjury for showing sealed crime scene photos to a photographer and then lying about it to Toal under oath, plus two counts of misconduct in office for pocketing more than $11,000 in bonuses and using her office to push the book [28][29]. Judge Heath Taylor gave her three years of probation and 100 hours of community service [29].</p>
+<p>No prison. She was never charged with jury tampering.</p>
+<p>WCIV obtained SLED's full case file on her through FOIA and published it in parts [30]. Murdaugh has since sued her [31].</p>
+</div>
+</section>
+
+<section class="band" id="orbit">
+<div class="wrap">
+<h2>The orbit: who else got charged</h2>
+<div class="cols">
+<div>
+<h3>Russell Laffitte</h3>
+<p>Former Palmetto State Bank CEO. Convicted on six federal counts in November 2022 and sentenced to seven years [5]. The Fourth Circuit vacated it in November 2024 over the judge's removal of a deliberating juror [32]. In April 2025 he pleaded guilty to the same six charges, with an agreed sentence of five years [33].</p>
+</div>
+<div>
+<h3>Cory Fleming</h3>
+<p>The lawyer Murdaugh steered the Satterfield estate to. Pleaded guilty to federal conspiracy and got 46 months in August 2023 [5].</p>
+</div>
+<div>
+<h3>Curtis "Eddie" Smith</h3>
+<p>Arrested after the Sept. 4, 2021 roadside shooting. SLED says Murdaugh asked him to shoot him in the head so Buster could collect about $10 million in life insurance [34][35]. Smith was charged with assisted suicide, assault and battery of a high and aggravated nature, pointing and presenting a firearm, insurance fraud and conspiracy. He denies the scheme and was still awaiting trial as of this fall's reporting [36].</p>
+</div>
+</div>
+<h3>The deaths that kept coming up</h3>
+<p>Gloria Satterfield died in 2018 after a fall at the family home, and her sons were robbed of the insurance money that followed [5]. Mallory Beach, 19, died in the February 2019 boat crash; Paul was charged and the case ended with his death. Stephen Smith, 19, was found dead on a Hampton County road in 2015. SLED reopened his case in June 2021 based on information from the double murder investigation [37], and it was reclassified as a homicide in 2023 [38]. No one has been charged. Buster Murdaugh has publicly denied any involvement and has sued over documentaries tying him to it [38].</p>
+</div>
+</section>
+
+<section class="band alt" id="timeline">
+<div class="wrap">
+<h2>Timeline</h2>
+<ol class="tl">
+<li><time>July 2015</time><span>Stephen Smith found dead on a Hampton County road.</span></li>
+<li><time>Feb. 2018</time><span>Gloria Satterfield dies after a fall at the Murdaugh home.</span></li>
+<li><time>Feb. 2019</time><span>Boat crash kills Mallory Beach.</span></li>
+<li class="hot"><time>June 7, 2021</time><span>Maggie and Paul Murdaugh shot dead at Moselle.</span></li>
+<li><time>June 22, 2021</time><span>SLED reopens the Stephen Smith case [37].</span></li>
+<li><time>Sept. 4, 2021</time><span>Roadside shooting on Old Salkehatchie Road [35].</span></li>
+<li><time>Oct. 2021</time><span>Jailed on financial charges in Richland County; bond set at $7 million [39].</span></li>
+<li><time>Nov. 2021</time><span>State Grand Jury hands up 27 more charges [11].</span></li>
+<li><time>Feb. 2022</time><span>First jail calls published after a FOIA fight [40].</span></li>
+<li><time>July 2022</time><span>Indicted for the murders.</span></li>
+<li><time>Nov. 2022</time><span>Laffitte convicted [5].</span></li>
+<li class="hot"><time>March 2023</time><span>Convicted of murder; two life sentences.</span></li>
+<li><time>April 2023</time><span>Tax indictment brings state charges to 101 [14].</span></li>
+<li><time>Sept. 2023</time><span>Pleads guilty to 22 federal counts [22].</span></li>
+<li><time>Nov. 2023</time><span>Pleads guilty to 22 state counts; 27 years [15].</span></li>
+<li><time>Jan. 29, 2024</time><span>Toal denies a new trial [41].</span></li>
+<li><time>April 1, 2024</time><span>Federal sentence: 40 years [5].</span></li>
+<li><time>Nov. 2024</time><span>Laffitte's conviction vacated [32].</span></li>
+<li><time>Dec. 8, 2025</time><span>Becky Hill pleads guilty; probation [29].</span></li>
+<li><time>Feb. 11, 2026</time><span>S.C. Supreme Court hears the appeal [41].</span></li>
+<li class="hot"><time>May 13, 2026</time><span>Murder convictions overturned [1].</span></li>
+<li><time>June 29, 2026</time><span>Retrial set for April 5, 2027 [2].</span></li>
+<li><time>Aug. 14, 2026</time><span>Venue moved out of the 14th Circuit [3].</span></li>
+<li><time>Nov. 13, 2026</time><span>Defense argues to dismiss the indictments [7].</span></li>
+<li><time>Nov. 30, 2026</time><span>Deadline to redact sealed trial records for release [9].</span></li>
+<li class="hot"><time>April 5, 2027</time><span>Retrial.</span></li>
+</ol>
+</div>
+</section>
+
+<section class="band" id="files">
+<div class="wrap">
+<h2>Records and filings</h2>
+<p>The primary paper first. Court records, charging documents, FOIA productions, and the reporting that tells you where a release lives when the release itself is paywalled or partial. A heads up: some of these are mirrors, some need an account, and some docket entries are still sealed.</p>
+<div class="cols">
+<div>
+<h3>FOIA releases and public records requests</h3>
+<ul class="links">
+<li><a href="https://www.muckrock.com/foi/south-carolina-302/visitation-log-jail-phone-calls-placed-by-alex-murdaugh-department-of-corrections-146817/">MuckRock: visitation logs and jail phone calls, Department of Corrections</a><small>Request correspondence, agency responses and records production</small></li>
+<li><a href="https://www.muckrock.com/foi/multirequest/visitation-log-jail-phone-calls-placed-by-alex-murdaugh-122473/">MuckRock: the parent multi request collection</a><small>Overlaps with the request above</small></li>
+<li><a href="https://www.muckrock.com/foi/mccormick-county-2258/visitation-log-jail-phone-calls-placed-by-alex-murdaugh-sheriffs-department-146818/">MuckRock: McCormick County Sheriff request</a><small>Same request, county side</small></li>
+<li><a href="https://lunasharkmedia.com/john-marvins-route-to-moselle/">Luna Shark: newly released SLED documents and interviews</a><small>Interview memos, investigator notes, crime scene log, impound report, lab material. Some behind Premium</small></li>
+<li><a href="https://www.scribd.com/document/512610540/SLED-released-report">SLED released report, Scribd mirror</a><small>Redacted incident reports on the June 7, 2021 killings. Scribd may want an account</small></li>
+<li><a href="https://www.scribd.com/document/577405114/Murdaugh-Jail-Calls-Order">Federal order denying Murdaugh&#x27;s bid to block jail call releases</a><small>Murdaugh v. Kitchen, June 2022</small></li>
+<li><a href="https://www.fitsnews.com/2023/07/10/alex-murdaugh-prison-files-latest-release-includes-phone-call-with-buster/">FITSNews: SCDC prison file releases</a><small>2023 correspondence and the 42 second call with Buster</small></li>
+</ul>
+</div>
+<div>
+<h3>Murder case: charges, trial record and evidence</h3>
+<ul class="links">
+<li><a href="https://www.scag.gov/media/aqmgde04/murdaugh-indictments-7-14-2022.pdf">Original murder and weapons indictments, July 14, 2022</a><small>Attorney General PDF of the charging documents</small></li>
+<li><a href="https://ctrack.sccourts.org/public/document/view.do?documentID=1429321">Record on Appeal, Volume XV, with the multi volume index</a><small>Roadmap to motions, orders, testimony and exhibits; flags sealed material. Not the whole record</small></li>
+<li><a href="https://ctrack.sccourts.org/public/document/view.do?documentID=1429314">Additional Record on Appeal filing, Nov. 6, 2025</a><small>Index plus underlying case materials</small></li>
+<li><a href="https://ctrack.sccourts.org/public/document/view.do?documentID=1405428">Supplemental designation of material for the appellate record</a><small>What else got added to the record</small></li>
+<li><a href="https://www.documentcloud.org/documents/23685616-murdaugh-murders-timeline-full/">Murdaugh murders timeline, full version</a><small>DocumentCloud</small></li>
+<li><a href="https://www.documentcloud.org/documents/23686779-sled-murdaugh-timeline/">SLED timeline, condensed</a><small>June 7, 2021, 6 p.m. to 11 p.m.</small></li>
+<li><a href="https://murdaugh.courtdaemon.com/evidence/">Alex Murdaugh Case Archive: evidence index</a><small>Independent index of trial exhibits. Listed does not mean downloadable</small></li>
+</ul>
+</div>
+<div>
+<h3>Jury tampering, the appeal and the Supreme Court decision</h3>
+<ul class="links">
+<li><a href="https://www.sccourts.org/media/opinions/HTMLFiles/SC/28329.pdf">S.C. Supreme Court Opinion No. 28329, official PDF</a><small>May 13, 2026. Reverses the murder convictions and orders a new trial</small></li>
+<li><a href="https://law.justia.com/cases/south-carolina/supreme-court/2026/28329.html">Opinion No. 28329, Justia searchable text</a><small>Same decision, easier to search</small></li>
+<li><a href="https://ctrack.sccourts.org/public/document/view.do?documentID=1187053">Defense pre hearing brief on a new trial</a><small>From the jury tampering proceedings</small></li>
+<li><a href="https://www.scag.gov/media/4urnvggc/murdaugh-richard-return-to-motion-to-suspend-appeal-and-for-leave-to-file-motion-for-new-trial-september-15-2023-03389685xd2c78.pdf">State&#x27;s response, Sept. 15, 2023</a><small>Opposing the request to suspend the appeal and seek a new trial</small></li>
+<li><a href="https://ctrack.sccourts.org/public/document/view.do?documentID=1428775">Appellate filing, Nov. 5, 2025</a><small>Argument over the financial crime evidence</small></li>
+<li><a href="https://ctrack.sccourts.org/public/document/view.do?documentID=1414739">Filing and Exhibit 1, Oct. 1, 2025</a><small>Did he waive objections to the financial evidence by testifying</small></li>
+<li><a href="https://ctrack.sccourts.org/public/document/view.do?documentID=1452605">Filing on Rebecca Hill and trial exhibits, Jan. 9, 2026</a><small>Hill&#x27;s testimony and her access to exhibits, sealed ones included</small></li>
+<li><a href="https://abcnews4.com/investigates/inside-the-investigation-of-becky-hill-part-1-dissemination-of-sealed-court-materials-alex-murdaugh-appeal-sc-supreme-court-sled-will-folks-fitsnews-fits-news">SLED&#x27;s case file on Becky Hill, via WCIV FOIA</a><small>Part 1 of the series</small></li>
+</ul>
+</div>
+<div>
+<h3>Federal financial crime case</h3>
+<ul class="links">
+<li><a href="https://www.courtlistener.com/docket/67419015/united-states-v-murdaugh/">United States v. Murdaugh, No. 9:23-cr-00396, CourtListener / RECAP</a><small>Charging papers, plea fights, sentencing, sealing, forfeiture. Free PDFs where RECAP has them</small></li>
+<li><a href="https://www.justice.gov/usao-sc/pr/alex-murdaugh-indicted-federal-conspiracy-wire-fraud-bank-fraud-and-money-laundering">DOJ: federal indictment announcement, May 24, 2023</a><small>Press release, not the indictment itself</small></li>
+<li><a href="https://www.justice.gov/usao-sc/pr/alex-murdaugh-sentenced-40-years-prison-federal-financial-crimes">DOJ: federal sentencing announcement, April 1, 2024</a><small>Schemes, counts, restitution, forfeiture</small></li>
+<li><a href="https://www.justice.gov/usao-sc/pr/murdaugh-co-conspirator-cory-fleming-plead-guilty-federal-conspiracy-charge">DOJ: Cory Fleming federal conspiracy plea</a><small>The Satterfield estate scheme</small></li>
+<li><a href="https://www.justice.gov/usao-sc/pr/russell-laffitte-pleads-guilty-conspiracy-wire-fraud-bank-fraud-and-misapplying-bank">DOJ: Russell Laffitte guilty plea</a><small>April 2025</small></li>
+</ul>
+</div>
+<div>
+<h3>State financial crimes, tax charges and related defendants</h3>
+<ul class="links">
+<li><a href="https://www.scag.gov/media/00nbzbqp/filed-indictment-2023-gs-47-03-colleton-april-2023-03271726xd2c78.pdf">Tax evasion indictment, April 20, 2023, official PDF</a><small>Tax years 2020 and 2021</small></li>
+<li><a href="https://www.scag.gov/about-the-office/news/attorney-general-alan-wilson-announces-state-grand-jury-issues-second-tax-evasion-indictment-against-richard-alexander-murdaugh/">Attorney General: second tax evasion indictment</a><small>Context on both tax indictments</small></li>
+<li><a href="https://www.scag.gov/about-the-office/news/attorney-general-alan-wilson-announces-state-grand-jury-issues-new-indictments-against-richard-alexander-murdaugh">Attorney General: additional financial crime indictments</a><small>Includes 2022-GS-47-23 and 2022-GS-47-24</small></li>
+<li><a href="https://www.scag.gov/about-the-office/news/state-grand-jury-indicts-russell-laffitte-along-with-cory-fleming-and-alex-murdaugh-for-new-charges-in-superseding-indictments/">Attorney General: superseding indictments of Laffitte, Fleming and Murdaugh</a><small>Links to the superseding indictments</small></li>
+<li><a href="https://www.scag.gov/about-the-office/news/state-grand-jury-indicts-cory-fleming-richard-alexander-murdaugh-indicted-for-new-charges/">Attorney General: Fleming indicted, new Murdaugh charges</a><small>Superseding indictment 2021-GS-47-30</small></li>
+<li><a href="https://www.scag.gov/about-the-office/news/state-grand-jury-indicts-richard-alexander-murdaugh-and-curtis-edward-smith-for-criminal-conspiracy-and-narcotics-curtis-edward-smith-also-indicted-for-money-laundering-forgery-and-trafficking-methamphetamine">Attorney General: Murdaugh and Curtis Edward Smith conspiracy and narcotics indictments</a><small>Includes 2022-GS-47-10</small></li>
+</ul>
+</div>
+<div>
+<h3>Gloria Satterfield and the insurance litigation</h3>
+<ul class="links">
+<li><a href="https://www.courtlistener.com/opinion/9961630/nautilus-insurance-company-v-murdaugh/">Nautilus Insurance Co. v. Murdaugh, Aug. 23, 2022 order</a><small>Claims over the Satterfield settlement</small></li>
+<li><a href="https://www.courtlistener.com/opinion/9964653/nautilus-insurance-company-v-murdaugh/">Nautilus Insurance Co. v. Murdaugh, June 18, 2024 order</a><small>Checks, correspondence, depositions. Case No. 2:22-1307-RMG</small></li>
+<li><a href="https://www.courtlistener.com/audio/106450/nautilus-insurance-company-v-cory-fleming/">Nautilus Insurance Co. v. Cory Fleming, appellate oral argument</a><small>Audio with searchable text</small></li>
+<li><a href="https://www.courtlistener.com/opinion/10679994/in-the-matter-of-cory-howerton-fleming/">In the Matter of Cory Howerton Fleming</a><small>Disciplinary opinion on his part in the Satterfield money</small></li>
+</ul>
+</div>
+<div>
+<h3>Mallory Beach boat crash</h3>
+<ul class="links">
+<li><a href="https://static.foxnews.com/foxnews.com/content/uploads/2021/08/Connor-Cook-deposition.pdf">Connor Cook deposition, PDF</a><small>Renee S. Beach v. Gregory M. Parker, No. 2019-CP-25-00111</small></li>
+<li><a href="https://ia803100.us.archive.org/15/items/5989565-Paul-Terry-Murdaugh-court-documents/5989565-Paul-Terry-Murdaugh-court-documents_text.pdf">Paul Terry Murdaugh court documents, Internet Archive</a><small>Factual summary and charging papers, with OCR text</small></li>
+<li><a href="https://www.thestate.com/article253522369.html">The State: the Attorney General&#x27;s boat crash case file release</a><small>Reporting on the release, not the full production. May be paywalled</small></li>
+<li><a href="https://www.blufftontoday.com/story/news/local/hampton-county-guardian/2021/08/24/murdaugh-murders-case-update-files-boat-crash-paul-accident/8237593002/">Hampton County Guardian: the boat crash case files</a><small>Reporting on the records release and depositions</small></li>
+</ul>
+</div>
+<div>
+<h3>Alex Murdaugh&#x27;s disciplinary record</h3>
+<ul class="links">
+<li><a href="https://www.sccourts.org/whatsnew/displayWhatsNew.cfm?indexId=2704">In the Matter of Richard Alexander Murdaugh, S.C. Judicial Branch</a><small>Disbarment proceedings. Legacy court URL, may move</small></li>
+</ul>
+</div>
+</div>
+<p class="note">On the jail calls: Richland County released 121 recordings covering October 2021 to March 2022 [42]. Colleton County released 28 calls from the trial period to Hidden True Crime in 2023, one of them a privileged call with Jim Griffin that the sheriff called human error [43].</p>
+</div>
+</section>
+
+<section class="band alt" id="press">
+<div class="wrap">
+<h2>Press file</h2>
+<div class="cols">
+<ul class="links">
+<li><a href="https://www.pbs.org/newshour/nation/alex-murdaughs-murder-convictions-overturned-in-south-carolina-supreme-court-ruling">AP via PBS: convictions overturned</a><small>May 13, 2026</small></li>
+<li><a href="https://scdailygazette.com/2026/06/29/alex-murdaugh-double-murder-retrial-to-take-place-next-year-sc-judge-decides/">SC Daily Gazette: retrial set for April 2027</a><small>June 29, 2026</small></li>
+<li><a href="https://6abc.com/story/alex-murdaugh-hearing-today-man-previously-convicted-murders-wife-son-due-back-court-ahead-april-2027-retrial/19678035/">ABC: venue moved out of Colleton</a><small>Aug. 14, 2026</small></li>
+<li><a href="https://www.ajc.com/news/2026/11/alex-murdaugh-wants-murder-indictments-dismissed-saying-agent-lied-to-grand-jury/">AP via AJC: bid to dismiss the indictments</a><small>Nov. 13, 2026</small></li>
+<li><a href="https://okcfox.com/news/nation-world/judge-orders-release-of-redacted-records-tied-to-murdaugh-jury-investigations">WCIV: sealed records ordered released</a><small>Nov. 2026</small></li>
+</ul>
+<ul class="links">
+<li><a href="https://news.yahoo.com/financial-crimes-did-fraudster-alex-172415607.html">The State: what he pleaded guilty to</a><small>Nov. 2023</small></li>
+<li><a href="https://amp.cnn.com/cnn/2021/11/19/us/murdaugh-financial-grand-jury-indictment">CNN: 27 new state charges</a><small>Nov. 19, 2021</small></li>
+<li><a href="https://lawandcrime.com/jixfn">Law&amp;Crime: tax indictment brings total to 101</a><small>April 2023</small></li>
+<li><a href="https://www.fitsnews.com/?p=337299">FITSNews: what the jail calls with Buster showed</a><small>Feb. 2022</small></li>
+<li><a href="https://www.postandcourier.com/murdaugh-updates/alex-murdaughs-jailhouse-tapes-have-dried-up-what-did-they-tell-us/article_e103cea8-3061-11ed-a207-57bb967ad471.html">Post and Courier: the jailhouse tapes</a><small>Sept. 2022</small></li>
+<li><a href="https://www.live5news.com/2025/12/08/hearing-scheduled-ex-clerk-court-linked-murdaugh-trial/?outputType=amp">Live 5: Becky Hill pleads guilty</a><small>Dec. 8, 2025</small></li>
+</ul>
+</div>
+</div>
+</section>
+
+<section class="band">
+<div class="wrap">
+<h2>What I am and am not saying</h2>
+<div class="fence">
+<p>I am saying Alex Murdaugh is a convicted thief. He admitted it under oath in two courts, and those convictions stand.</p>
+<p>I am not saying he has been convicted of killing Maggie and Paul. That verdict is gone. He will be tried again, and until a new jury rules he is presumed innocent of the murders.</p>
+<p>I am not saying anyone in the Murdaugh family had anything to do with Stephen Smith's death. No one has been charged. The case is open.</p>
+<p>Curtis Smith's charges are accusations. He denies them.</p>
+</div>
+</div>
+</section>
+
+<section class="band alt" id="receipts">
+<div class="wrap">
+<h2>Receipts</h2>
+<ol class="receipts">
+<li><a href="https://www.sccourts.org/media/opinions/HTMLFiles/SC/28329.pdf">S.C. Supreme Court Opinion No. 28329, May 13, 2026</a>; <a href="https://www.goodmorningamerica.com/news/story/alex-murdaugh-murder-conviction-overturned-south-carolina-supreme-132920595">ABC News coverage</a></li>
+<li><a href="https://scdailygazette.com/2026/06/29/alex-murdaugh-double-murder-retrial-to-take-place-next-year-sc-judge-decides/">SC Daily Gazette, retrial date, June 29, 2026</a></li>
+<li><a href="https://6abc.com/story/alex-murdaugh-hearing-today-man-previously-convicted-murders-wife-son-due-back-court-ahead-april-2027-retrial/19678035/">ABC News, change of venue, Aug. 14, 2026</a></li>
+<li><a href="https://wrdw.com/2026/11/13/murdaugh-appear-court-defense-seeks-dismissal-murder-indictments">WRDW, Nov. 13 hearing and Jan. 20 Sumter hearing</a></li>
+<li><a href="https://www.justice.gov/usao-sc/pr/alex-murdaugh-sentenced-40-years-prison-federal-financial-crimes">U.S. Attorney's Office, D.S.C., federal sentencing release, April 1, 2024</a></li>
+<li><a href="https://abc7.com/post/where-is-alex-murdaugh-now-sentence-financial-crimes-update/14601990/">CNN via ABC7, federal sentence concurrent with state 27 years</a></li>
+<li><a href="https://www.kiro7.com/news/national/alex-murdaugh-wants/GJIQTRNDPM4ZXJXV6YBJACUMZ4/">AP, motion to dismiss indictments, Nov. 13, 2026</a></li>
+<li><a href="https://www.newsbreak.com/thedailybeast-513346/5024165756831-pentagon-pete-makes-bizarre-move-against-america-s-closest-ally">Daily Beast via NewsBreak, judge denies motion to dismiss</a></li>
+<li><a href="https://okcfox.com/news/nation-world/judge-orders-release-of-redacted-records-tied-to-murdaugh-jury-investigations">WCIV, order to release redacted sealed records, Nov. 17, 2026</a></li>
+<li><a href="https://www.wtoc.com/2026/08/14/key-rulings-shake-up-alex-murdaugh-retrial-venue-disputed-prior-testimony-fingernail-dna-approved/">WTOC, prior testimony and fingernail DNA rulings</a></li>
+<li><a href="https://amp.cnn.com/cnn/2021/11/19/us/murdaugh-financial-grand-jury-indictment">CNN, 27 charges, Nov. 19, 2021</a></li>
+<li><a href="https://wjla.com/news/nation-world/new-murdaugh-charges-show-earlier-victims-older-scheme-in-alleged-theft-of-84-million">WCIV, 15 indictments and 71 charges</a></li>
+<li><a href="https://www.courttv.com/news/alex-murdaugh-faces-more-financial-crime-indictments/">AP via Court TV, nine more charges, Aug. 2022</a></li>
+<li><a href="https://lawandcrime.com/jixfn">Law&amp;Crime, tax indictment, total of 101</a></li>
+<li><a href="https://www.abajournal.com/news/article/ex-lawyer-alex-murdaugh-already-convicted-of-murder-pleads-guilty-to-state-charges-for-stealing-from-clients">ABA Journal, state guilty plea</a></li>
+<li><a href="https://ca.news.yahoo.com/murdaugh-admits-committing-state-financial-190605769.html">The State, plea deal details</a></li>
+<li><a href="https://www.nbclosangeles.com/news/national-international/alex-murdaugh-pleads-guilty-to-financial-crimes-in-state-court-adding-to-prison-time/3271528/?amp=1">AP via NBC, deal resolves 101 state charges</a></li>
+<li><a href="https://news.yahoo.com/financial-crimes-did-fraudster-alex-172415607.html">The State, charge by charge breakdown</a></li>
+<li><a href="https://www.nbcbayarea.com/news/national-international/alex-murdaugh-pleads-guilty-to-financial-crimes-in-state-court-adding-to-prison-time/">AP via NBC, 18 victims</a></li>
+<li><a href="https://abc3340.com/news/nation-world/new-murdaugh-charges-show-earlier-victims-older-scheme-in-alleged-theft-of-84-million">WCIV, Pinckney estate</a></li>
+<li><a href="https://kutv.com/news/nation-world/new-murdaugh-charges-show-earlier-victims-older-scheme-in-alleged-theft-of-84-million">WCIV, Natarsha Thomas and the Badger family</a></li>
+<li><a href="https://abc7chicago.com/post/where-is-alex-murdaugh-now-sentence-financial-crimes-update/14601990">CNN via ABC7 Chicago, prosecutors' 17.5 to 22 year recommendation and polygraph</a></li>
+<li><a href="https://www.aol.com/day-4-live-updates-1st-144421798.html">The State via AOL, 911 call timing</a></li>
+<li><a href="https://news3lv.com/news/nation-world/alex-murdaughs-hope-for-retrial-hangs-on-mondays-jury-tampering-hearing-south-carolina-sc-wciv-abc-news-4-murder-colleton-county-maggie-paul-trial-becky-hill">WCIV, Toal denies new trial</a></li>
+<li><a href="https://komonews.com/news/nation-world/sc-supreme-court-rules-alex-murdaugh-is-eligible-for-a-new-trial">WCIV, financial evidence issue in the ruling</a></li>
+<li><a href="https://www.wpxi.com/news/trending/alex-murdaugh-murder-retrial-date-set/AV7KX5WE45GVXOTBKRVJ4T43MI/?outputType=amp">WPXI, clerk's comments to jurors</a></li>
+<li><a href="https://www.pbs.org/newshour/nation/alex-murdaughs-murder-convictions-overturned-in-south-carolina-supreme-court-ruling">AP via PBS, book motive</a></li>
+<li><a href="https://www.insurancejournal.com/news/southeast/2025/12/10/850615.htm">AP via Insurance Journal, Hill's four charges</a></li>
+<li><a href="https://www.live5news.com/2025/12/08/hearing-scheduled-ex-clerk-court-linked-murdaugh-trial/?outputType=amp">WIS via Live 5, Hill plea and sentence</a></li>
+<li><a href="https://abcnews4.com/investigates/inside-the-investigation-of-becky-hill-part-1-dissemination-of-sealed-court-materials-alex-murdaugh-appeal-sc-supreme-court-sled-will-folks-fitsnews-fits-news">WCIV, SLED file on Hill</a></li>
+<li><a href="https://www.abajournal.com/web/article/judge-expected-to-rule-on-alex-murdaugh-murder-retrial-next-week">ABA Journal, Murdaugh suit against the clerk (related coverage)</a></li>
+<li><a href="https://www.fitsnews.com/?p=1179407">FITSNews, Laffitte verdicts vacated, Nov. 14, 2024</a></li>
+<li><a href="https://www.justice.gov/usao-sc/pr/russell-laffitte-pleads-guilty-conspiracy-wire-fraud-bank-fraud-and-misapplying-bank">U.S. Attorney's Office, Laffitte guilty plea, April 2025</a></li>
+<li><a href="https://abcnews4.com/news/local/colleton-county-man-arrested-in-connection-to-alex-murdaugh-shooting">WCIV, Curtis Smith arrest and charges</a></li>
+<li><a href="https://lawandcrime.com/vfnru">Law&amp;Crime, arrest warrant affidavit</a></li>
+<li><a href="https://okcfox.com/criminally-obsessed/exclusive-secret-interview-alex-murdaughs-alleged-co-conspirator-still-awaiting-trial">WCIV, Eddie Smith still awaiting trial</a></li>
+<li><a href="https://digital-release.newsnationnow.com/us-news/southeast/investigation-into-murdaugh-family-killings-reopens-a-2015-unsolved-death">NewsNation, SLED reopens Stephen Smith case</a></li>
+<li><a href="https://www.courttv.com/trending/stephen-smith-death-investigation/">Court TV, Stephen Smith case file</a></li>
+<li><a href="https://news.yahoo.com/ve-done-illegal-stuff-alex-211102338.html">The State, Richland jail and $7 million bond</a></li>
+<li><a href="https://www.fitsnews.com/2022/07/14/how-alex-murdaugh-might-be-hiding-jail-calls-from-law-enforcement/">FITSNews, first jail calls published Feb. 23, 2022</a></li>
+<li><a href="https://www.ajc.com/news/2026/06/a-timeline-of-events-in-the-cases-against-alex-murdaugh/">AP via AJC, case timeline</a></li>
+<li><a href="https://www.wsav.com/news/local-news/jailhouse-calls-offer-insight-into-alex-murdaughs-mindset/">WSAV, 121 jail recordings</a></li>
+<li><a href="https://www.foxnews.com/us/alex-murdaugh-lawyer-mad-hell-jail-call-released">Fox News, Colleton County calls to Hidden True Crime</a></li>
+</ol>
+<p class="note">Sourcing notes: Court documents and government releases are cited first where they exist. News reports carry the rest. The Mallory Beach details come from the boat crash records linked under Records and filings. The ruling on the motion to dismiss is reported but I have not yet seen the written order; I'll swap in the order itself once it posts. Photo: AP Photo/James Pollard.</p>
+<p class="feral">Stay feral.</p>
+</div>
+</section>
+
+<footer class="band"><div class="wrap">Feral America · stayferalamerica.com · Corrections: tell me what I got wrong and show me the paper.</div></footer>
+
+<script>
+{
+const g=document.getElementById('grid');
+g.innerHTML=Array.from({length:101},(_,i)=>`<i class="${i<22?'g':''}" style="${i<22?`animation-delay:${i*40}ms`:''}"></i>`).join('');
+}
+</script>
+</body>
+</html>
